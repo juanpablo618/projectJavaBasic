@@ -33,8 +33,7 @@ public class GenericDAOImpl<E>
 
 
     private Class retornaInstanciaDeLaClase(E entity) {
-        Class instanceClass = entity.getClass();
-        return instanceClass;
+        return entity.getClass();
     }
 
     private void instanciarVariables(E entity) {
