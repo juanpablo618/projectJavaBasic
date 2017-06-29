@@ -27,7 +27,7 @@ public class CustomerDAO extends GenericDAOImpl<Customer> {
     }
 
 
-    public Customer find(Customer entity) throws NoSuchFieldException, IllegalAccessException, SQLException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+    public Customer find(Customer entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
         return super.find(entity);
     }
 }

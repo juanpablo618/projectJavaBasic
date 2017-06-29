@@ -57,15 +57,11 @@ public class GenericDAOImpl<E>
 
     private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException {
 
-        if ( todasLasVariables.length == 0){
-            return null;
-        }
+
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
-            if (retornaInstanciaDeLaClase(entity).getField(nombreDeLasVariables.get(i)).getName().equals("id")) {
-                return id = retornaInstanciaDeLaClase(entity).getField(nombreDeLasVariables.get(i)).getName().toString() + "=" + retornaInstanciaDeLaClase(entity).getField(nombreDeLasVariables.get(i)).get(entity).toString();
-            }else{
-                return null;
+            if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals("id")) {
+                return id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString() + "=" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString();
             }
         }
         return null;
@@ -75,12 +71,12 @@ public class GenericDAOImpl<E>
 
         PreparedStatement ps = conn.prepareCall(sqlFinal);
 
-        if (ps.execute()) {
-            System.out.println("failed operation: " + sqlFinal);
-        } else {
+        try {
+            ps.execute();
             System.out.println("successful operation: " + sqlFinal);
+        } catch (Exception e) {
+            System.out.println("failed operation: " + sqlFinal);
         }
-
     }
 
 
@@ -164,32 +160,25 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        int i = 0;
 
-        do {
-            nombreDeLasVariables.add(todasLasVariables[i].getName());
-            listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(nombreDeLasVariables.get(i)).get(entity));
+        for( int i=0;i<todasLasVariables.length;i++) {
+            //do {
+                listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
 
-            //No funciona para otras DB's
-            listaDeValoresDeVariables.set(i, " ' " + listaDeValoresDeVariables.get(i).toString() + " ' ");
+                //No funciona para otras DB's
+                listaDeValoresDeVariables.set(i, "'" + listaDeValoresDeVariables.get(i) + "'");
 
-            totalDeVariables.append(nombreDeLasVariables.get(i)).append(espacio);
+                totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
 
-            if (i == todasLasVariables.length - 1) {
-                break;
-            }
-
-            i = i + 1;
-        } while (i <= todasLasVariables.length);
-
+        }
         String totalDeVariablesFinal;
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
 
-        String sqlFinal = "Insert into " + tabla + " (" + totalDeVariablesFinal + ") VALUES (" + listaDeValoresDeVariables.toString() + ")";
+        String sqlFinal = "Insert into #TABLA (" + totalDeVariablesFinal + ") VALUES (" + listaDeValoresDeVariables.toString() + ")";
+        sqlFinal = sqlFinal.replace("#TABLA",tabla);
 
-        sqlFinal = sqlFinal.replace("[", " ");
-        sqlFinal = sqlFinal.replace("]", " ");
 
+        sqlFinal = sqlFinal.replaceAll("[>\\[\\]-]", "");
         ejecutaSentencia(conn, sqlFinal);
 
 
@@ -203,27 +192,22 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        int i = 0;
         HashMap columnaValor = new HashMap();
 
-        do {
-            nombreDeLasVariables.add(todasLasVariables[i].getName());
-            listaDeValoresDeVariables.add(" ' "+retornaInstanciaDeLaClase(entity).getField(nombreDeLasVariables.get(i)).get(entity)+" ' ");
+        for(int i = 0; i< todasLasVariables.length;i++){
 
-            columnaValor.put(nombreDeLasVariables.get(i), listaDeValoresDeVariables.get(i));
+            listaDeValoresDeVariables.add("'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
 
-            if (i == todasLasVariables.length - 1) {
-                break;
-            }
-            i = i + 1;
+            columnaValor.put(todasLasVariables[i].getName(), listaDeValoresDeVariables.get(i));
 
-        } while (i < todasLasVariables.length);
+        }
 
-        String sqlFinal = "UPDATE " + tabla + " SET " + columnaValor.toString() + " WHERE " + devuelveID(entity).toString();
-        sqlFinal = sqlFinal.replace("[", " ");
-        sqlFinal = sqlFinal.replace("]", " ");
-        sqlFinal = sqlFinal.replace("{", " ");
-        sqlFinal = sqlFinal.replace("}", " ");
+        String sqlFinal = "UPDATE #TABLA SET " + columnaValor.toString() + " WHERE " + devuelveID(entity).toString();
+
+        sqlFinal = sqlFinal.replace("#TABLA",tabla);
+
+        sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]","");
+
 
         ejecutaSentencia(conn, sqlFinal);
 
@@ -239,7 +223,10 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "DELETE FROM " + tabla + " WHERE " + devuelveID(entity);
+        String sql = "DELETE FROM #TABLA WHERE " + devuelveID(entity);
+
+        sql = sql.replace("#TABLA",tabla);
+
 
         ejecutaSentencia(conn, sql);
 
@@ -256,13 +243,15 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "SELECT * FROM " + tabla + " WHERE " + devuelveID(entity);
+        String sql = "SELECT * FROM #TABLA WHERE " + devuelveID(entity);
+
+        sql = sql.replace("#TABLA",tabla);
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
-        Class instanceClass = retornaInstanciaDeLaClase(entity);
-        Object objetoClase = instanceClass.newInstance();
+
+        Object objetoClase = retornaInstanciaDeLaClase(entity).newInstance();
 
         invocarSetters(objetoClase,rs);
 

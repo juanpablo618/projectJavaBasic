@@ -9,18 +9,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DataBaseTest {
+import static org.junit.Assert.assertEquals;
 
-    private final static String DB_URL = "jdbc:h2:tcp://localhost/~/testdb";
-    private final static String USER = "sa";
+public class DataBaseTestMySql {
+
+    private final static String DB_URL = "jdbc:mysql://localhost:3306/concretepage";
+    private final static String USER = "root";
     private final static String PASS = "";
 
-    private static Log logger = LogFactory.getLog("com.cuellojuan.entity.business");
 
 
 
     @Test
-    public void testConnection(){
+    public void testConnectionToMySQL(){
         Connection conn = null;
         try {
             Class.forName("org.apache.commons.dbcp.BasicDataSource");
@@ -31,10 +32,10 @@ public class DataBaseTest {
         } finally {
             if (conn != null) {
                 try {
+                    //Comparo el nombre de la bd
+                    assertEquals("MySQL", conn.getMetaData().getDatabaseProductName());
                     conn.close();
-                    System.out.println("success and close db");
-
-                } catch (Exception e) {
+               } catch (Exception e) {
 
                 }
             }
@@ -42,14 +43,14 @@ public class DataBaseTest {
 
     }
 
-    @Test(expected = org.h2.jdbc.JdbcSQLException.class)
+    @Test(expected = java.sql.SQLException.class)
     public void testConnectionfailInvalidPassword() throws ClassNotFoundException, SQLException {
         Connection conn = null;
 
         Class.forName("org.apache.commons.dbcp.BasicDataSource");
         System.out.println("Connecting to database...");
         conn = DriverManager.getConnection(DB_URL,USER,"blabla");
-
+        assertEquals(null,conn);
         conn.close();
 
     }

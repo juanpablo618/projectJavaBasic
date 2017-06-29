@@ -14,8 +14,8 @@ import java.sql.SQLException;
 public class App {
 
     public static void main( String[] args ) throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext("Spring-Module.xml");
+
+        ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
         CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
 
@@ -54,10 +54,10 @@ public class App {
 
         System.out.println("clase: " + customerDAO.find(juan).getClass().toString());
 
-       // System.out.println("clase: " + customerDAO.find(juanP).toString());
+       //System.out.println("clase: " + customerDAO.find(juanP).toString());
 
 
-        //customerDAO.remove(juan);
+        customerDAO.remove(juan);
 
     }
 
