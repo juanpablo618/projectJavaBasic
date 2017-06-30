@@ -28,10 +28,6 @@ public class GenericDAOImpl<E>
 
     private StringBuilder totalDeVariables;
 
-
-
-
-
     private Class retornaInstanciaDeLaClase(E entity) {
         return entity.getClass();
     }
@@ -55,7 +51,6 @@ public class GenericDAOImpl<E>
     }
 
     private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException {
-
 
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
@@ -100,53 +95,37 @@ public class GenericDAOImpl<E>
 
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
-
-
                         break;
                     case "VARCHAR":
 
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getString(campoParaSetear.getName().toLowerCase()));
-
-
                         break;
                     case "BOOLEAN":
 
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getBoolean(campoParaSetear.getName().toLowerCase()));
-
-
                         break;
                     case "DATE":
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getDate(campoParaSetear.getName().toLowerCase()));
-
                         break;
                     case "DOUBLE":
 
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getDouble(campoParaSetear.getName().toLowerCase()));
-
-
                         break;
                     case "FLOAT":
 
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
                                 + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getFloat(campoParaSetear.getName().toLowerCase()));
-
-
                         break;
                     default:
-
                         clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
-
+                        + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
                         break;
-
                 }
-
             }
-
         return ob;
     }
 
@@ -161,14 +140,9 @@ public class GenericDAOImpl<E>
 
 
         for( int i=0;i<todasLasVariables.length;i++) {
-            //do {
-                listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
-
                 //No funciona para otras DB's
-                listaDeValoresDeVariables.set(i, "'" + listaDeValoresDeVariables.get(i) + "'");
-
+                listaDeValoresDeVariables.add( "'" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity) + "'");
                 totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
-
         }
         String totalDeVariablesFinal;
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
@@ -194,11 +168,7 @@ public class GenericDAOImpl<E>
         HashMap columnaValor = new HashMap();
 
         for(int i = 0; i< todasLasVariables.length;i++){
-
-            listaDeValoresDeVariables.add("'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
-
-            columnaValor.put(todasLasVariables[i].getName(), listaDeValoresDeVariables.get(i));
-
+            columnaValor.put(todasLasVariables[i].getName(), "'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
         }
 
         String sqlFinal = "UPDATE #TABLA SET " + columnaValor.toString() + " WHERE " + devuelveID(entity).toString();
@@ -206,7 +176,6 @@ public class GenericDAOImpl<E>
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
 
         sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]","");
-
 
         ejecutaSentencia(conn, sqlFinal);
 
@@ -225,11 +194,7 @@ public class GenericDAOImpl<E>
         String sql = "DELETE FROM #TABLA WHERE " + devuelveID(entity);
 
         sql = sql.replace("#TABLA",tabla);
-
-
         ejecutaSentencia(conn, sql);
-
-
     }
 
 
