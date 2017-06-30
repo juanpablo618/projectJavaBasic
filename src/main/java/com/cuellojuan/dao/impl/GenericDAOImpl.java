@@ -55,10 +55,12 @@ public class GenericDAOImpl<E>
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
             if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals("id")) {
-                return id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString() + "=" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString();
+                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString() + "=" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString();
+                break;
             }
         }
-        return null;
+
+        return id;
     }
 
     private void ejecutaSentencia(Connection conn, String sqlFinal) throws SQLException {
@@ -171,7 +173,12 @@ public class GenericDAOImpl<E>
             columnaValor.put(todasLasVariables[i].getName(), "'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
         }
 
-        String sqlFinal = "UPDATE #TABLA SET " + columnaValor.toString() + " WHERE " + devuelveID(entity).toString();
+        StringBuilder preSql = new StringBuilder();
+        preSql.append("UPDATE #TABLA SET ");
+        preSql.append(columnaValor.toString());
+        preSql.append(" WHERE ");
+        preSql.append(devuelveID(entity));
+        String sqlFinal = preSql.toString();
 
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
 
@@ -191,7 +198,10 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "DELETE FROM #TABLA WHERE " + devuelveID(entity);
+        StringBuilder preSql = new StringBuilder();
+        preSql.append("DELETE FROM #TABLA WHERE ");
+        StringBuilder append = preSql.append(devuelveID(entity));
+        String sql = preSql.toString();
 
         sql = sql.replace("#TABLA",tabla);
         ejecutaSentencia(conn, sql);
@@ -207,7 +217,12 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "SELECT * FROM #TABLA WHERE " + devuelveID(entity);
+        StringBuilder preSql = new StringBuilder();
+        preSql.append("SELECT * FROM #TABLA WHERE ");
+
+        StringBuilder append = preSql.append(devuelveID(entity));
+
+        String sql = preSql.toString();
 
         sql = sql.replace("#TABLA",tabla);
 
