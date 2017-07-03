@@ -14,15 +14,15 @@ public class CustomerDAO extends GenericDAOImpl<Customer> {
     }
 
 
-    public void remove(Customer entity) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, SQLException {
+    public void remove(Customer entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
         super.remove(entity);
     }
 
-    public void insert(Customer entity) throws IllegalAccessException, SQLException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+    public void insert(Customer entity) throws IllegalAccessException, SQLException, NoSuchMethodException,NoSuchFieldException {
         super.insert(entity);
     }
 
-    public void update(Customer entity) throws IllegalAccessException, SQLException, NoSuchFieldException {
+    public void update(Customer entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
             super.update(entity);
     }
 

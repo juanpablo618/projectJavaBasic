@@ -28,11 +28,11 @@ public class GenericDAOImpl<E>
 
     private StringBuilder totalDeVariables;
 
-    private Class retornaInstanciaDeLaClase(E entity) {
+    private Class retornaInstanciaDeLaClase(E entity) throws NoSuchMethodException, IllegalAccessException {
         return entity.getClass();
     }
 
-    private void instanciarVariables(E entity) {
+    private void instanciarVariables(E entity) throws NoSuchMethodException, IllegalAccessException{
         tabla = retornaInstanciaDeLaClase(entity).getSimpleName();
         todasLasVariables = retornaInstanciaDeLaClase(entity).getFields();
 
@@ -50,7 +50,7 @@ public class GenericDAOImpl<E>
         } while (i < todasLasVariables.length);
     }
 
-    private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException {
+    private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
@@ -132,7 +132,7 @@ public class GenericDAOImpl<E>
     }
 
 
-    public void insert(E entity) throws SQLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+    public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
 
         instanciarVariables(entity);
         String espacio = ", ";
@@ -143,24 +143,34 @@ public class GenericDAOImpl<E>
 
         for( int i=0;i<todasLasVariables.length;i++) {
                 //No funciona para otras DB's
-                listaDeValoresDeVariables.add( "'" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity) + "'");
-                totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
+                if (todasLasVariables[i].getType().getName().equals("java.lang.String")){
+                    listaDeValoresDeVariables.add( "'" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity) + "'");
+                    totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
+                }else {
+                    listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
+                    totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
+                }
         }
+
         String totalDeVariablesFinal;
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
 
-        String sqlFinal = "Insert into #TABLA (" + totalDeVariablesFinal + ") VALUES (" + listaDeValoresDeVariables.toString() + ")";
+        StringBuilder preSql = new StringBuilder();
+        preSql.append("Insert into #TABLA (");
+        preSql.append(totalDeVariablesFinal.toString());
+        preSql.append(") VALUES (");
+        preSql.append(listaDeValoresDeVariables.toString());
+        preSql.append(")");
+        String sqlFinal = preSql.toString();
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
-
-
         sqlFinal = sqlFinal.replaceAll("[>\\[\\]-]", "");
-        ejecutaSentencia(conn, sqlFinal);
+       ejecutaSentencia(conn, sqlFinal);
 
 
     }
 
 
-    public void update(E entity) throws SQLException, IllegalAccessException, NoSuchFieldException {
+    public void update(E entity) throws SQLException,  NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
 
         instanciarVariables(entity);
 
@@ -170,7 +180,15 @@ public class GenericDAOImpl<E>
         HashMap columnaValor = new HashMap();
 
         for(int i = 0; i< todasLasVariables.length;i++){
-            columnaValor.put(todasLasVariables[i].getName(), "'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
+
+            if (todasLasVariables[i].getType().getName().equals("java.lang.String")){
+                columnaValor.put(todasLasVariables[i].getName(), "'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
+
+            }else{
+                columnaValor.put(todasLasVariables[i].getName(), retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
+
+            }
+
         }
 
         StringBuilder preSql = new StringBuilder();
@@ -178,10 +196,9 @@ public class GenericDAOImpl<E>
         preSql.append(columnaValor.toString());
         preSql.append(" WHERE ");
         preSql.append(devuelveID(entity));
+
         String sqlFinal = preSql.toString();
-
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
-
         sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]","");
 
         ejecutaSentencia(conn, sqlFinal);
@@ -190,7 +207,7 @@ public class GenericDAOImpl<E>
 
 
     @Override
-    public void remove(E entity) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, SQLException {
+    public void remove(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
         instanciarVariables(entity);
         rellenarListaDeNombresDeVariables();
@@ -201,8 +218,8 @@ public class GenericDAOImpl<E>
         StringBuilder preSql = new StringBuilder();
         preSql.append("DELETE FROM #TABLA WHERE ");
         StringBuilder append = preSql.append(devuelveID(entity));
-        String sql = preSql.toString();
 
+        String sql = preSql.toString();
         sql = sql.replace("#TABLA",tabla);
         ejecutaSentencia(conn, sql);
     }
