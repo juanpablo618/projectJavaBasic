@@ -142,7 +142,7 @@ public class GenericDAOImpl<E>
 
 
         for( int i=0;i<todasLasVariables.length;i++) {
-                //No funciona para otras DB's
+
                 if (todasLasVariables[i].getType().getName().equals("java.lang.String")){
                     listaDeValoresDeVariables.add( "'" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity) + "'");
                     totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
