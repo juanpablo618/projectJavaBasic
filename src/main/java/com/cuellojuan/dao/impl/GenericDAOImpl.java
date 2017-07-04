@@ -81,70 +81,70 @@ public class GenericDAOImpl<E>
 
         Class clase = ob.getClass();
         rs.next();
+        StringBuffer set = new StringBuffer("set");
 
             for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
 
                 Field campoParaSetear = clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase());
 
-                String tipoDatoRS = rs.getMetaData().getColumnTypeName(i);
+                int tipodatoRS = rs.getMetaData().getColumnType(i);
 
-                switch (tipoDatoRS) {
-                    case "INT":
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
-                        break;
-                    case "LONG":
+                switch (tipodatoRS) {
+                    case 4:
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
 
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
                         break;
-                    case "VARCHAR":
+                    case -1:
 
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getString(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
                         break;
-                    case "BOOLEAN":
+                    case 12:
 
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getBoolean(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getString(campoParaSetear.getName().toLowerCase()));
                         break;
-                    case "DATE":
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getDate(campoParaSetear.getName().toLowerCase()));
-                        break;
-                    case "DOUBLE":
+                    case 16:
 
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getDouble(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getBoolean(campoParaSetear.getName().toLowerCase()));
                         break;
-                    case "FLOAT":
+                    case 91:
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getDate(campoParaSetear.getName().toLowerCase()));
+                        break;
+                    case 8:
 
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getFloat(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getDouble(campoParaSetear.getName().toLowerCase()));
+                        break;
+                    case 6:
+
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getFloat(campoParaSetear.getName().toLowerCase()));
                         break;
                     default:
-                        clase.getDeclaredMethod("set" + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                        + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType()).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
                         break;
                 }
             }
         return ob;
     }
 
+    private Method devuelveMetodo(Class clase, StringBuffer set, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
+
+        return clase.getDeclaredMethod(set + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
+                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType());
+    }
+
 
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
-
         instanciarVariables(entity);
         String espacio = ", ";
 
         Connection conn;
         conn = dataSource.getConnection();
 
-
         for( int i=0;i<todasLasVariables.length;i++) {
 
-                if (todasLasVariables[i].getType().getName().equals("java.lang.String")){
-                    listaDeValoresDeVariables.add( "'" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity) + "'");
+                if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
+                    StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+                    variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
+                    listaDeValoresDeVariables.add(variableconComillas);
                     totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
                 }else {
                     listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
@@ -156,22 +156,19 @@ public class GenericDAOImpl<E>
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
 
         StringBuilder preSql = new StringBuilder();
-        preSql.append("Insert into #TABLA (");
-        preSql.append(totalDeVariablesFinal.toString());
-        preSql.append(") VALUES (");
-        preSql.append(listaDeValoresDeVariables.toString());
-        preSql.append(")");
+        preSql.append("Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES )");
+
         String sqlFinal = preSql.toString();
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
+        sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES",totalDeVariablesFinal.toString());
+        sqlFinal = sqlFinal.replace("#VALORES",listaDeValoresDeVariables.toString());
         sqlFinal = sqlFinal.replaceAll("[>\\[\\]-]", "");
-       ejecutaSentencia(conn, sqlFinal);
-
+        ejecutaSentencia(conn, sqlFinal);
 
     }
 
 
     public void update(E entity) throws SQLException,  NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
-
         instanciarVariables(entity);
 
         Connection conn;
@@ -181,28 +178,28 @@ public class GenericDAOImpl<E>
 
         for(int i = 0; i< todasLasVariables.length;i++){
 
-            if (todasLasVariables[i].getType().getName().equals("java.lang.String")){
-                columnaValor.put(todasLasVariables[i].getName(), "'"+retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity)+"'");
+            StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+            variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
+
+            if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
+                columnaValor.put(todasLasVariables[i].getName(), variableconComillas);
 
             }else{
                 columnaValor.put(todasLasVariables[i].getName(), retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
 
             }
-
         }
 
         StringBuilder preSql = new StringBuilder();
-        preSql.append("UPDATE #TABLA SET ");
-        preSql.append(columnaValor.toString());
-        preSql.append(" WHERE ");
-        preSql.append(devuelveID(entity));
+        preSql.append("UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID");
 
         String sqlFinal = preSql.toString();
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
+        sqlFinal = sqlFinal.replace("#ID",devuelveID(entity));
+        sqlFinal = sqlFinal.replace("#COLUMNAVALOR",columnaValor.toString());
         sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]","");
 
         ejecutaSentencia(conn, sqlFinal);
-
     }
 
 
@@ -216,11 +213,11 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         StringBuilder preSql = new StringBuilder();
-        preSql.append("DELETE FROM #TABLA WHERE ");
-        StringBuilder append = preSql.append(devuelveID(entity));
+        preSql.append("DELETE FROM #TABLA WHERE #ID");
 
         String sql = preSql.toString();
         sql = sql.replace("#TABLA",tabla);
+        sql = sql.replace("#ID",devuelveID(entity));
         ejecutaSentencia(conn, sql);
     }
 
@@ -228,20 +225,17 @@ public class GenericDAOImpl<E>
     public E find(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
 
         instanciarVariables(entity);
-
         rellenarListaDeNombresDeVariables();
 
         Connection conn;
         conn = dataSource.getConnection();
 
         StringBuilder preSql = new StringBuilder();
-        preSql.append("SELECT * FROM #TABLA WHERE ");
-
-        StringBuilder append = preSql.append(devuelveID(entity));
+        preSql.append("SELECT * FROM #TABLA WHERE #ID");
 
         String sql = preSql.toString();
-
         sql = sql.replace("#TABLA",tabla);
+        sql = sql.replace("#ID", devuelveID(entity));
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -253,10 +247,9 @@ public class GenericDAOImpl<E>
 
         rs.close();
         ps.close();
+
         return (E) objetoClase;
-
         }
-
     }
 
 
