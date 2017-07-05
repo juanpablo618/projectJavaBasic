@@ -81,7 +81,7 @@ public class GenericDAOImpl<E>
 
         Class clase = ob.getClass();
         rs.next();
-          final StringBuffer set = new StringBuffer("set");
+          final  String SET = new String("set");
 
             for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
 
@@ -91,45 +91,45 @@ public class GenericDAOImpl<E>
 
                 switch (tipodatoRS) {
                     case 4:
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
 
                         break;
                     case -1:
 
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
                         break;
                     case 12:
 
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getString(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getString(campoParaSetear.getName().toLowerCase()));
                         break;
                     case 16:
 
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getBoolean(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getBoolean(campoParaSetear.getName().toLowerCase()));
                         break;
                     case 91:
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getDate(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getDate(campoParaSetear.getName().toLowerCase()));
                         break;
                     case 8:
 
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getDouble(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getDouble(campoParaSetear.getName().toLowerCase()));
                         break;
                     case 6:
 
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getFloat(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getFloat(campoParaSetear.getName().toLowerCase()));
                         break;
                     default:
-                        devuelveMetodo(clase, set, rs, i,campoParaSetear).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
+                        devuelveMetodo(clase, SET, rs, i,campoParaSetear).invoke(ob, rs.getObject(campoParaSetear.getName().toLowerCase()));
                         break;
                 }
             }
         return ob;
     }
 
-    private Method devuelveMetodo(Class clase, StringBuffer set, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
+    private Method devuelveMetodo(Class clase, String SET, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
+        String nombreColumna = new String(rs.getMetaData().getColumnName(i));
+        String nombreMetodo = Character.toUpperCase(nombreColumna.toLowerCase().charAt(0)) + nombreColumna.toLowerCase().substring(1,nombreColumna.toLowerCase().length());
 
-        String nombreMetodo = Character.toUpperCase(rs.getMetaData().getColumnName(i).toLowerCase().charAt(0)) + rs.getMetaData().getColumnName(i).toLowerCase().substring(1,rs.getMetaData().getColumnName(i).toLowerCase().length());
-
-        return clase.getDeclaredMethod(set + nombreMetodo , campoParaSetear.getType());
+        return clase.getDeclaredMethod(SET.concat(nombreMetodo), campoParaSetear.getType());
     }
 
 
@@ -178,14 +178,12 @@ public class GenericDAOImpl<E>
             Object variable = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity);
 
             if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
-            StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+            StringBuffer variableconComillas = new StringBuffer(variable.toString());
             variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
             variable = variableconComillas;
 
             }
                 columnaValor.put(todasLasVariables[i].getName(), variable);
-
-
         }
 
         String sqlFinal = "UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID";
