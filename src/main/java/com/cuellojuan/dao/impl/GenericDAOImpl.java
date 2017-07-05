@@ -55,7 +55,7 @@ public class GenericDAOImpl<E>
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
             if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals("id")) {
-                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString() + "=" + retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString();
+                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString().concat("=").concat( retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
                 break;
             }
         }
