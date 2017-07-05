@@ -81,7 +81,7 @@ public class GenericDAOImpl<E>
 
         Class clase = ob.getClass();
         rs.next();
-        StringBuffer set = new StringBuffer("set");
+          final StringBuffer set = new StringBuffer("set");
 
             for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
 
@@ -127,8 +127,9 @@ public class GenericDAOImpl<E>
 
     private Method devuelveMetodo(Class clase, StringBuffer set, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
 
-        return clase.getDeclaredMethod(set + rs.getMetaData().getColumnName(i).toLowerCase().substring(0, 1).toUpperCase()
-                + rs.getMetaData().getColumnName(i).substring(1).toLowerCase(), campoParaSetear.getType());
+        String nombreMetodo = Character.toUpperCase(rs.getMetaData().getColumnName(i).toLowerCase().charAt(0)) + rs.getMetaData().getColumnName(i).toLowerCase().substring(1,rs.getMetaData().getColumnName(i).toLowerCase().length());
+
+        return clase.getDeclaredMethod(set + nombreMetodo , campoParaSetear.getType());
     }
 
 
@@ -140,25 +141,22 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         for( int i=0;i<todasLasVariables.length;i++) {
+            Object variable = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity);
 
-                if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
-                    StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+            if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
+                StringBuffer variableconComillas = new StringBuffer(variable.toString());
                     variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
-                    listaDeValoresDeVariables.add(variableconComillas);
+                    variable = variableconComillas;
+            }
+                    listaDeValoresDeVariables.add(variable);
                     totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
-                }else {
-                    listaDeValoresDeVariables.add(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
-                    totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
-                }
         }
+
 
         String totalDeVariablesFinal;
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
 
-        StringBuilder preSql = new StringBuilder();
-        preSql.append("Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES )");
-
-        String sqlFinal = preSql.toString();
+        String sqlFinal = "Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES )";
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
         sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES",totalDeVariablesFinal.toString());
         sqlFinal = sqlFinal.replace("#VALORES",listaDeValoresDeVariables.toString());
@@ -177,23 +175,20 @@ public class GenericDAOImpl<E>
         HashMap columnaValor = new HashMap();
 
         for(int i = 0; i< todasLasVariables.length;i++){
-
-            StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
-            variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
+            Object variable = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity);
 
             if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
-                columnaValor.put(todasLasVariables[i].getName(), variableconComillas);
-
-            }else{
-                columnaValor.put(todasLasVariables[i].getName(), retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity));
+            StringBuffer variableconComillas = new StringBuffer(retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+            variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
+            variable = variableconComillas;
 
             }
+                columnaValor.put(todasLasVariables[i].getName(), variable);
+
+
         }
 
-        StringBuilder preSql = new StringBuilder();
-        preSql.append("UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID");
-
-        String sqlFinal = preSql.toString();
+        String sqlFinal = "UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID";
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
         sqlFinal = sqlFinal.replace("#ID",devuelveID(entity));
         sqlFinal = sqlFinal.replace("#COLUMNAVALOR",columnaValor.toString());
@@ -212,10 +207,7 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        StringBuilder preSql = new StringBuilder();
-        preSql.append("DELETE FROM #TABLA WHERE #ID");
-
-        String sql = preSql.toString();
+        String sql = "DELETE FROM #TABLA WHERE #ID";
         sql = sql.replace("#TABLA",tabla);
         sql = sql.replace("#ID",devuelveID(entity));
         ejecutaSentencia(conn, sql);
@@ -230,10 +222,7 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        StringBuilder preSql = new StringBuilder();
-        preSql.append("SELECT * FROM #TABLA WHERE #ID");
-
-        String sql = preSql.toString();
+        String sql = "SELECT * FROM #TABLA WHERE #ID";
         sql = sql.replace("#TABLA",tabla);
         sql = sql.replace("#ID", devuelveID(entity));
 
