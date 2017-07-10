@@ -33,6 +33,7 @@ public class GenericDAOImpl<E>
     private static final String IGUAL = "=";
 
     private static final String ID = "id";
+    private static final String ESPACIO = ", ";
 
 
     private Class retornaInstanciaDeLaClase(E entity) throws NoSuchMethodException, IllegalAccessException {
@@ -128,7 +129,10 @@ public class GenericDAOImpl<E>
 
         String nombreColumna = new String(rs.getMetaData().getColumnName(i));
         String nombreColumnaMiniscula = new String(nombreColumna.toLowerCase());
-        String nombreMetodo = Character.toUpperCase(nombreColumnaMiniscula.charAt(0)) + nombreColumnaMiniscula.substring(1,nombreColumnaMiniscula.length());
+
+        String primeraLetraMayuscula = String.valueOf(Character.toUpperCase(nombreColumnaMiniscula.charAt(0)));
+
+        String nombreMetodo = primeraLetraMayuscula.concat(nombreColumnaMiniscula.substring(1,nombreColumnaMiniscula.length()));
 
         return clase.getDeclaredMethod(SET.concat(nombreMetodo), campoParaSetear.getType());
     }
@@ -136,7 +140,7 @@ public class GenericDAOImpl<E>
 
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
         instanciarVariables(entity);
-        String espacio = ", ";
+        //String espacio = ", ";
 
         Connection conn;
         conn = dataSource.getConnection();
@@ -150,7 +154,7 @@ public class GenericDAOImpl<E>
                     variable = variableconComillas;
             }
                     listaDeValoresDeVariables.add(variable);
-                    totalDeVariables.append(todasLasVariables[i].getName()).append(espacio);
+                    totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
         }
 
         String totalDeVariablesFinal;
