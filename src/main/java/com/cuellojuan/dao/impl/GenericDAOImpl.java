@@ -28,7 +28,11 @@ public class GenericDAOImpl<E>
 
     private StringBuilder totalDeVariables;
 
-    final  String CONSTANTE_SET = "set";
+    private static final String SET = "set";
+
+    private static final String IGUAL = "=";
+
+    private static final String ID = "id";
 
 
     private Class retornaInstanciaDeLaClase(E entity) throws NoSuchMethodException, IllegalAccessException {
@@ -57,8 +61,8 @@ public class GenericDAOImpl<E>
 
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
 
-            if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals("id")) {
-                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString().concat("=").concat( retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+            if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals(ID)) {
+                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString().concat(IGUAL).concat( retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
                 break;
             }
         }
@@ -121,11 +125,12 @@ public class GenericDAOImpl<E>
     }
 
     private Method devuelveMetodo(Class clase, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
+
         String nombreColumna = new String(rs.getMetaData().getColumnName(i));
         String nombreColumnaMiniscula = new String(nombreColumna.toLowerCase());
         String nombreMetodo = Character.toUpperCase(nombreColumnaMiniscula.charAt(0)) + nombreColumnaMiniscula.substring(1,nombreColumnaMiniscula.length());
 
-        return clase.getDeclaredMethod(CONSTANTE_SET.concat(nombreMetodo), campoParaSetear.getType());
+        return clase.getDeclaredMethod(SET.concat(nombreMetodo), campoParaSetear.getType());
     }
 
 

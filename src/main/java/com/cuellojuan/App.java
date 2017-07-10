@@ -27,12 +27,12 @@ public class App {
 //        System.out.println("Con Alumno DAO: ");
 //        System.out.println(alumnoDAO.findById(1).toString());
 
-
+    for (int i = 1 ; i<2 ; i++) {
         Customer juan = new Customer();
-        int id = 92;
+        int id = i;
 
         juan.setId(id);
-        juan.setAge(12);
+        juan.setAge(i);
         juan.setName("juan pablo");
 
         customerDAO.insert(juan);
@@ -51,14 +51,13 @@ public class App {
 //        juanP.setName("juan pablo");
 
 
-
         System.out.println("clase: " + customerDAO.find(juan).getClass().toString());
 
-       //System.out.println("clase: " + customerDAO.find(juanP).toString());
+        //System.out.println("clase: " + customerDAO.find(juanP).toString());
 
 
         customerDAO.remove(juan);
-
+    }
     }
 
 }
