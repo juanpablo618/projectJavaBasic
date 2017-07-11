@@ -56,7 +56,7 @@ public class App {
         //System.out.println("clase: " + customerDAO.find(juanP).toString());
 
 
-        customerDAO.remove(juan);
+        //customerDAO.remove(juan);
     }
     }
 

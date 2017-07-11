@@ -1,0 +1,96 @@
+Lecciones aprendidas :
+
+
+
+
+1) jdbc : Es una interfaz de acceso a datos estándar sql, su objetivo principal es proporcionar un acceso uniforme a una gran variedad de bases de datos relacionales.
+para usarlo es necesario disponer del driver jdbc apropiado
+es utilizado principalmente para 3 acciones básicas:
+
+	A) Establece una conexión con la base de datos:
+			Cargar el driver: Class.forName ("Nombre Del driver");
+
+		Connection con = DriverManager.getConnection (
+				 "jdbc:odbc:wombat", "login", "password");
+				 Statement stmt = con.createStatement();
+
+	B) Ejecuta sentencias SQL:
+				En esta consulta regresa los resultados en el objeto ResultSet:
+					 ResultSet rs = stmt.executeQuery("SELECT a, b, c FROM Table1");
+
+	C) Procesa los resultados:
+
+			while (rs.next()) {
+				 int x = rs.getInt("a");
+				 String s = rs.getString("b");
+				 float f = rs.getFloat("c");
+				 }
+
+
+
+Principales interfaces de jdbc usadas en este proyecto:
+
+DriverManager = proporciona métodos para cargar drivers.
+
+Connection = representa una conexión a la base de datos.
+
+DatabaseMetadata = información sobre la bd y la consulta que hicimos, por ejemplo ayuda a obtener el nombre de las columnas de la tabla que estamos consultando.
+(Los metadatos son los datos acerca de los datos o sea que describen la naturaleza de los datos, o sea podemos conocer la estructura de los datos no su contenido)
+
+Statement = Utilizado para enviar sentencias sql a la bd. los objetos statement son creados a partir de una conexión existente.
+	Para sentencia select usar executeQuery().
+	Para sentencias que crean o modifican tablas el método a utilizar executeUpdate().
+	Cuando no sabemos el tipo de retorno conviene utilizar execute().
+
+PreparedStatement = Sentencias sql precompiladas, como por ejemplo el delete.
+
+ResultSet = Devuelve todos los renglones de una sentencia ejecutada, a los cuales se les puede pedir los datos traidos de la ejecución de la sentencia sql y utilizarlos.
+
+ResultSetMetadata = Fué utilizado para extraer información de las propiedades del ResultSet,
+
+
+La mayor parte de las operaciones que podemos realizar con la api JDBC, lanzarán la excepción java.sql.SQLException, lo recomendable es encerrar todo el código jdbc entre bloques try/catch
+
+
+
+
+Java Naming and Directory Interface = Básicamente permite a las aplicaciones guardar y recoger datos identificados por un nombre, organizando dichos datos en una estructura que puede ser similar a una estructura de directorios.
+montar un "servidor" de JNDI y meter todos estos datos de configuración en él(Puede ser cualquier de las clases Java básicas, pero también cualquier clase Java que extienda de serializable), se  pueden organizar en una estructura de directorios  o como mejor nos venga. Las aplicaciones conectarán con este servidor JNDI para pedir los datos que necesiten. Si los datos cambian, sólo tenemos que cambiarlos en el servidor JNDI. (Todavía no está hecho en este proyecto).
+
+
+
+2) Generic en java
+	Permite eliminar los "cast".
+	Dota al lenguaje de una mejor comprobación de tipos en tiempo de compilación.
+
+
+convenciones de nombres:
+
+E: elemento de una colección.
+K: clave.
+N: número.
+T: tipo.
+V: valor.
+S, U, V etc: para segundos, terceros y cuartos tipos.
+
+
+ejemplo:
+
+En la definición de clases:
+public class GenericDAOImpl<E> implements GenericDAO<E>
+
+
+en la definición de metodos:
+private Class retornaInstanciaDeLaClase(E entity)
+
+
+
+3) relfection en java
+Principalmente sirve para poder acceder a variables y metodos de los objetos cuando el programa está en ejecución.
+o sea pocas palabras: el programa tiene la capacidad de observar y modificar su estructura de manera dinámica.
+
+para que lo usé:
+	crear objetos de una clase, manipular sus variables e invocar sus metodos.
+	configurar el datasource (Spring).
+
+pascal y c++ no tienen esta cualidad.

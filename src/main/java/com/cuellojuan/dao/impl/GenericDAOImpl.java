@@ -140,7 +140,6 @@ public class GenericDAOImpl<E>
 
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
         instanciarVariables(entity);
-        //String espacio = ", ";
 
         Connection conn;
         conn = dataSource.getConnection();
