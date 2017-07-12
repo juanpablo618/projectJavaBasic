@@ -52,8 +52,28 @@ ResultSetMetadata = Fué utilizado para extraer información de las propiedades 
 La mayor parte de las operaciones que podemos realizar con la api JDBC, lanzarán la excepción java.sql.SQLException, lo recomendable es encerrar todo el código jdbc entre bloques try/catch
 
 
+Cuando queremos obtener el último insert hecho en una tabla:
+
+        PreparedStatement st2 = this.getCn().prepareStatement("SELECT LAST_INSERT_ID() from Venta limit 1");
+        ResultSet rs;
+        rs = st2.executeQuery();
 
 
+
+Cuando queremos realizar un metodo que haga varios inserts o sea una transacción, lo conveniente es hacer:
+coneccion..setAutoCommit(false); // ya que por defecto viene en true, o sea cada conexion hace commit automatico.
+
+realizar todos los inserts y luego
+
+coneccion.commit(); // si pudo realizar todo el metodo exitosamente.
+
+"o"  si no pudo realizar todo el metodo, que haga = conecccion.rollback(); lo cual deshace todo el trabajo realizado .
+
+
+
+
+
+===================///===================================///====================================///===============================
 Java Naming and Directory Interface = Básicamente permite a las aplicaciones guardar y recoger datos identificados por un nombre, organizando dichos datos en una estructura que puede ser similar a una estructura de directorios.
 montar un "servidor" de JNDI y meter todos estos datos de configuración en él(Puede ser cualquier de las clases Java básicas, pero también cualquier clase Java que extienda de serializable), se  pueden organizar en una estructura de directorios  o como mejor nos venga. Las aplicaciones conectarán con este servidor JNDI para pedir los datos que necesiten. Si los datos cambian, sólo tenemos que cambiarlos en el servidor JNDI. (Todavía no está hecho en este proyecto).
 
