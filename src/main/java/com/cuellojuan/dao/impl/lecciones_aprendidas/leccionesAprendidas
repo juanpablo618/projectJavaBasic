@@ -1,8 +1,5 @@
 Lecciones aprendidas :
 
-
-
-
 1) jdbc : Es una interfaz de acceso a datos estándar sql, su objetivo principal es proporcionar un acceso uniforme a una gran variedad de bases de datos relacionales.
 para usarlo es necesario disponer del driver jdbc apropiado
 es utilizado principalmente para 3 acciones básicas:
@@ -74,12 +71,13 @@ coneccion.commit(); // si pudo realizar todo el metodo exitosamente.
 
 
 ===================///===================================///====================================///===============================
-Java Naming and Directory Interface = Básicamente permite a las aplicaciones guardar y recoger datos identificados por un nombre, organizando dichos datos en una estructura que puede ser similar a una estructura de directorios.
+2) Java Naming and Directory Interface = Básicamente permite a las aplicaciones guardar y recoger datos identificados por un nombre, organizando dichos datos en una estructura que puede ser similar a una estructura de directorios.
 montar un "servidor" de JNDI y meter todos estos datos de configuración en él(Puede ser cualquier de las clases Java básicas, pero también cualquier clase Java que extienda de serializable), se  pueden organizar en una estructura de directorios  o como mejor nos venga. Las aplicaciones conectarán con este servidor JNDI para pedir los datos que necesiten. Si los datos cambian, sólo tenemos que cambiarlos en el servidor JNDI. (Todavía no está hecho en este proyecto).
 
+===================///===================================///====================================///===============================
 
 
-2) Generic en java
+3) Generic en java
 	Permite eliminar los "cast".
 	Dota al lenguaje de una mejor comprobación de tipos en tiempo de compilación.
 
@@ -104,8 +102,9 @@ en la definición de metodos:
 private Class retornaInstanciaDeLaClase(E entity)
 
 
+===================///===================================///====================================///===============================
 
-3) relfection en java
+4) reflection en java
 Principalmente sirve para poder acceder a variables y metodos de los objetos cuando el programa está en ejecución.
 o sea pocas palabras: el programa tiene la capacidad de observar y modificar su estructura de manera dinámica.
 
@@ -114,3 +113,17 @@ para que lo usé:
 	configurar el datasource (Spring).
 
 pascal y c++ no tienen esta cualidad.
+
+
+
+===================///===================================///====================================///===============================
+5) Spring:
+Es el encargado de construir todos los objetos que la aplicación va a utilizar y también es el encargado de asegurarse que se integran
+ de forma correcta.
+
+osea es un factory de objetos basado en inyección de dependencias. (de fondo una reflection de java)
+
+Hasta ahora solo hemos utilizado spring para cargar las propiedades al datasource, en el archivo "Spring-Datasource.xml"
+
+
+

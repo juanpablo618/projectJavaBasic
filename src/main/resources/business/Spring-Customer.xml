@@ -12,14 +12,34 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="alumnoDAO" class="com.cuellojuan.dao.AlumnoDAO">
+
+    <bean id="usuariosDAO" class="com.cuellojuan.dao.UsuariosDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="customer" class="com.cuellojuan.entity.Customer">
+    <bean id="reportesventasDAO" class="com.cuellojuan.dao.ReportesventasDAO">
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="alumno" class="com.cuellojuan.entity.Alumno">
+    <bean id="proveedoresDAO" class="com.cuellojuan.dao.ProveedoresDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="productosDAO" class="com.cuellojuan.dao.ProductosDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="comprainfoDAO" class="com.cuellojuan.dao.ComprainfoDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="clientesDAO" class="com.cuellojuan.dao.ClientesDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+
+    <bean id="customer" class="com.cuellojuan.entity.Customer">
     </bean>
 
 

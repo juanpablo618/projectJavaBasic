@@ -42,7 +42,7 @@ public class GenericDAOImpl<E>
 
     private void instanciarVariables(E entity) throws NoSuchMethodException, IllegalAccessException{
         tabla = retornaInstanciaDeLaClase(entity).getSimpleName();
-        todasLasVariables = retornaInstanciaDeLaClase(entity).getFields();
+        todasLasVariables = retornaInstanciaDeLaClase(entity).getDeclaredFields();
 
         listaDeValoresDeVariables = new ArrayList();
         nombreDeLasVariables = new ArrayList<>();

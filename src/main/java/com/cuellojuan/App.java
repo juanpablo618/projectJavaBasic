@@ -1,9 +1,7 @@
 package com.cuellojuan;
 
-import com.cuellojuan.dao.AlumnoDAO;
-import com.cuellojuan.dao.CustomerDAO;
-import com.cuellojuan.dao.GenericDAO;
-import com.cuellojuan.entity.Customer;
+import com.cuellojuan.dao.*;
+import com.cuellojuan.entity.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -27,21 +25,21 @@ public class App {
 //        System.out.println("Con Alumno DAO: ");
 //        System.out.println(alumnoDAO.findById(1).toString());
 
-    for (int i = 1 ; i<2 ; i++) {
-        Customer juan = new Customer();
-        int id = i;
-
-        juan.setId(id);
-        juan.setAge(i);
-        juan.setName("juan pablo");
-
-        customerDAO.insert(juan);
-
-        juan.setName("roberto carlos");
-        customerDAO.update(juan);
-
-        System.out.println(customerDAO.find(juan).toString());
-
+//    for (int i = 1 ; i<2 ; i++) {
+//        Customer juan = new Customer();
+//        int id = i;
+//
+//        juan.setId(id);
+//        juan.setAge(i);
+//        juan.setName("juan pablo");
+//
+//        customerDAO.insert(juan);
+//
+//        juan.setName("roberto carlos");
+//        customerDAO.update(juan);
+//
+//        System.out.println(customerDAO.find(juan).toString());
+//
 
 //        Customer juanP = new Customer();
 //         int id = 93;
@@ -51,13 +49,96 @@ public class App {
 //        juanP.setName("juan pablo");
 
 
-        System.out.println("clase: " + customerDAO.find(juan).getClass().toString());
+//        System.out.println("clase: " + customerDAO.find(juan).getClass().toString());
 
         //System.out.println("clase: " + customerDAO.find(juanP).toString());
 
 
         //customerDAO.remove(juan);
-    }
+    //}
+
+        UsuariosDAO usuariosDAO = (UsuariosDAO) context.getBean("usuariosDAO");
+
+        int id= 62;
+        Usuarios usuario = new Usuarios();
+        usuario.setUsuarioid(id);
+        usuario.setCategoria("ADMINISTRADOR");
+        usuario.setContrasena("holahola");
+        usuario.setNombrecompleto("juan insertado");
+        usuario.setTelefono("452234");
+        usuario.setUbicacion("cordoba");
+        usuario.setUsuarionombre("junacito");
+
+        usuariosDAO.insert(usuario);
+
+        ReportesventasDAO reportesventasDAO = (ReportesventasDAO) context.getBean("reportesventasDAO");
+
+        Reportesventas reportesVentas = new Reportesventas();
+
+        reportesVentas.setVentasid(id);
+        reportesVentas.setFecha("Fri Jan 16 23:12:40 NPT 2016");
+        reportesVentas.setCodigoproducto("codigo producto");
+        reportesVentas.setCodigocliente("codigo cliente");
+        reportesVentas.setCantidad(21);
+        reportesVentas.setIngresos(24);
+        reportesVentas.setVendidopor("vendedor juan");
+
+        reportesventasDAO.insert(reportesVentas);
+
+
+
+        ProveedoresDAO proveedoresDAO = (ProveedoresDAO) context.getBean("proveedoresDAO");
+
+        Proveedores proveedor = new Proveedores();
+        proveedor.setPid(id);
+        proveedor.setCodigoproveedor("codigo prov");
+        proveedor.setNombrecompleto("juan proveedor");
+        proveedor.setUbicacion("ubicacion 1201");
+        proveedor.setTelefono("2134124");
+
+        proveedoresDAO.insert(proveedor);
+
+
+        ProductosDAO productosDAO = (ProductosDAO) context.getBean("productosDAO");
+
+        Productos producto = new Productos();
+        producto.setPid(id);
+        producto.setProductocodigo("producto codigo");
+        producto.setProductonombre("producto nombre");
+        producto.setPreciocosto(43.2);
+        producto.setPrecioventa(50);
+        producto.setMarca("marca marca");
+
+        productosDAO.insert(producto);
+
+
+
+
+        ComprainfoDAO comprainfoDAO = (ComprainfoDAO) context.getBean("comprainfoDAO");
+
+        Comprainfo comprainfo = new Comprainfo();
+
+        comprainfo.setCompraid(id);
+        comprainfo.setCodigoproveedor("codigo proveedor");
+        comprainfo.setCodigoproducto("codigo producto");
+        comprainfo.setFecha("Fri Jan 16 23:12:40 NPT 2016");
+        comprainfo.setCantidad(21);
+        comprainfo.setCostototal(21.2);
+
+        comprainfoDAO.insert(comprainfo);
+
+        ClientesDAO clientesDAO = (ClientesDAO) context.getBean("clientesDAO");
+
+
+        Clientes cliente = new Clientes();
+        cliente.setCid(id);
+        cliente.setClientecodigo("cliente codigo");
+        cliente.setNombre("juan nombre");
+        cliente.setUbicacion("ubicacion 213");
+        cliente.setTelefono("3123");
+
+        clientesDAO.insert(cliente);
+
     }
 
 }

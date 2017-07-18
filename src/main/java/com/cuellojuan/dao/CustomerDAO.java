@@ -1,12 +1,10 @@
 package com.cuellojuan.dao;
 
 import com.cuellojuan.dao.impl.GenericDAOImpl;
-import com.cuellojuan.entity.Customer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.cuellojuan.entity.Customer;
 
 public class CustomerDAO extends GenericDAOImpl<Customer> {
 
