@@ -3,7 +3,7 @@ package com.cuellojuan.entity;
 
 public class Proveedores {
 
-    public Integer pid;
+    public Integer id;
     public String codigoproveedor;
     public String nombrecompleto;
     public String ubicacion;
@@ -14,8 +14,8 @@ public class Proveedores {
     }
 
 
-    public Proveedores(Integer pid, String codigoproveedor, String nombrecompleto, String ubicacion, String telefono) {
-        this.pid = pid;
+    public Proveedores(Integer id, String codigoproveedor, String nombrecompleto, String ubicacion, String telefono) {
+        this.id = id;
         this.codigoproveedor = codigoproveedor;
         this.nombrecompleto = nombrecompleto;
         this.ubicacion = ubicacion;
@@ -23,12 +23,12 @@ public class Proveedores {
     }
 
 
-    public Integer getPid() {
-        return pid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCodigoproveedor() {

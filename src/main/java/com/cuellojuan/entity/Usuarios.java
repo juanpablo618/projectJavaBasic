@@ -2,7 +2,7 @@ package com.cuellojuan.entity;
 
     public class Usuarios {
 
-        public Integer usuarioid;
+        public Integer id;
         public String nombrecompleto;
         public String ubicacion;
         public String telefono;
@@ -14,11 +14,11 @@ package com.cuellojuan.entity;
         }
 
         public Usuarios(Integer usuarioid) {
-            this.usuarioid = usuarioid;
+            this.id = usuarioid;
         }
 
-        public Usuarios(Integer usuarioid, String nombrecompleto, String ubicacion, String telefono, String usuarionombre, String contrasena, String categoria) {
-            this.usuarioid = usuarioid;
+        public Usuarios(Integer id, String nombrecompleto, String ubicacion, String telefono, String usuarionombre, String contrasena, String categoria) {
+            this.id = id;
             this.nombrecompleto = nombrecompleto;
             this.ubicacion = ubicacion;
             this.telefono = telefono;
@@ -27,12 +27,12 @@ package com.cuellojuan.entity;
             this.categoria = categoria;
         }
 
-        public Integer getUsuarioid() {
-            return usuarioid;
+        public Integer getid() {
+            return id;
         }
 
-        public void setUsuarioid(Integer usuarioid) {
-            this.usuarioid = usuarioid;
+        public void setId(Integer id) {
+            this.id = id;
         }
 
         public String getNombrecompleto() {
@@ -86,7 +86,7 @@ package com.cuellojuan.entity;
         @Override
         public int hashCode() {
             int hash = 0;
-            hash += (usuarioid != null ? usuarioid.hashCode() : 0);
+            hash += (id != null ? id.hashCode() : 0);
             return hash;
         }
 
@@ -97,7 +97,7 @@ package com.cuellojuan.entity;
                 return false;
             }
             Usuarios other = (Usuarios) object;
-            if ((this.usuarioid == null && other.usuarioid != null) || (this.usuarioid != null && !this.usuarioid.equals(other.usuarioid))) {
+            if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
                 return false;
             }
             return true;
@@ -105,7 +105,7 @@ package com.cuellojuan.entity;
 
         @Override
         public String toString() {
-            return "UsuarioID=" + usuarioid + " ]";
+            return "UsuarioID=" + id + " ]";
         }
 
     }

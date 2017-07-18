@@ -42,7 +42,7 @@ public class App {
 //
 
 //        Customer juanP = new Customer();
-//         int id = 93;
+         int id = 93;
 //
 //        juanP.setId(id);
 //        juanP.setAge(41);
@@ -57,19 +57,6 @@ public class App {
         //customerDAO.remove(juan);
     //}
 
-        UsuariosDAO usuariosDAO = (UsuariosDAO) context.getBean("usuariosDAO");
-
-        int id= 62;
-        Usuarios usuario = new Usuarios();
-        usuario.setUsuarioid(id);
-        usuario.setCategoria("ADMINISTRADOR");
-        usuario.setContrasena("holahola");
-        usuario.setNombrecompleto("juan insertado");
-        usuario.setTelefono("452234");
-        usuario.setUbicacion("cordoba");
-        usuario.setUsuarionombre("junacito");
-
-        usuariosDAO.insert(usuario);
 
         ReportesventasDAO reportesventasDAO = (ReportesventasDAO) context.getBean("reportesventasDAO");
 
@@ -90,11 +77,6 @@ public class App {
         ProveedoresDAO proveedoresDAO = (ProveedoresDAO) context.getBean("proveedoresDAO");
 
         Proveedores proveedor = new Proveedores();
-        proveedor.setPid(id);
-        proveedor.setCodigoproveedor("codigo prov");
-        proveedor.setNombrecompleto("juan proveedor");
-        proveedor.setUbicacion("ubicacion 1201");
-        proveedor.setTelefono("2134124");
 
         proveedoresDAO.insert(proveedor);
 
@@ -110,8 +92,6 @@ public class App {
         producto.setMarca("marca marca");
 
         productosDAO.insert(producto);
-
-
 
 
         ComprainfoDAO comprainfoDAO = (ComprainfoDAO) context.getBean("comprainfoDAO");

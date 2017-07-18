@@ -87,25 +87,6 @@ public class CustomerTest {
 
     }
 
-    //Todavía no lo puedo resolver.
-//    @Test
-//    public  void testCustomerDelete() throws InvocationTargetException, SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-//        ApplicationContext context =
-//                new ClassPathXmlApplicationContext("Spring-Module.xml");
-//
-//        CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-//
-//        int nroid = 999;
-//        String name = "juan";
-//        int age= 67;
-//
-//        Customer customerTest = new Customer(nroid,name,age);
-//
-//        customerDAO.insert(customerTest);
-//        customerDAO.remove(customerTest);
-//
-//        assertEquals(null, customerDAO.find(customerTest));
-//
-//    }
+
 
 }
