@@ -81,17 +81,6 @@ public class App {
         proveedoresDAO.insert(proveedor);
 
 
-        ProductosDAO productosDAO = (ProductosDAO) context.getBean("productosDAO");
-
-        Productos producto = new Productos();
-        producto.setPid(id);
-        producto.setProductocodigo("producto codigo");
-        producto.setProductonombre("producto nombre");
-        producto.setPreciocosto(43.2);
-        producto.setPrecioventa(50);
-        producto.setMarca("marca marca");
-
-        productosDAO.insert(producto);
 
 
         ComprainfoDAO comprainfoDAO = (ComprainfoDAO) context.getBean("comprainfoDAO");

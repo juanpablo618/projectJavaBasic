@@ -70,4 +70,7 @@ public class Comprainfo {
     public void setCostototal(double costototal) {
         this.costototal = costototal;
     }
+
+
+
 }

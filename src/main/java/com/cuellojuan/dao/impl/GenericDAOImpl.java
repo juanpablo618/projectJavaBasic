@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.lang.reflect.*;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 @Repository
 public class GenericDAOImpl<E>
@@ -151,6 +152,12 @@ public class GenericDAOImpl<E>
                 StringBuffer variableconComillas = new StringBuffer(variable.toString());
                     variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
                     variable = variableconComillas;
+            }else {
+                if (todasLasVariables[i].getType().getName().equals(Date.class.getName())){
+                    StringBuffer variableconComillas = new StringBuffer(variable.toString());
+                    variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
+                    variable = variableconComillas;
+                }
             }
                     listaDeValoresDeVariables.add(variable);
                     totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);

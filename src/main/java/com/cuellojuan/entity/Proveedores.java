@@ -10,6 +10,7 @@ public class Proveedores {
     public String telefono;
 
 
+
     public Proveedores() {
     }
 

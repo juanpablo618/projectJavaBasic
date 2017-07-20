@@ -38,6 +38,11 @@
     </bean>
 
 
+    <bean id="herramientasDAO" class="com.cuellojuan.dao.HerramientasDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
 
     <bean id="customer" class="com.cuellojuan.entity.Customer">
     </bean>

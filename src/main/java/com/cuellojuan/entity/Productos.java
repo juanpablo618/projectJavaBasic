@@ -2,7 +2,7 @@ package com.cuellojuan.entity;
 
 public class Productos {
 
-    public Integer pid;
+    public Integer id;
     public String productocodigo;
     public String productonombre;
     public double preciocosto;
@@ -14,8 +14,8 @@ public class Productos {
     }
 
 
-    public Productos(Integer pid, String productocodigo, String productonombre, double preciocosto, double precioventa, String marca) {
-        this.pid = pid;
+    public Productos(Integer id, String productocodigo, String productonombre, double preciocosto, double precioventa, String marca) {
+        this.id = id;
         this.productocodigo = productocodigo;
         this.productonombre = productonombre;
         this.preciocosto = preciocosto;
@@ -24,12 +24,12 @@ public class Productos {
     }
 
 
-    public Integer getPid() {
-        return pid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getProductocodigo() {
@@ -71,4 +71,9 @@ public class Productos {
     public void setMarca(String marca) {
         this.marca = marca;
     }
+
+
+
+
+
 }
