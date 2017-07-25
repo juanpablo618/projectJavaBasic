@@ -2,6 +2,7 @@ package com.cuellojuan.entity;
 
 public class Clientes {
 
+
     public Integer cid;
     public String clientecodigo;
     public String nombre;

@@ -1,15 +1,24 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
+import com.cuellojuan.entity.Piezas;
 import org.springframework.stereotype.Repository;
+
 import javax.sql.DataSource;
-import java.lang.reflect.*;
-import java.sql.*;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Repository
-public class GenericDAOImpl<E>
+public class GenericDAOImplHotel<E>
         implements GenericDAO<E> {
 
     private DataSource dataSource;
@@ -33,7 +42,7 @@ public class GenericDAOImpl<E>
 
     private static final String IGUAL = "=";
 
-    private static final String ID = "id";
+    private static  String ID;
 
     private static final String ESPACIO = ", ";
 
@@ -43,7 +52,7 @@ public class GenericDAOImpl<E>
     }
 
     private void instanciarVariables(E entity) throws NoSuchMethodException, IllegalAccessException{
-        tabla = retornaInstanciaDeLaClase(entity).getSimpleName();
+        tabla = retornaInstanciaDeLaClase(entity).getSimpleName().substring(0, 1).toLowerCase() + retornaInstanciaDeLaClase(entity).getSimpleName().substring(1);
         todasLasVariables = retornaInstanciaDeLaClase(entity).getDeclaredFields();
 
         listaDeValoresDeVariables = new ArrayList();
@@ -63,6 +72,8 @@ public class GenericDAOImpl<E>
     private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
+
+            ID = todasLasVariables[0].getName();
 
             if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals(ID)) {
                 id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString().concat(IGUAL).concat( retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
@@ -247,6 +258,96 @@ public class GenericDAOImpl<E>
 
         return (E) objetoClase;
         }
+
+
+
+
+    public int obtenerUltimoId(String id, String tabla) throws SQLException {
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+        String sql = "SELECT max(#ID) FROM #TABLA";
+        sql = sql.replace("#TABLA",tabla);
+        sql = sql.replace("#ID",id);
+
+        PreparedStatement st2 = conn.prepareStatement(sql);
+        ResultSet rs;
+        int valorRS = 0;
+
+        rs = st2.executeQuery();
+
+        while(rs.next()){
+            valorRS = rs.getInt(1);
+        }
+
+        rs.close();
+        st2.close();
+        return valorRS;
+
+
+
+    }
+
+
+
+    public int obtenerCantidadDePiezasPorLimpiar() throws SQLException{
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+        String sql = "SELECT count(*) FROM `relinventario` WHERE quantita_min_predef > quantita";
+
+        PreparedStatement st2 = conn.prepareStatement(sql);
+        ResultSet rs;
+        int valorRS = 0;
+
+        rs = st2.executeQuery();
+
+        while(rs.next()){
+            valorRS = rs.getInt(1);
+        }
+
+        rs.close();
+        st2.close();
+        return valorRS;
+
+
+    }
+
+    public List<Piezas> obtenerPiezasConVentiladores() throws SQLException{
+
+        List<Piezas> listaDePiezasConVentiladores;
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+        String sql = "select idappartamento from relinventario where idbeneinventario=1 AND quantita>=1";
+
+        PreparedStatement st2 = conn.prepareStatement(sql);
+        ResultSet rs;
+
+        rs = st2.executeQuery();
+            listaDePiezasConVentiladores = new ArrayList();
+
+        while(rs.next()){
+            Piezas pieza = new Piezas();
+            pieza.setID(rs.getInt("idappartamento"));
+            listaDePiezasConVentiladores.add(pieza);
+
+        }
+
+        rs.close();
+        st2.close();
+        return listaDePiezasConVentiladores;
+
+
+    }
+
+
+
+
+
     }
 
 

@@ -30,7 +30,7 @@ public class ProductosTest {
         producto.setPreciocosto(43.2);
         producto.setPrecioventa(50);
         producto.setMarca("marca marca");
-
+        producto.setStockactual(40);
         productosDAO.insert(producto);
 
         assertEquals(999,(int)productosDAO.find(producto).getId());

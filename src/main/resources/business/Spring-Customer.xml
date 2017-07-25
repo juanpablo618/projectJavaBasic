@@ -7,6 +7,10 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <bean id="genericDAOimplHotel" class="com.cuellojuan.dao.impl.GenericDAOImplHotel">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
 
     <bean id="customerDAO" class="com.cuellojuan.dao.CustomerDAO">
         <property name="dataSource" ref="dataSource" />
@@ -42,6 +46,11 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+
+
+    <bean id="reporteInventarioDAO" class="com.cuellojuan.dao.ReporteInventarioDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 
     <bean id="customer" class="com.cuellojuan.entity.Customer">

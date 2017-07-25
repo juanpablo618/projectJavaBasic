@@ -8,21 +8,31 @@ public class Productos {
     public double preciocosto;
     public double precioventa;
     public String marca;
+    public int stockactual;
 
 
     public Productos() {
     }
 
 
-    public Productos(Integer id, String productocodigo, String productonombre, double preciocosto, double precioventa, String marca) {
+    public Productos(Integer id, String productocodigo, String productonombre, double preciocosto, double precioventa, String marca, int stockactual) {
         this.id = id;
         this.productocodigo = productocodigo;
         this.productonombre = productonombre;
         this.preciocosto = preciocosto;
         this.precioventa = precioventa;
         this.marca = marca;
+        this.stockactual = stockactual;
     }
 
+
+    public int getStockactual() {
+        return stockactual;
+    }
+
+    public void setStockactual(int stockactual) {
+        this.stockactual = stockactual;
+    }
 
     public Integer getId() {
         return id;

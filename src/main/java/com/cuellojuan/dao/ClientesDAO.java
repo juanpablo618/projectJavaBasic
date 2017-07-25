@@ -24,6 +24,8 @@ public class ClientesDAO extends GenericDAOImpl<Clientes> {
 
 
     public Clientes find(Clientes entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+
+
         return super.find(entity);
     }
 

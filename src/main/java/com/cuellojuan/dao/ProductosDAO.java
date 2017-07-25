@@ -27,6 +27,8 @@ public class ProductosDAO extends GenericDAOImpl<Productos> {
 
 
     public Productos find(Productos entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+
+
         return super.find(entity);
     }
 

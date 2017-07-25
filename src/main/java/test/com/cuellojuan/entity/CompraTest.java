@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 public class CompraTest {
 
 
-//solo inserta 2 registros en comprainfo
+//solo inserta 2 registros en comprainfo y valida que a los productos se reduzca el stock
     @Test
     public void testInsertCompraConDosProductosMismoProveedor() throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
@@ -51,6 +51,7 @@ public class CompraTest {
         producto1.setPreciocosto(45.2);
         producto1.setPrecioventa(55);
         producto1.setMarca("marca marca 1");
+        producto1.setStockactual(40);
 
         listaDeProductosEnCompra.add(producto1);
 
@@ -62,24 +63,33 @@ public class CompraTest {
         producto2.setPreciocosto(43.2);
         producto2.setPrecioventa(50);
         producto2.setMarca("marca marca");
+        producto2.setStockactual(94);
 
     listaDeProductosEnCompra.add(producto2);
 
 
         Comprainfo comprainfo = new Comprainfo();
 
+        int stockProd1 = producto1.getStockactual();
+        int stockProd2 = producto2.getStockactual();
 
-    for(Productos producto : listaDeProductosEnCompra){
+
+        for(Productos producto : listaDeProductosEnCompra){
 
         comprainfo.setCodigoproveedor(proveedor.getCodigoproveedor());
         comprainfo.setCodigoproducto(producto.getProductocodigo());
         comprainfo.setFecha("Fri Jan 16 23:12:40 NPT 2016");
         comprainfo.setCantidad(2);
         comprainfo.setCostototal(producto.getPrecioventa());
+        producto.setStockactual(producto.getStockactual()-1);
 
         comprainfoDAO.insert(comprainfo);
 
+
     }
+        assertEquals(stockProd1 - 1 ,producto1.getStockactual());
+        assertEquals(stockProd2 - 1,producto2.getStockactual());
+
 
 
     }
