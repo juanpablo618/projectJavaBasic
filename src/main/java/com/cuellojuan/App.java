@@ -4,6 +4,7 @@ import com.cuellojuan.dao.ReporteInventarioDAO;
 import com.cuellojuan.entity.Relinventario;
 import com.cuellojuan.tasks.BuscarPiezasConVentiladores;
 import com.cuellojuan.tasks.BuscarPiezasSucias;
+import com.cuellojuan.tasks.ReservasPorBooking;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,23 +18,21 @@ public class App {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
-        ReporteInventarioDAO reporteInventarioDAO = (ReporteInventarioDAO) context.getBean("reporteInventarioDAO");
-
-        Relinventario reporte = new Relinventario();
-
-       reporte.setIdbeneinventario(1);
-
-       System.out.println( reporteInventarioDAO.find(reporte).toString());
-
-
-
-        System.out.println( reporteInventarioDAO.obtenerUltimoId("idbeneinventario","relinventario"));
-
 
         BuscarPiezasSucias hilo1 = new BuscarPiezasSucias();
         hilo1.start();
+
         BuscarPiezasConVentiladores hilo2 = new BuscarPiezasConVentiladores();
         hilo2.start();
+
+        //Numero de reservas que vienen por booking:
+        ReservasPorBooking hilo3 = new ReservasPorBooking();
+        hilo3.start();
+
+
+
+
+
 
 
 // select count(*) from relinventario where idbeneinventario=1
@@ -138,15 +137,6 @@ public class App {
 //        clientesDAO.insert(cliente);
 //        clientesDAO.find(cliente).toString();
 //
-
-
-
-
-//
-
-
-
-
 
 
     }

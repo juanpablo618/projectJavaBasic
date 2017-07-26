@@ -26,8 +26,7 @@ public class BuscarPiezasConVentiladores extends Thread{
         {
 
             try {
-                System.out.println("piezas que tienen ventiladores: ");
-                System.out.println(reporteInventarioDAO.obtenerPiezasConVentiladores().toString());
+                System.out.println("piezas que tienen ventiladores: ".concat(reporteInventarioDAO.obtenerPiezasConVentiladores().toString()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }

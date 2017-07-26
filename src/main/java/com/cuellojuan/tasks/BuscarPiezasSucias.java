@@ -2,11 +2,9 @@ package com.cuellojuan.tasks;
 
 
 import com.cuellojuan.dao.ReporteInventarioDAO;
-import com.cuellojuan.entity.Relinventario;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 
@@ -28,8 +26,7 @@ public class BuscarPiezasSucias extends Thread{
         {
 
             try {
-                System.out.println("piezas por limpiar");
-                System.out.println(reporteInventarioDAO.obtenerCantidadDePiezasPorLimpiar());
+                System.out.println("piezas por limpiar: "+ reporteInventarioDAO.obtenerCantidadDePiezasPorLimpiar());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

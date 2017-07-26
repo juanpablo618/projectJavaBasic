@@ -1,6 +1,7 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
+import com.cuellojuan.entity.ClientesPorBooking;
 import com.cuellojuan.entity.Piezas;
 import org.springframework.stereotype.Repository;
 
@@ -296,7 +297,7 @@ public class GenericDAOImplHotel<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "SELECT count(*) FROM `relinventario` WHERE quantita_min_predef > quantita";
+        String sql = "SELECT count(*) FROM `relinventario` WHERE quantita_min_predef > quantita AND idbeneinventario=3";
 
         PreparedStatement st2 = conn.prepareStatement(sql);
         ResultSet rs;
@@ -345,10 +346,42 @@ public class GenericDAOImplHotel<E>
     }
 
 
+    public List<ClientesPorBooking> obtenerCantidadDeClientesQueVienenPorBooking() throws SQLException {
 
 
+        List<ClientesPorBooking> listaDeClientesPorBooking;
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+//        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking'";
+        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking' OR commento='booking>>'";
+
+
+
+        PreparedStatement st2 = conn.prepareStatement(sql);
+        ResultSet rs;
+
+        rs = st2.executeQuery();
+        listaDeClientesPorBooking = new ArrayList();
+
+        while(rs.next()){
+            ClientesPorBooking cliente = new ClientesPorBooking();
+
+            cliente.setIdCliente(rs.getInt("idclienti"));
+            cliente.setIdPieza(rs.getInt("idappartamenti"));
+            cliente.setNumPersonas(rs.getInt("num_persone"));
+            cliente.setTarifaTotal(rs.getDouble("tariffa_tot"));
+            listaDeClientesPorBooking.add(cliente);
+
+        }
+
+        rs.close();
+        st2.close();
+        return listaDeClientesPorBooking;
 
     }
+}
 
 
 
