@@ -7,9 +7,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.SQLException;
 
+import static com.cuellojuan.App.context;
+
 public class ReservasPorBooking extends Thread{
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
     ClientesPorBookingDAO clientesPorBookingDAO = (ClientesPorBookingDAO) context.getBean("clientesPorBookingDAO");
 

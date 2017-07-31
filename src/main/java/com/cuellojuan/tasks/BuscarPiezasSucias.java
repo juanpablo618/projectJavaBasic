@@ -7,11 +7,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.SQLException;
 
+import static com.cuellojuan.App.context;
+
 
 public class BuscarPiezasSucias extends Thread{
 
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+//    ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
     ReporteInventarioDAO reporteInventarioDAO = (ReporteInventarioDAO) context.getBean("reporteInventarioDAO");
 
