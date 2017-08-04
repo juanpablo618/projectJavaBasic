@@ -1,0 +1,45 @@
+package com.cuellojuan.entity;
+
+
+public class Estado {
+
+    public int id_estado;
+
+    public String nombre;
+    public String descripcion;
+
+
+    public Estado() {
+    }
+
+    public Estado(int id_estado, String nombre, String descripcion) {
+        this.id_estado = id_estado;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
+
+    public int getId_estado() {
+        return id_estado;
+    }
+
+    public void setId_estado(int id_estado) {
+        this.id_estado = id_estado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+}

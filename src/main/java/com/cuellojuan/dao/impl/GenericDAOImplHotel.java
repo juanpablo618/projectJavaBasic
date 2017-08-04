@@ -1,7 +1,7 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
-import com.cuellojuan.entity.ClientesPorBooking;
+import com.cuellojuan.entity.ReservasPorBooking;
 import com.cuellojuan.entity.Piezas;
 import org.springframework.stereotype.Repository;
 
@@ -346,10 +346,10 @@ public class GenericDAOImplHotel<E>
     }
 
 
-    public List<ClientesPorBooking> obtenerCantidadDeClientesQueVienenPorBooking() throws SQLException {
+    public List<ReservasPorBooking> obtenerCantidadDeClientesQueVienenPorBooking() throws SQLException {
 
 
-        List<ClientesPorBooking> listaDeClientesPorBooking;
+        List<ReservasPorBooking> listaDeReservasPorBooking;
 
         Connection conn;
         conn = dataSource.getConnection();
@@ -363,22 +363,22 @@ public class GenericDAOImplHotel<E>
         ResultSet rs;
 
         rs = st2.executeQuery();
-        listaDeClientesPorBooking = new ArrayList();
+        listaDeReservasPorBooking = new ArrayList();
 
         while(rs.next()){
-            ClientesPorBooking cliente = new ClientesPorBooking();
+            ReservasPorBooking cliente = new ReservasPorBooking();
 
             cliente.setIdCliente(rs.getInt("idclienti"));
-            cliente.setIdPieza(rs.getInt("idappartamenti"));
+            cliente.setIdApartamento(rs.getInt("idappartamenti"));
             cliente.setNumPersonas(rs.getInt("num_persone"));
             cliente.setTarifaTotal(rs.getDouble("tariffa_tot"));
-            listaDeClientesPorBooking.add(cliente);
+            listaDeReservasPorBooking.add(cliente);
 
         }
 
         rs.close();
         st2.close();
-        return listaDeClientesPorBooking;
+        return listaDeReservasPorBooking;
 
     }
 }

@@ -14,16 +14,15 @@ import java.sql.SQLException;
 
 public class App {
 
-    private static final String SET = "set";
-
     public static final ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
     public static void main( String[] args ) throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
 
-
+        //Cantidad de piezas por limpiar diarias:
         BuscarPiezasSucias hilo1 = new BuscarPiezasSucias();
         hilo1.start();
 
+        //Piezas que tienen ventilador:
         BuscarPiezasConVentiladores hilo2 = new BuscarPiezasConVentiladores();
         hilo2.start();
 
@@ -32,62 +31,6 @@ public class App {
         hilo3.start();
 
 
-
-
-
-
-
-// select count(*) from relinventario where idbeneinventario=1
-// select idappartamento from relinventario where idbeneinventario=1
-
-
-
-//
-
-//        CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-//
-
-//        System.out.println("Con Customer DAO: ");
-//        System.out.println(customerDAO.findById(1));
-//
-//
-//        AlumnoDAO alumnoDAO = (AlumnoDAO) context.getBean("alumnoDAO");
-//        System.out.println("Con Alumno DAO: ");
-//        System.out.println(alumnoDAO.findById(1).toString());
-
-//    for (int i = 1 ; i<2 ; i++) {
-//        Customer juan = new Customer();
-//        int id = i;
-//
-//        juan.setId(id);
-//        juan.setAge(i);
-//        juan.setName("juan pablo");
-//
-//        customerDAO.insert(juan);
-//
-//        juan.setName("roberto carlos");
-//        customerDAO.update(juan);
-//
-//        System.out.println(customerDAO.find(juan).toString());
-//
-
-//        Customer juanP = new Customer();
-//         int id = 93;
-//
-//        juanP.setId(id);
-//        juanP.setAge(41);
-//        juanP.setName("juan pablo");
-
-
-//        System.out.println("clase: " + customerDAO.find(juan).getClass().toString());
-
-        //System.out.println("clase: " + customerDAO.find(juanP).toString());
-
-
-        //customerDAO.remove(juan);
-    //}
-
-//
 //        ReportesventasDAO reportesventasDAO = (ReportesventasDAO) context.getBean("reportesventasDAO");
 //
 //        Reportesventas reportesVentas = new Reportesventas();
@@ -129,7 +72,7 @@ public class App {
 //        ClientesDAO clientesDAO = (ClientesDAO) context.getBean("clientesDAO");
 //
 //
-//        Clientes cliente = new Clientes();
+//        Cliente cliente = new Cliente();
 //        cliente.setCid(45);
 //        cliente.setClientecodigo("cliente codigo");
 //        cliente.setNombre("juan nombre");

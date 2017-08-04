@@ -1,12 +1,12 @@
 package com.cuellojuan.entity;
 
 
-public class ClientesPorBooking {
+public class ReservasPorBooking {
 
     //id cliente
     private int idCliente;
     //id de la pieza donde se aloja
-    private int idPieza;
+    private int idApartamento;
     //nro de personas de la reserva
     private int numPersonas;
     //tarifa total
@@ -14,13 +14,13 @@ public class ClientesPorBooking {
 
 
 
-    public ClientesPorBooking() {
+    public ReservasPorBooking() {
     }
 
 
-    public ClientesPorBooking(int idCliente, int idPieza, int numPersonas, double tarifaTotal) {
+    public ReservasPorBooking(int idCliente, int idApartamento, int numPersonas, double tarifaTotal) {
         this.idCliente = idCliente;
-        this.idPieza = idPieza;
+        this.idApartamento = idApartamento;
         this.numPersonas = numPersonas;
         this.tarifaTotal = tarifaTotal;
     }
@@ -34,12 +34,12 @@ public class ClientesPorBooking {
         this.idCliente = idCliente;
     }
 
-    public int getIdPieza() {
-        return idPieza;
+    public int getIdApartamento() {
+        return idApartamento;
     }
 
-    public void setIdPieza(int idPieza) {
-        this.idPieza = idPieza;
+    public void setIdApartamento(int idApartamento) {
+        this.idApartamento = idApartamento;
     }
 
     public int getNumPersonas() {
@@ -61,9 +61,9 @@ public class ClientesPorBooking {
 
     @Override
     public String toString() {
-        return "ClientesPorBooking{" +
+        return "ReservasPorBooking{" +
                 "idCliente=" + idCliente +
-                ", idPieza=" + idPieza +
+                ", idApartamento=" + idApartamento +
                 ", numPersonas=" + numPersonas +
                 ", tarifaTotal=" + tarifaTotal +
                 '}';

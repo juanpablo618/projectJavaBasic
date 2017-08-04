@@ -1,29 +1,29 @@
 package com.cuellojuan.dao;
 
-import com.cuellojuan.entity.Clientes;
+import com.cuellojuan.entity.Cliente;
 import com.cuellojuan.dao.impl.GenericDAOImpl;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-public class ClientesDAO extends GenericDAOImpl<Clientes> {
+public class ClientesDAO extends GenericDAOImpl<Cliente> {
 
     public ClientesDAO() {
     }
 
-    public void remove(Clientes entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Cliente entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
         super.remove(entity);
     }
 
-    public void insert(Clientes entity) throws IllegalAccessException, SQLException, NoSuchMethodException,NoSuchFieldException {
+    public void insert(Cliente entity) throws IllegalAccessException, SQLException, NoSuchMethodException,NoSuchFieldException {
         super.insert(entity);
     }
 
-    public void update(Clientes entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(Cliente entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
         super.update(entity);
     }
 
 
-    public Clientes find(Clientes entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public Cliente find(Cliente entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
 
 
         return super.find(entity);
