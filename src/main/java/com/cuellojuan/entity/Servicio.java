@@ -4,10 +4,10 @@ package com.cuellojuan.entity;
 public class Servicio {
 
 
-    public String id_servicio;
-    public String nombre;
-    public String codigo;
-    public String descripcion;
+    private String id_servicio;
+    private String nombre;
+    private String codigo;
+    private String descripcion;
 
     public Servicio() {
     }

@@ -3,23 +3,31 @@ package com.cuellojuan.entity;
 
 public class Reserva {
 
-    public int id_reserva;
-    public int id_cliente;
-    public int num_personas;
-    public Double tarifa_total;
-    public String comentario;
-    public int id_prov_de_reserva;
+    private int id_reserva;
+    private Cliente cliente;
+    private int num_personas;
+    private Double tarifa_total;
+    private String comentario;
+    private ProvReserva proveedorDeReserva;
 
     public Reserva() {
     }
 
-    public Reserva(int id_reserva, int id_cliente, int num_personas, Double tarifa_total, String comentario, int id_prov_de_reserva) {
+    public Reserva(int id_reserva, Cliente cliente, int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorDeReserva) {
         this.id_reserva = id_reserva;
-        this.id_cliente = id_cliente;
+        this.cliente = cliente;
         this.num_personas = num_personas;
         this.tarifa_total = tarifa_total;
         this.comentario = comentario;
-        this.id_prov_de_reserva = id_prov_de_reserva;
+        this.proveedorDeReserva = proveedorDeReserva;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public int getId_reserva() {
@@ -30,13 +38,6 @@ public class Reserva {
         this.id_reserva = id_reserva;
     }
 
-    public int getId_cliente() {
-        return id_cliente;
-    }
-
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
-    }
 
     public int getNum_personas() {
         return num_personas;
@@ -62,11 +63,11 @@ public class Reserva {
         this.comentario = comentario;
     }
 
-    public int getId_prov_de_reserva() {
-        return id_prov_de_reserva;
+    public ProvReserva getProveedorDeReserva() {
+        return proveedorDeReserva;
     }
 
-    public void setId_prov_de_reserva(int id_prov_de_reserva) {
-        this.id_prov_de_reserva = id_prov_de_reserva;
+    public void setProveedorDeReserva(ProvReserva proveedorDeReserva) {
+        this.proveedorDeReserva = proveedorDeReserva;
     }
 }

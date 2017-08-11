@@ -14,9 +14,6 @@
 
 
 
-    <bean id="customerDAO" class="com.cuellojuan.dao.CustomerDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
 
 
     <bean id="usuariosDAO" class="com.cuellojuan.dao.UsuariosDAO">
@@ -27,27 +24,15 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="proveedoresDAO" class="com.cuellojuan.dao.ProveedoresDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-    <bean id="productosDAO" class="com.cuellojuan.dao.ProductosDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-    <bean id="comprainfoDAO" class="com.cuellojuan.dao.ComprainfoDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
 
     <bean id="clientesDAO" class="com.cuellojuan.dao.ClientesDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
 
-    <bean id="herramientasDAO" class="com.cuellojuan.dao.HerramientasDAO">
+    <bean id="proveedorReservaDAO" class="com.cuellojuan.dao.ProveedorReservaDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
 
 
     <bean id="reporteInventarioDAO" class="com.cuellojuan.dao.ReporteInventarioDAO">
@@ -60,9 +45,6 @@
 
 
 
-
-    <bean id="customer" class="com.cuellojuan.entity.Customer">
-    </bean>
 
 
 </beans>

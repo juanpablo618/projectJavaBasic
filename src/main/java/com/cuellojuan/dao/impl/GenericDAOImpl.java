@@ -1,6 +1,8 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
+import com.cuellojuan.entity.Usuario;
+import javassist.expr.Instanceof;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.lang.reflect.*;
@@ -43,7 +45,7 @@ public class GenericDAOImpl<E>
     }
 
     private void instanciarVariables(E entity) throws NoSuchMethodException, IllegalAccessException{
-        tabla = retornaInstanciaDeLaClase(entity).getSimpleName();
+        tabla = retornaInstanciaDeLaClase(entity).getSimpleName().toLowerCase();
         todasLasVariables = retornaInstanciaDeLaClase(entity).getDeclaredFields();
 
         listaDeValoresDeVariables = new ArrayList();
@@ -55,6 +57,8 @@ public class GenericDAOImpl<E>
     private void rellenarListaDeNombresDeVariables() {
         int i = 0;
         do {
+            todasLasVariables[i].setAccessible(true);
+
             nombreDeLasVariables.add(todasLasVariables[i].getName());
             i = i + 1;
         } while (i < todasLasVariables.length);
@@ -63,9 +67,15 @@ public class GenericDAOImpl<E>
     private String devuelveID (E entity) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
         for (int i = 0 ; i <= todasLasVariables.length ; i++){
+            todasLasVariables[i].setAccessible(true);
+            if (retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName()).getName().equals(ID)) {
+                todasLasVariables[i].setAccessible(true);
 
-            if (retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().equals(ID)) {
-                id = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).getName().toString().concat(IGUAL).concat( retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity).toString());
+                Field f = retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName());
+                f.setAccessible(true);
+
+
+                id = f.getName().toString().concat(IGUAL).concat( f.get(entity).toString());
                 break;
             }
         }
@@ -147,21 +157,42 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         for( int i=0;i<todasLasVariables.length;i++) {
-            Object variable = retornaInstanciaDeLaClase(entity).getField(todasLasVariables[i].getName()).get(entity);
+
+            //retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName()).setAccessible(true);
+            Field f = retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName());
+            f.setAccessible(true);
+
+            Object variable = f.get(entity);
+
 
             if (todasLasVariables[i].getType().getName().equals(String.class.getName())){
+                todasLasVariables[i].setAccessible(true);
+
                 StringBuffer variableconComillas = new StringBuffer(variable.toString());
                     variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
                     variable = variableconComillas;
-            }else {
+            }
+            else {
                 if (todasLasVariables[i].getType().getName().equals(Date.class.getName())){
+                    todasLasVariables[i].setAccessible(true);
+
                     StringBuffer variableconComillas = new StringBuffer(variable.toString());
                     variableconComillas.insert(0,'\'').insert(variableconComillas.length(),'\'');
                     variable = variableconComillas;
                 }
             }
-                    listaDeValoresDeVariables.add(variable);
-                    totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
+            todasLasVariables[i].setAccessible(true);
+
+// usar getTargetClass
+
+           if(variable instanceof Usuario)
+              variable = retornaInstanciaDeLaClase(entity).getDeclaredField("id").getInt(entity);
+
+
+            listaDeValoresDeVariables.add(variable);
+
+            totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
+
         }
 
         String totalDeVariablesFinal;

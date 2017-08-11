@@ -14,7 +14,7 @@ public class ClientesDAO extends GenericDAOImpl<Cliente> {
         super.remove(entity);
     }
 
-    public void insert(Cliente entity) throws IllegalAccessException, SQLException, NoSuchMethodException,NoSuchFieldException {
+    public void insert(Cliente entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
         super.insert(entity);
     }
 

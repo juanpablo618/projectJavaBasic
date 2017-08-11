@@ -1,8 +1,8 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
+import com.cuellojuan.entity.Apartamento;
 import com.cuellojuan.entity.ReservasPorBooking;
-import com.cuellojuan.entity.Piezas;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -297,7 +297,7 @@ public class GenericDAOImplHotel<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "SELECT count(*) FROM `relinventario` WHERE quantita_min_predef > quantita AND idbeneinventario=3";
+        String sql = "SELECT count(*) FROM `tareas_por_apartamento` WHERE id_tarea=1  AND id_estado=1";
 
         PreparedStatement st2 = conn.prepareStatement(sql);
         ResultSet rs;
@@ -316,14 +316,14 @@ public class GenericDAOImplHotel<E>
 
     }
 
-    public List<Piezas> obtenerPiezasConVentiladores() throws SQLException{
+    public List<Apartamento> obtenerPiezasConVentiladores() throws SQLException{
 
-        List<Piezas> listaDePiezasConVentiladores;
+        List<Apartamento> listaDePiezasConVentiladores;
 
         Connection conn;
         conn = dataSource.getConnection();
 
-        String sql = "select idappartamento from relinventario where idbeneinventario=1 AND quantita>=1";
+        String sql = "select id_apartamento from detalle_inventario where id_elemento_de_inventario=1 AND cantidad=1";
 
         PreparedStatement st2 = conn.prepareStatement(sql);
         ResultSet rs;
@@ -332,8 +332,8 @@ public class GenericDAOImplHotel<E>
             listaDePiezasConVentiladores = new ArrayList();
 
         while(rs.next()){
-            Piezas pieza = new Piezas();
-            pieza.setID(rs.getInt("idappartamento"));
+            Apartamento pieza = new Apartamento();
+            pieza.setId_apartamento(rs.getInt("id_apartamento"));
             listaDePiezasConVentiladores.add(pieza);
 
         }

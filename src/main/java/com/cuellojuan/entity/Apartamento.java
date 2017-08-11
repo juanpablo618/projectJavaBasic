@@ -3,11 +3,11 @@ package com.cuellojuan.entity;
 
 public class Apartamento {
 
-    public int id_apartamento;
-    public int nro_piso;
-    public int ocupacion_maxima;
-    public String nombre_edificio;
-    public String comentario;
+    private int id_apartamento;
+    private int nro_piso;
+    private int ocupacion_maxima;
+    private String nombre_edificio;
+    private String comentario;
 
 
     public Apartamento() {

@@ -3,10 +3,10 @@ package com.cuellojuan.entity;
 
 public class Estado {
 
-    public int id_estado;
+    private int id_estado;
 
-    public String nombre;
-    public String descripcion;
+    private String nombre;
+    private String descripcion;
 
 
     public Estado() {

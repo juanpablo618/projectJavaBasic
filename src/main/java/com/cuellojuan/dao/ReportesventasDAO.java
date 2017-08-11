@@ -17,7 +17,7 @@ public class ReportesventasDAO extends GenericDAOImpl<Reportesventas> {
         super.remove(entity);
     }
 
-    public void insert(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchMethodException,NoSuchFieldException {
+    public void insert(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
         super.insert(entity);
     }
 

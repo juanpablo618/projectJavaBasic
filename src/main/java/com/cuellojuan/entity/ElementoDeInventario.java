@@ -5,17 +5,17 @@ import java.util.Date;
 
 public class ElementoDeInventario {
 
-public int id_elemento_de_inventario;
+    private int id_elemento_de_inventario;
 
-public String nombre;
+    private String nombre;
 
-public String codigo;
+    private String codigo;
 
-public String descripcion;
+    private String descripcion;
 
-public Date fecha_insercion;
+    private Date fecha_insercion;
 
-public int id_usuario;
+    private int id_usuario;
 
 
     public ElementoDeInventario() {

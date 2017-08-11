@@ -3,9 +3,9 @@ package com.cuellojuan.entity;
 
 public class Usuario {
 
-    public int id_usuario;
-    public String nombre;
-    public String apellido;
+    private int id_usuario;
+    private String nombre;
+    private String apellido;
 
     public Usuario() {
     }
@@ -40,4 +40,20 @@ public class Usuario {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id_usuario=" + id_usuario +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                '}';
+    }
+
+    public int devolverID(){
+
+        return id_usuario;
+    }
+
 }
