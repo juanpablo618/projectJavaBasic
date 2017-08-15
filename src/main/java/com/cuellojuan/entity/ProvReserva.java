@@ -3,25 +3,25 @@ package com.cuellojuan.entity;
 
 public class ProvReserva {
 
-    private int id_prov_de_reserva;
+    private int id;
     private String nombre;
     private String descripcion;
 
     public ProvReserva() {
     }
 
-    public ProvReserva(int id_prov_de_reserva, String nombre, String descripcion) {
-        this.id_prov_de_reserva = id_prov_de_reserva;
+    public ProvReserva(int id, String nombre, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public int getId_prov_de_reserva() {
-        return id_prov_de_reserva;
+    public int getId() {
+        return id;
     }
 
-    public void setId_prov_de_reserva(int id_prov_de_reserva) {
-        this.id_prov_de_reserva = id_prov_de_reserva;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

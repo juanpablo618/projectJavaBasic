@@ -1,10 +1,8 @@
 package com.cuellojuan.entity;
 
-import com.cuellojuan.dao.UsuariosDAO;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.Date;
 
 public class Cliente {
 
@@ -24,7 +22,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int id, String apellido, String nombre, String fecha_nacimiento, String tel_fijo, String tel_celular, String email, String comentario, Usuario usuarioquerecibio, String fecha_insercion) throws IllegalAccessException, InstantiationException, SQLException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+    public Cliente(int id, String apellido, String nombre, String fecha_nacimiento, String tel_fijo, String tel_celular, String email, String comentario, String fecha_insercion) throws IllegalAccessException, InstantiationException, SQLException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
         this.id = id;
         this.apellido = apellido;
         this.nombre = nombre;

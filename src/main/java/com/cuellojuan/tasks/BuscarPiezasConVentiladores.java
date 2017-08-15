@@ -22,17 +22,17 @@ public class BuscarPiezasConVentiladores extends Thread{
     }
 
 
-
-    public void run()
-        {
-
-            try {
-                System.out.println("piezas que tienen ventiladores: ".concat(reporteInventarioDAO.obtenerPiezasConVentiladores().toString()));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println("El proceso de obtener piezas con ventiladores ha terminado");
-        }
+// se utilizaba en el sistema viejo...
+//    public void run()
+//        {
+//
+//            try {
+//                System.out.println("piezas que tienen ventiladores: ".concat(reporteInventarioDAO.obtenerPiezasConVentiladores().toString()));
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println("El proceso de obtener piezas con ventiladores ha terminado");
+//        }
 
 
 

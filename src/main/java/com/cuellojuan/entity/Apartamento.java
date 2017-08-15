@@ -3,7 +3,7 @@ package com.cuellojuan.entity;
 
 public class Apartamento {
 
-    private int id_apartamento;
+    private int id;
     private int nro_piso;
     private int ocupacion_maxima;
     private String nombre_edificio;
@@ -13,20 +13,20 @@ public class Apartamento {
     public Apartamento() {
     }
 
-    public Apartamento(int id_apartamento, int nro_piso, int ocupacion_maxima, String nombre_edificio, String comentario) {
-        this.id_apartamento = id_apartamento;
+    public Apartamento(int id, int nro_piso, int ocupacion_maxima, String nombre_edificio, String comentario) {
+        this.id = id;
         this.nro_piso = nro_piso;
         this.ocupacion_maxima = ocupacion_maxima;
         this.nombre_edificio = nombre_edificio;
         this.comentario = comentario;
     }
 
-    public int getId_apartamento() {
-        return id_apartamento;
+    public int getId() {
+        return id;
     }
 
-    public void setId_apartamento(int id_apartamento) {
-        this.id_apartamento = id_apartamento;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNro_piso() {

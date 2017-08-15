@@ -3,8 +3,8 @@ package com.cuellojuan.entity;
 
 public class Reserva {
 
-    private int id_reserva;
-    private Cliente cliente;
+    private int id;
+    private Cliente idCliente;
     private int num_personas;
     private Double tarifa_total;
     private String comentario;
@@ -13,9 +13,8 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int id_reserva, Cliente cliente, int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorDeReserva) {
-        this.id_reserva = id_reserva;
-        this.cliente = cliente;
+    public Reserva(int id, Cliente cliente, int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorDeReserva) {
+        this.id = id;
         this.num_personas = num_personas;
         this.tarifa_total = tarifa_total;
         this.comentario = comentario;
@@ -23,21 +22,20 @@ public class Reserva {
     }
 
     public Cliente getCliente() {
-        return cliente;
+        return idCliente;
     }
 
     public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+        this.idCliente = cliente;
     }
 
-    public int getId_reserva() {
-        return id_reserva;
+    public int getId() {
+        return id;
     }
 
-    public void setId_reserva(int id_reserva) {
-        this.id_reserva = id_reserva;
+    public void setId(int id) {
+        this.id = id;
     }
-
 
     public int getNum_personas() {
         return num_personas;

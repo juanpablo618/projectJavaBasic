@@ -4,7 +4,7 @@ package com.cuellojuan.entity;
 public class Servicio {
 
 
-    private String id_servicio;
+    private String id;
     private String nombre;
     private String codigo;
     private String descripcion;
@@ -13,19 +13,19 @@ public class Servicio {
     }
 
 
-    public Servicio(String id_servicio, String nombre, String codigo, String descripcion) {
-        this.id_servicio = id_servicio;
+    public Servicio(String id, String nombre, String codigo, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public String getId_servicio() {
-        return id_servicio;
+    public String getId() {
+        return id;
     }
 
-    public void setId_servicio(String id_servicio) {
-        this.id_servicio = id_servicio;
+    public void setId(String id_servicio) {
+        this.id = id;
     }
 
     public String getNombre() {

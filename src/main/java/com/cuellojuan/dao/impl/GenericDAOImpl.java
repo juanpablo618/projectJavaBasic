@@ -1,10 +1,11 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
-import com.cuellojuan.entity.Usuario;
+import com.cuellojuan.entity.*;
 import javassist.expr.Instanceof;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.*;
 import java.sql.*;
 import java.util.*;
@@ -183,10 +184,71 @@ public class GenericDAOImpl<E>
             }
             todasLasVariables[i].setAccessible(true);
 
-// usar getTargetClass
+            switch (variable.getClass().getSimpleName()){
 
-           if(variable instanceof Usuario)
-              variable = retornaInstanciaDeLaClase(entity).getDeclaredField("id").getInt(entity);
+                case "Usuario":
+                    variable = ((Usuario) variable).getId();
+                    break;
+                case "Cliente":
+                    variable = ((Cliente) variable).getId();
+                    break;
+                case "ProvReserva":
+                    variable = ((ProvReserva) variable).getId();
+                    break;
+                case "ElementoInventario":
+                    variable = ((ElementoInventario) variable).getId();
+                    break;
+                case "Apartamento":
+                    variable = ((Apartamento) variable).getId();
+                    break;
+                case "Tarea":
+                    variable = ((Tarea) variable).getId();
+                    break;
+                case "Estado":
+                    variable = ((Estado) variable).getId();
+                    break;
+
+                default:
+                    break;
+
+            }
+
+
+
+
+//  solo lo dejo para mejorarlo luego.
+//           if(variable instanceof Usuario) {
+//               variable = ((Usuario) variable).getId();
+//           }else{
+//               if(variable instanceof Cliente) {
+//                   variable = ((Cliente) variable).getId();
+//           }else {
+//                if (variable instanceof ProvReserva){
+//                    variable = ((ProvReserva) variable).getId();
+//                }else
+//                    if(variable instanceof ElementoInventario){
+//                        variable = ((ElementoInventario) variable).getId();
+//                    }else{
+//                        if(variable instanceof Apartamento){
+//                            variable = ((Apartamento) variable).getId();
+//                        }else{
+//                            if(variable instanceof Tarea){
+//                                variable = ((Tarea) variable).getId();
+//                            }else{
+//                                if(variable instanceof  Estado)
+//                                    variable = ((Estado) variable).getId();
+//                            }
+//                        }
+//
+//                    }
+//
+//
+//               }
+//           }
+
+           // variable.getClass().getSimpleName().equals("Usuario")
+
+
 
 
             listaDeValoresDeVariables.add(variable);
@@ -198,7 +260,7 @@ public class GenericDAOImpl<E>
         String totalDeVariablesFinal;
         totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
 
-        String sqlFinal = "Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES )";
+        String sqlFinal = "Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES );";
         sqlFinal = sqlFinal.replace("#TABLA",tabla);
         sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES",totalDeVariablesFinal.toString());
         sqlFinal = sqlFinal.replace("#VALORES",listaDeValoresDeVariables.toString());

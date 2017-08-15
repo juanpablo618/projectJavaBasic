@@ -1,8 +1,6 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
-import com.cuellojuan.entity.Apartamento;
-import com.cuellojuan.entity.ReservasPorBooking;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -316,71 +314,74 @@ public class GenericDAOImplHotel<E>
 
     }
 
-    public List<Apartamento> obtenerPiezasConVentiladores() throws SQLException{
 
-        List<Apartamento> listaDePiezasConVentiladores;
+    //se dejo de usar, esto se usaba con el sistema viejo.
 
-        Connection conn;
-        conn = dataSource.getConnection();
-
-        String sql = "select id_apartamento from detalle_inventario where id_elemento_de_inventario=1 AND cantidad=1";
-
-        PreparedStatement st2 = conn.prepareStatement(sql);
-        ResultSet rs;
-
-        rs = st2.executeQuery();
-            listaDePiezasConVentiladores = new ArrayList();
-
-        while(rs.next()){
-            Apartamento pieza = new Apartamento();
-            pieza.setId_apartamento(rs.getInt("id_apartamento"));
-            listaDePiezasConVentiladores.add(pieza);
-
-        }
-
-        rs.close();
-        st2.close();
-        return listaDePiezasConVentiladores;
-
-
-    }
-
-
-    public List<ReservasPorBooking> obtenerCantidadDeClientesQueVienenPorBooking() throws SQLException {
-
-
-        List<ReservasPorBooking> listaDeReservasPorBooking;
-
-        Connection conn;
-        conn = dataSource.getConnection();
-
-//        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking'";
-        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking' OR commento='booking>>'";
+//    public List<Apartamento> obtenerPiezasConVentiladores() throws SQLException{
+//
+//        List<Apartamento> listaDePiezasConVentiladores;
+//
+//        Connection conn;
+//        conn = dataSource.getConnection();
+//
+//        String sql = "select id_apartamento from detalle_inventario where id_elemento_de_inventario=1 AND cantidad=1";
+//
+//        PreparedStatement st2 = conn.prepareStatement(sql);
+//        ResultSet rs;
+//
+//        rs = st2.executeQuery();
+//            listaDePiezasConVentiladores = new ArrayList();
+//
+//        while(rs.next()){
+//            Apartamento pieza = new Apartamento();
+//            pieza.setId(rs.getInt("id_apartamento"));
+//            listaDePiezasConVentiladores.add(pieza);
+//
+//        }
+//
+//        rs.close();
+//        st2.close();
+//        return listaDePiezasConVentiladores;
+//
+//
+//    }
 
 
-
-        PreparedStatement st2 = conn.prepareStatement(sql);
-        ResultSet rs;
-
-        rs = st2.executeQuery();
-        listaDeReservasPorBooking = new ArrayList();
-
-        while(rs.next()){
-            ReservasPorBooking cliente = new ReservasPorBooking();
-
-            cliente.setIdCliente(rs.getInt("idclienti"));
-            cliente.setIdApartamento(rs.getInt("idappartamenti"));
-            cliente.setNumPersonas(rs.getInt("num_persone"));
-            cliente.setTarifaTotal(rs.getDouble("tariffa_tot"));
-            listaDeReservasPorBooking.add(cliente);
-
-        }
-
-        rs.close();
-        st2.close();
-        return listaDeReservasPorBooking;
-
-    }
+//    public List<ReservasPorBooking> obtenerCantidadDeClientesQueVienenPorBooking() throws SQLException {
+//
+//
+//        List<ReservasPorBooking> listaDeReservasPorBooking;
+//
+//        Connection conn;
+//        conn = dataSource.getConnection();
+//
+////        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking'";
+//        String sql = "select idclienti, idappartamenti, num_persone, tariffa_tot FROM prenota2017 WHERE commento='booking' OR commento='booking>>'";
+//
+//
+//
+//        PreparedStatement st2 = conn.prepareStatement(sql);
+//        ResultSet rs;
+//
+//        rs = st2.executeQuery();
+//        listaDeReservasPorBooking = new ArrayList();
+//
+//        while(rs.next()){
+//            ReservasPorBooking cliente = new ReservasPorBooking();
+//
+//            cliente.setIdCliente(rs.getInt("idclienti"));
+//            cliente.setIdApartamento(rs.getInt("idappartamenti"));
+//            cliente.setNumPersonas(rs.getInt("num_persone"));
+//            cliente.setTarifaTotal(rs.getDouble("tariffa_tot"));
+//            listaDeReservasPorBooking.add(cliente);
+//
+//        }
+//
+//        rs.close();
+//        st2.close();
+//        return listaDeReservasPorBooking;
+//
+//    }
 }
 
 

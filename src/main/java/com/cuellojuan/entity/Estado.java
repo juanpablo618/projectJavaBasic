@@ -3,7 +3,7 @@ package com.cuellojuan.entity;
 
 public class Estado {
 
-    private int id_estado;
+    private int id;
 
     private String nombre;
     private String descripcion;
@@ -12,19 +12,19 @@ public class Estado {
     public Estado() {
     }
 
-    public Estado(int id_estado, String nombre, String descripcion) {
-        this.id_estado = id_estado;
+    public Estado(int id, String nombre, String descripcion) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
 
-    public int getId_estado() {
-        return id_estado;
+    public int getId() {
+        return id;
     }
 
-    public void setId_estado(int id_estado) {
-        this.id_estado = id_estado;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

@@ -3,26 +3,26 @@ package com.cuellojuan.entity;
 
 public class Usuario {
 
-    private int id_usuario;
+    private int id;
     private String nombre;
     private String apellido;
 
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, String nombre, String apellido) {
-        this.id_usuario = id_usuario;
+    public Usuario(int id, String nombre, String apellido) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
 
-    public int getId_usuario() {
-        return id_usuario;
+    public int getId() {
+        return id;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -45,7 +45,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "id_usuario=" + id_usuario +
+                "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 '}';
@@ -53,7 +53,7 @@ public class Usuario {
 
     public int devolverID(){
 
-        return id_usuario;
+        return id;
     }
 
 }
