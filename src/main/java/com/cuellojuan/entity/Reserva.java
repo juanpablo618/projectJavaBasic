@@ -4,29 +4,29 @@ package com.cuellojuan.entity;
 public class Reserva {
 
     private int id;
-    private Cliente idCliente;
+    private Cliente cliente;
     private int num_personas;
     private Double tarifa_total;
     private String comentario;
-    private ProvReserva proveedorDeReserva;
+    private ProvReserva proveedorreserva;
 
     public Reserva() {
     }
 
-    public Reserva(int id, Cliente cliente, int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorDeReserva) {
+    public Reserva(int id,  int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorreserva) {
         this.id = id;
         this.num_personas = num_personas;
         this.tarifa_total = tarifa_total;
         this.comentario = comentario;
-        this.proveedorDeReserva = proveedorDeReserva;
+        this.proveedorreserva = proveedorreserva;
     }
 
     public Cliente getCliente() {
-        return idCliente;
+        return cliente;
     }
 
     public void setCliente(Cliente cliente) {
-        this.idCliente = cliente;
+        this.cliente = cliente;
     }
 
     public int getId() {
@@ -61,11 +61,24 @@ public class Reserva {
         this.comentario = comentario;
     }
 
-    public ProvReserva getProveedorDeReserva() {
-        return proveedorDeReserva;
+    public ProvReserva getProveedorreserva() {
+        return proveedorreserva;
     }
 
-    public void setProveedorDeReserva(ProvReserva proveedorDeReserva) {
-        this.proveedorDeReserva = proveedorDeReserva;
+    public void setProveedorreserva(ProvReserva proveedorreserva) {
+        this.proveedorreserva = proveedorreserva;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", num_personas=" + num_personas +
+                ", tarifa_total=" + tarifa_total +
+                ", comentario='" + comentario + '\'' +
+                ", proveedorreserva=" + proveedorreserva +
+                '}';
     }
 }

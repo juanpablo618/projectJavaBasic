@@ -3,6 +3,8 @@ package com.cuellojuan.entity;
 
 public class TareasPorApartamento {
 
+    private int id;
+
     private Tarea tarea;
     private Apartamento apartamento;
 
@@ -15,7 +17,8 @@ public class TareasPorApartamento {
     public TareasPorApartamento() {
     }
 
-    public TareasPorApartamento(Tarea tarea, Apartamento apartamento, Estado estado, Usuario realizarPor, String descripcion) {
+    public TareasPorApartamento(int id, Tarea tarea, Apartamento apartamento, Estado estado, Usuario realizarPor, String descripcion) {
+        this.id = id;
         this.tarea = tarea;
         this.apartamento = apartamento;
         this.estado = estado;
@@ -23,6 +26,13 @@ public class TareasPorApartamento {
         this.descripcion = descripcion;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Tarea getTarea() {
         return tarea;
@@ -63,7 +73,5 @@ public class TareasPorApartamento {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-
 
 }

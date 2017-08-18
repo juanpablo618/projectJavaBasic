@@ -39,4 +39,14 @@ public class ProvReserva {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+
+    @Override
+    public String toString() {
+        return "ProvReserva{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

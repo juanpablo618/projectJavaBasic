@@ -2,7 +2,7 @@ package com.cuellojuan.entity;
 
 
 public class DetalleInventario {
-
+    private int id;
     private ElementoInventario elementoInventario;
     private  Apartamento apartamento;
     private int cantidad;
@@ -14,7 +14,8 @@ public class DetalleInventario {
     public DetalleInventario() {
     }
 
-    public DetalleInventario(ElementoInventario elementoInventario, Apartamento apartamento, int cantidad, String fecha_insercion, Usuario realizadoPor) {
+    public DetalleInventario(int id, ElementoInventario elementoInventario, Apartamento apartamento, int cantidad, String fecha_insercion, Usuario realizadoPor) {
+        this.id = id;
         this.elementoInventario = elementoInventario;
         this.apartamento = apartamento;
         this.cantidad = cantidad;
@@ -22,6 +23,13 @@ public class DetalleInventario {
         this.realizadoPor = realizadoPor;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public ElementoInventario getElementoInventario() {
         return elementoInventario;

@@ -117,6 +117,19 @@ public class Cliente {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", apellido='" + apellido + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
+                ", tel_fijo='" + tel_fijo + '\'' +
+                ", tel_celular='" + tel_celular + '\'' +
+                ", email='" + email + '\'' +
+                ", comentario='" + comentario + '\'' +
+                ", usuarioquerecibio=" + usuarioquerecibio +
+                ", fecha_insercion='" + fecha_insercion + '\'' +
+                '}';
+    }
 }

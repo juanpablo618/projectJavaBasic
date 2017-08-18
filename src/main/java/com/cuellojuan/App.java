@@ -34,27 +34,15 @@ public class App {
 //
 //
        ClientesDAO clienteDAO = (ClientesDAO) context.getBean("clientesDAO");
-
        UsuariosDAO usuarioDAO = (UsuariosDAO)   context.getBean("usuariosDAO");
-
        ProveedorReservaDAO proveedorReservaDAO = (ProveedorReservaDAO)   context.getBean("proveedorReservaDAO");
-
-        ReservasDAO reservasDAO =  (ReservasDAO) context.getBean("reservasDAO");
-
-
-        ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("apartamentoDAO");
-
-
-        ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
-
-        DetalleInventarioDAO detalleInventarioDAO = (DetalleInventarioDAO) context.getBean("detalleInventarioDAO");
-
-        TareasPorApartamentoDAO tareasPorApartamentoDAO = (TareasPorApartamentoDAO) context.getBean("tareasPorApartamentoDAO");
-
-
-        TareaDAO tareaDAO = (TareaDAO) context.getBean("tareaDAO");
-
-        EstadoDAO estadoDAO = (EstadoDAO) context.getBean("estadoDAO");
+       ReservasDAO reservasDAO =  (ReservasDAO) context.getBean("reservasDAO");
+       ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("apartamentoDAO");
+       ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
+       DetalleInventarioDAO detalleInventarioDAO = (DetalleInventarioDAO) context.getBean("detalleInventarioDAO");
+       TareasPorApartamentoDAO tareasPorApartamentoDAO = (TareasPorApartamentoDAO) context.getBean("tareasPorApartamentoDAO");
+       TareaDAO tareaDAO = (TareaDAO) context.getBean("tareaDAO");
+       EstadoDAO estadoDAO = (EstadoDAO) context.getBean("estadoDAO");
 
 
 
@@ -63,7 +51,23 @@ public class App {
         juan.setNombre("juan pablo");
         juan.setApellido("cuello");
 
+        Usuario laura = new Usuario();
+        laura.setId(80);
+        laura.setNombre("Laura");
+        laura.setApellido("ortiz");
+
         usuarioDAO.insert(juan);
+
+        juan.setNombre("juan juan");
+
+
+        usuarioDAO.insert(laura);
+
+        System.out.println("");
+        System.out.println(usuarioDAO.find(juan).toString());
+        System.out.println("");
+
+        usuarioDAO.update(juan);
 
 
         Cliente cliente = new Cliente();
@@ -71,22 +75,26 @@ public class App {
         cliente.setId(5);
         cliente.setNombre("juan");
         cliente.setApellido("cuello");
-
-
         cliente.setFecha_nacimiento(Calendar.getInstance().getTime().toString());
-
-
         cliente.setTel_fijo("21312");
         cliente.setTel_celular("121212");
         cliente.setEmail("email@email.com");
         cliente.setComentario("comentario");
 
-
-
         cliente.setUsuarioquerecibio(juan);
         cliente.setFecha_insercion(Calendar.getInstance().getTime().toString());
 
+
+
         clienteDAO.insert(cliente);
+
+        cliente.setUsuarioquerecibio(laura);
+
+        clienteDAO.update(cliente);
+
+        System.out.println("");
+        System.out.println(clienteDAO.find(cliente));
+        System.out.println("");
 
 
 
@@ -96,7 +104,27 @@ public class App {
         provedorBooking.setNombre("booking");
         provedorBooking.setDescripcion("booking por extranet");
 
-         proveedorReservaDAO.insert(provedorBooking);
+        proveedorReservaDAO.insert(provedorBooking);
+
+
+
+        provedorBooking.setDescripcion("booking por sistema web");
+
+        proveedorReservaDAO.update(provedorBooking);
+
+        System.out.println("");
+        System.out.println(proveedorReservaDAO.find(provedorBooking));
+        System.out.println("");
+
+
+
+        ProvReserva provedorSetur = new ProvReserva();
+
+        provedorSetur.setId(3);
+        provedorSetur.setNombre("Setur");
+        provedorSetur.setDescripcion("Setur contacto directo ");
+
+        proveedorReservaDAO.insert(provedorSetur);
 
 
 
@@ -107,9 +135,23 @@ public class App {
         reserva.setNum_personas(5);
         reserva.setTarifa_total(200.00);
         reserva.setComentario("comentario en la reserva");
-        reserva.setProveedorDeReserva(provedorBooking);
+
+        reserva.setProveedorreserva(provedorBooking);
 
         reservasDAO.insert(reserva);
+
+
+
+
+        reserva.setProveedorreserva(provedorSetur);
+
+        reservasDAO.update(reserva);
+
+
+        System.out.println("");
+        System.out.println(reservasDAO.find(reserva));
+        System.out.println("");
+
 
 
         Apartamento apartamento1 = new Apartamento();
@@ -117,10 +159,22 @@ public class App {
         apartamento1.setId(2);
         apartamento1.setNro_piso(2);
         apartamento1.setOcupacion_maxima(4);
-        apartamento1.setNombre_edificio("la porteña");
+        apartamento1.setNombre_edificio("La Porteña");
         apartamento1.setComentario("facil acceso directo desde la calle.");
 
         apartamentoDAO.insert(apartamento1);
+        apartamento1.setComentario("facil acceso directo desde la calle y con baño privado");
+
+        apartamentoDAO.update(apartamento1);
+
+
+//        System.out.println("");
+//        System.out.println(apartamentoDAO.find(apartamento1));
+//        System.out.println("");
+
+
+
+
 
 
         ElementoInventario pala = new ElementoInventario();
@@ -132,9 +186,24 @@ public class App {
         pala.setUsuarioQueCompro(juan);
 
         elementoInventarioDAO.insert(pala);
+        pala.setUsuarioQueCompro(laura);
+        elementoInventarioDAO.update(pala);
+
+
+
+//        System.out.println("");
+//        System.out.println(elementoInventarioDAO.find(pala));
+//        System.out.println("");
+
+
+
+
+
 
 
         DetalleInventario detalleInventario = new DetalleInventario();
+
+        detalleInventario.setId(4);
         detalleInventario.setElementoInventario(pala);
         detalleInventario.setApartamento(apartamento1);
         detalleInventario.setCantidad(2);
@@ -144,6 +213,17 @@ public class App {
 
         detalleInventarioDAO.insert(detalleInventario);
 
+        detalleInventario.setCantidad(1);
+
+        detalleInventarioDAO.update(detalleInventario);
+
+
+//        System.out.println("");
+//        System.out.println(detalleInventarioDAO.find(detalleInventario));
+//        System.out.println("");
+
+
+
 
         Tarea limpiar = new Tarea();
         limpiar.setNombre("limpiar pieza");
@@ -152,6 +232,15 @@ public class App {
 
 
         tareaDAO.insert(limpiar);
+        limpiar.setDescripcion("limpiar todo hasta armarios y los baños");
+        tareaDAO.update(limpiar);
+
+
+
+//        System.out.println("");
+//        System.out.println(tareaDAO.find(limpiar));
+//        System.out.println("");
+
 
 
         Estado realizado = new Estado();
@@ -161,9 +250,18 @@ public class App {
 
         estadoDAO.insert(realizado);
 
+        realizado.setDescripcion("totalmente completo y registrado en sistema");
+        estadoDAO.update(realizado);
+
+
+//        System.out.println("");
+//        System.out.println(estadoDAO.find(realizado));
+//        System.out.println("");
+
+
 
         TareasPorApartamento limpiarPieza1 = new TareasPorApartamento();
-
+        limpiarPieza1.setId(4);
         limpiarPieza1.setTarea(limpiar);
         limpiarPieza1.setApartamento(apartamento1);
         limpiarPieza1.setEstado(realizado);
@@ -172,13 +270,39 @@ public class App {
 
 
         tareasPorApartamentoDAO.insert(limpiarPieza1);
+        limpiarPieza1.setDescripcion("debe realizarse antes de las 13 hs");
 
+        tareasPorApartamentoDAO.update(limpiarPieza1);
+
+
+//        System.out.println("");
+//        System.out.println(tareasPorApartamentoDAO.find(limpiarPieza1));
+//        System.out.println("");
+
+
+
+
+
+        tareasPorApartamentoDAO.remove(limpiarPieza1);
+
+        usuarioDAO.remove(juan);
+        usuarioDAO.remove(laura);
+
+        clienteDAO.remove(cliente);
+
+        proveedorReservaDAO.remove(provedorBooking);
+        proveedorReservaDAO.remove(provedorSetur);
+
+        reservasDAO.remove(reserva);
+
+
+        estadoDAO.remove(realizado);
+
+        apartamentoDAO.remove(apartamento1);
+        elementoInventarioDAO.remove(pala);
+        tareaDAO.remove(limpiar);
+        detalleInventarioDAO.remove(detalleInventario);
 
     }
-
-
-
-
-
 
 }
