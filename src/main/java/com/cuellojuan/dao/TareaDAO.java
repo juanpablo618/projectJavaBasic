@@ -25,7 +25,7 @@ public class TareaDAO extends GenericDAOImpl<Tarea> {
     }
 
 
-    public Tarea find(Tarea entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public Tarea find(Tarea entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
 
         return super.find(entity);

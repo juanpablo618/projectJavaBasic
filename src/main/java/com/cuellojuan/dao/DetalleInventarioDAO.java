@@ -25,7 +25,7 @@ public class DetalleInventarioDAO extends GenericDAOImpl<DetalleInventario> {
     }
 
 
-    public DetalleInventario find(DetalleInventario entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public DetalleInventario find(DetalleInventario entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
 
         return super.find(entity);

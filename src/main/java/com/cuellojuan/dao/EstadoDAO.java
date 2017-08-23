@@ -21,7 +21,7 @@ public class EstadoDAO extends GenericDAOImpl<Estado> {
     }
 
 
-    public Estado find(Estado entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public Estado find(Estado entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
 
         return super.find(entity);

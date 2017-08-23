@@ -1,6 +1,7 @@
 package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
+import com.cuellojuan.dao.UsuariosDAO;
 import com.cuellojuan.entity.*;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
@@ -8,6 +9,8 @@ import java.lang.reflect.*;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
+
+import static com.cuellojuan.App.context;
 
 @Repository
 public class GenericDAOImpl<E>
@@ -142,7 +145,7 @@ public class GenericDAOImpl<E>
 
 
 
-    private Object invocarSetters(Object ob, ResultSet rs) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException {
+    private Object invocarSetters(Object ob, ResultSet rs) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InstantiationException, ClassNotFoundException {
 
         Class clase = ob.getClass();
         rs.next();
@@ -159,30 +162,72 @@ public class GenericDAOImpl<E>
             switch (clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getSimpleName()){
 
                 case "Usuario":
+                    /*
                     Connection conn;
                     conn = dataSource.getConnection();
                     ResultSet rs2;
+
+
+                    String nombrePaqueteYCLase = "com.cuellojuan.entity.";
+                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Usuario");
+
+                    Object usuarioInstancia = Class.forName(nombrePaqueteYCLase).newInstance();
+
+                    String nombreParaTablita = usuarioInstancia.getClass().getSimpleName().toLowerCase();
+
+                    Class usuarioClase = Class.forName(nombrePaqueteYCLase);
+
+
+                                       Field[] usuarioFields = usuarioClase.getDeclaredFields();
+
+                                        Method[] usuarioMetodos = usuarioClase.getDeclaredMethods();
+
+
+                                        Method setIdMetodo = usuarioClase.getMethod("setId", int.class);
+                                        Method setNombreMetodo = usuarioClase.getMethod("setNombre", String.class);
+                                        Method setApellidoMetodo = usuarioClase.getMethod("setApellido", String.class);
+                    */
+
+
+
+
+
+                          //  usuario = new Usuario();
+
+
+                    //  String nombreTablaUsuario = usuario.getClass().getSimpleName().toLowerCase();
+
+
+                    //      String SqlSelectUsuario =  "SELECT id, nombre, apellido FROM #nombreTabla WHERE id= "+ rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()) ;
+
+                    //      SqlSelectUsuario = SqlSelectUsuario.replace("#nombreTabla", nombreTablaUsuario);
+
+                    //                    PreparedStatement st = conn.prepareCall(SqlSelectUsuario);
+                    //                    rs2 = st.executeQuery();
+
+
+                    //      while (rs2.next()) {
+
+
+                    //          usuario.setId(rs2.getInt("id"));
+                    //          usuario.setNombre(rs2.getString("nombre"));
+                    //          usuario.setApellido(rs2.getString("apellido"));
+
+
+                                /*
+                                setIdMetodo.invoke(usuarioInstancia, rs2.getInt("id"));
+                                setNombreMetodo.invoke(usuarioInstancia, rs2.getString("nombre"));
+                                setApellidoMetodo.invoke(usuarioInstancia, rs2.getString("apellido") );
+                                */
+                     //       }
+
+                    UsuariosDAO usuarioDAO = (UsuariosDAO)   context.getBean("usuariosDAO");
+
                     usuario = new Usuario();
+                            usuario.setId(rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
 
-                    String nombreTablaUsuario = usuario.getClass().getSimpleName().toLowerCase();
+                    usuario = usuarioDAO.find(usuario);
 
-                    //int idUsuario = rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase());
-
-                    String SqlSelectUsuario =  "SELECT id, nombre, apellido FROM #nombreTabla WHERE id= "+ rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()) ;
-
-                    SqlSelectUsuario = SqlSelectUsuario.replace("#nombreTabla", nombreTablaUsuario);
-
-                    PreparedStatement st = conn.prepareCall(SqlSelectUsuario);
-                    //st.setInt(1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
-                    rs2 = st.executeQuery();
-
-
-                    while (rs2.next()) {
-                        usuario.setId(rs2.getInt("id"));
-                        usuario.setNombre(rs2.getString("nombre"));
-                        usuario.setApellido(rs2.getString("apellido"));
-
-                    }
 
                     break;
 
@@ -290,6 +335,7 @@ public class GenericDAOImpl<E>
 
                         case "Usuario":
                             devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, usuario);
+
                         break;
 
                         case "Cliente":
@@ -414,43 +460,6 @@ public class GenericDAOImpl<E>
             }
 
 
-
-
-//  solo lo dejo para mejorarlo luego.
-//           if(variable instanceof Usuario) {
-//               variable = ((Usuario) variable).getId();
-//           }else{
-//               if(variable instanceof Cliente) {
-//                   variable = ((Cliente) variable).getId();
-//           }else {
-//                if (variable instanceof ProvReserva){
-//                    variable = ((ProvReserva) variable).getId();
-//                }else
-//                    if(variable instanceof ElementoInventario){
-//                        variable = ((ElementoInventario) variable).getId();
-//                    }else{
-//                        if(variable instanceof Apartamento){
-//                            variable = ((Apartamento) variable).getId();
-//                        }else{
-//                            if(variable instanceof Tarea){
-//                                variable = ((Tarea) variable).getId();
-//                            }else{
-//                                if(variable instanceof  Estado)
-//                                    variable = ((Estado) variable).getId();
-//                            }
-//                        }
-//
-//                    }
-//
-//
-//               }
-//           }
-
-           // variable.getClass().getSimpleName().equals("Usuario")
-
-
-
-
             listaDeValoresDeVariables.add(variable);
 
             totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
@@ -563,7 +572,7 @@ public class GenericDAOImpl<E>
     }
 
 
-    public E find(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+    public E find(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
 
         instanciarVariables(entity);
         rellenarListaDeNombresDeVariables();

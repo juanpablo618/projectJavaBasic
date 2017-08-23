@@ -25,7 +25,7 @@ public class ProveedorReservaDAO extends GenericDAOImpl<ProvReserva> {
     }
 
 
-    public ProvReserva find(ProvReserva entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public ProvReserva find(ProvReserva entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
 
         return super.find(entity);

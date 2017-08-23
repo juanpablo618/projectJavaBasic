@@ -27,7 +27,7 @@ public class UsuariosDAO extends GenericDAOImpl<Usuario> {
     }
 
 
-    public Usuario find(Usuario entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public Usuario find(Usuario entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
         return super.find(entity);
     }

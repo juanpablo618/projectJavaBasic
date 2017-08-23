@@ -9,7 +9,7 @@ public interface GenericDAO<E> {
         void update(E entity) throws SQLException,  NoSuchFieldException, NoSuchMethodException, IllegalAccessException;
         void remove(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException;
 
-        E find (E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException;
+        E find (E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException;
 
 
 }

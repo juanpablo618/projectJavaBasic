@@ -24,7 +24,7 @@ public class TareasPorApartamentoDAO  extends GenericDAOImpl<TareasPorApartament
     }
 
 
-    public TareasPorApartamento find(TareasPorApartamento entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public TareasPorApartamento find(TareasPorApartamento entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
 
 
         return super.find(entity);

@@ -26,7 +26,7 @@ public class ReportesventasDAO extends GenericDAOImpl<Reportesventas> {
     }
 
 
-    public Reportesventas find(Reportesventas entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException {
+    public Reportesventas find(Reportesventas entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
         return super.find(entity);
     }
 
