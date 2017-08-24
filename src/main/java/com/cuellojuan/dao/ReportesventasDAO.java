@@ -17,11 +17,11 @@ public class ReportesventasDAO extends GenericDAOImpl<Reportesventas> {
         super.remove(entity);
     }
 
-    public void insert(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
+    public void insert(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, ClassNotFoundException {
         super.insert(entity);
     }
 
-    public void update(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(Reportesventas entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
         super.update(entity);
     }
 

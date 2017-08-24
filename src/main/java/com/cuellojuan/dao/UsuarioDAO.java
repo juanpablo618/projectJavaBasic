@@ -8,9 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 
-public class UsuariosDAO extends GenericDAOImpl<Usuario> {
+public class UsuarioDAO extends GenericDAOImpl<Usuario> {
 
-    public UsuariosDAO() {
+    public UsuarioDAO() {
     }
 
 
@@ -18,11 +18,11 @@ public class UsuariosDAO extends GenericDAOImpl<Usuario> {
         super.remove(entity);
     }
 
-    public void insert(Usuario entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
+    public void insert(Usuario entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, ClassNotFoundException {
         super.insert(entity);
     }
 
-    public void update(Usuario entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(Usuario entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
         super.update(entity);
     }
 

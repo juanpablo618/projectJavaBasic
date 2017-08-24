@@ -33,10 +33,10 @@ public class App {
 //
 //
 //
-       ClientesDAO clienteDAO = (ClientesDAO) context.getBean("clientesDAO");
-       UsuariosDAO usuarioDAO = (UsuariosDAO)   context.getBean("usuariosDAO");
-       ProveedorReservaDAO proveedorReservaDAO = (ProveedorReservaDAO)   context.getBean("proveedorReservaDAO");
-       ReservasDAO reservasDAO =  (ReservasDAO) context.getBean("reservasDAO");
+       ClienteDAO clienteDAO = (ClienteDAO) context.getBean("ClienteDAO");
+       UsuarioDAO usuarioDAO = (UsuarioDAO)   context.getBean("UsuarioDAO");
+       ProvReservaDAO provReservaDAO = (ProvReservaDAO)   context.getBean("ProvReservaDAO");
+       ReservaDAO reservaDAO =  (ReservaDAO) context.getBean("ReservaDAO");
        ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("apartamentoDAO");
        ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
        DetalleInventarioDAO detalleInventarioDAO = (DetalleInventarioDAO) context.getBean("detalleInventarioDAO");
@@ -104,16 +104,16 @@ public class App {
         provedorBooking.setNombre("booking");
         provedorBooking.setDescripcion("booking por extranet");
 
-        proveedorReservaDAO.insert(provedorBooking);
+        provReservaDAO.insert(provedorBooking);
 
 
 
         provedorBooking.setDescripcion("booking por sistema web");
 
-        proveedorReservaDAO.update(provedorBooking);
+        provReservaDAO.update(provedorBooking);
 
         System.out.println("");
-        System.out.println(proveedorReservaDAO.find(provedorBooking));
+        System.out.println(provReservaDAO.find(provedorBooking));
         System.out.println("");
 
 
@@ -124,7 +124,7 @@ public class App {
         provedorSetur.setNombre("Setur");
         provedorSetur.setDescripcion("Setur contacto directo ");
 
-        proveedorReservaDAO.insert(provedorSetur);
+        provReservaDAO.insert(provedorSetur);
 
 
 
@@ -138,18 +138,18 @@ public class App {
 
         reserva.setProveedorreserva(provedorBooking);
 
-        reservasDAO.insert(reserva);
+        reservaDAO.insert(reserva);
 
 
 
 
         reserva.setProveedorreserva(provedorSetur);
 
-        reservasDAO.update(reserva);
+        reservaDAO.update(reserva);
 
 
         System.out.println("");
-        System.out.println(reservasDAO.find(reserva));
+        System.out.println(reservaDAO.find(reserva));
         System.out.println("");
 
 
@@ -290,10 +290,10 @@ public class App {
 
         clienteDAO.remove(cliente);
 
-        proveedorReservaDAO.remove(provedorBooking);
-        proveedorReservaDAO.remove(provedorSetur);
+        provReservaDAO.remove(provedorBooking);
+        provReservaDAO.remove(provedorSetur);
 
-        reservasDAO.remove(reserva);
+        reservaDAO.remove(reserva);
 
 
         estadoDAO.remove(realizado);

@@ -70,4 +70,16 @@ public class DetalleInventario {
     public void setRealizadoPor(Usuario realizadoPor) {
         this.realizadoPor = realizadoPor;
     }
+
+    @Override
+    public String toString() {
+        return "DetalleInventario{" +
+                "id=" + id +
+                ", elementoInventario=" + elementoInventario +
+                ", apartamento=" + apartamento +
+                ", cantidad=" + cantidad +
+                ", fecha_insercion='" + fecha_insercion + '\'' +
+                ", realizadoPor=" + realizadoPor +
+                '}';
+    }
 }

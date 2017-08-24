@@ -74,4 +74,15 @@ public class TareasPorApartamento {
         this.descripcion = descripcion;
     }
 
+    @Override
+    public String toString() {
+        return "TareasPorApartamento{" +
+                "id=" + id +
+                ", tarea=" + tarea +
+                ", apartamento=" + apartamento +
+                ", estado=" + estado +
+                ", realizarPor=" + realizarPor +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

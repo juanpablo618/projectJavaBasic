@@ -78,4 +78,16 @@ public class ElementoInventario {
     public void setUsuarioQueCompro(Usuario usuarioQueCompro) {
         this.usuarioQueCompro = usuarioQueCompro;
     }
+
+    @Override
+    public String toString() {
+        return "ElementoInventario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", codigo='" + codigo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", fecha_insercion='" + fecha_insercion + '\'' +
+                ", usuarioQueCompro=" + usuarioQueCompro +
+                '}';
+    }
 }

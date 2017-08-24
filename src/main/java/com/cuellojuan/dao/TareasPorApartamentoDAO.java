@@ -15,11 +15,11 @@ public class TareasPorApartamentoDAO  extends GenericDAOImpl<TareasPorApartament
         super.remove(entity);
     }
 
-    public void insert(TareasPorApartamento entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
+    public void insert(TareasPorApartamento entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, ClassNotFoundException {
         super.insert(entity);
     }
 
-    public void update(TareasPorApartamento entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(TareasPorApartamento entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
         super.update(entity);
     }
 

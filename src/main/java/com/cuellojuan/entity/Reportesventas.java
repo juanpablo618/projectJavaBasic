@@ -80,4 +80,17 @@ public class Reportesventas {
     public void setVendidopor(String vendidopor) {
         this.vendidopor = vendidopor;
     }
+
+    @Override
+    public String toString() {
+        return "Reportesventas{" +
+                "ventasid=" + ventasid +
+                ", fecha='" + fecha + '\'' +
+                ", codigoproducto='" + codigoproducto + '\'' +
+                ", codigocliente='" + codigocliente + '\'' +
+                ", cantidad=" + cantidad +
+                ", ingresos=" + ingresos +
+                ", vendidopor='" + vendidopor + '\'' +
+                '}';
+    }
 }

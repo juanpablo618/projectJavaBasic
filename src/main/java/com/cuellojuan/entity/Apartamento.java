@@ -60,4 +60,15 @@ public class Apartamento {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
+
+    @Override
+    public String toString() {
+        return "Apartamento{" +
+                "id=" + id +
+                ", nro_piso=" + nro_piso +
+                ", ocupacion_maxima=" + ocupacion_maxima +
+                ", nombre_edificio='" + nombre_edificio + '\'' +
+                ", comentario='" + comentario + '\'' +
+                '}';
+    }
 }

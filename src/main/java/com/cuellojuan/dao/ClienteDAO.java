@@ -5,20 +5,20 @@ import com.cuellojuan.dao.impl.GenericDAOImpl;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-public class ClientesDAO extends GenericDAOImpl<Cliente> {
+public class ClienteDAO extends GenericDAOImpl<Cliente> {
 
-    public ClientesDAO() {
+    public ClienteDAO() {
     }
 
     public void remove(Cliente entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
         super.remove(entity);
     }
 
-    public void insert(Cliente entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
+    public void insert(Cliente entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, ClassNotFoundException {
         super.insert(entity);
     }
 
-    public void update(Cliente entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(Cliente entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
         super.update(entity);
     }
 

@@ -16,7 +16,7 @@
 
 
 
-    <bean id="usuariosDAO" class="com.cuellojuan.dao.UsuariosDAO">
+    <bean id="UsuarioDAO" class="com.cuellojuan.dao.UsuarioDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
@@ -25,16 +25,16 @@
     </bean>
 
 
-    <bean id="clientesDAO" class="com.cuellojuan.dao.ClientesDAO">
+    <bean id="ClienteDAO" class="com.cuellojuan.dao.ClienteDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
 
-    <bean id="proveedorReservaDAO" class="com.cuellojuan.dao.ProveedorReservaDAO">
+    <bean id="ProvReservaDAO" class="com.cuellojuan.dao.ProvReservaDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="reservasDAO" class="com.cuellojuan.dao.ReservasDAO">
+    <bean id="ReservaDAO" class="com.cuellojuan.dao.ReservaDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

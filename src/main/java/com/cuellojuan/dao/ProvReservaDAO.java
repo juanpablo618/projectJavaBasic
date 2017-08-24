@@ -7,20 +7,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 
-public class ProveedorReservaDAO extends GenericDAOImpl<ProvReserva> {
+public class ProvReservaDAO extends GenericDAOImpl<ProvReserva> {
 
-    public ProveedorReservaDAO() {
+    public ProvReservaDAO() {
     }
 
     public void remove(ProvReserva entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
         super.remove(entity);
     }
 
-    public void insert(ProvReserva entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException {
+    public void insert(ProvReserva entity) throws IllegalAccessException, SQLException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException, ClassNotFoundException {
         super.insert(entity);
     }
 
-    public void update(ProvReserva entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException {
+    public void update(ProvReserva entity) throws IllegalAccessException, SQLException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
         super.update(entity);
     }
 
