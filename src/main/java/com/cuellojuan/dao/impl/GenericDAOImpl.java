@@ -123,17 +123,8 @@ public class GenericDAOImpl<E>
             Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoInstancia.getClass());
 
 
-            findMetodoDelDao.invoke(interfazObjetoInstancia2, objetoInstancia);
-
-
-
-
-
-        return objetoInstancia;
+        return findMetodoDelDao.invoke(interfazObjetoInstancia2, objetoInstancia);
     }
-
-
-
 
 
     private Object invocarSetters(Object ob, ResultSet rs) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InstantiationException, ClassNotFoundException {
@@ -146,20 +137,12 @@ public class GenericDAOImpl<E>
 
             Field campoParaSetear = clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase());
 
-/*
-            Object usuario = null;
-            Object cliente = null;
-            Object proveedorReserva = null;
-*/
-
             Object objetoParaInstanciar1 = null;
             Object objetoParaInstanciar2 = null;
-
 
             String nombrePaqueteYCLase = "com.cuellojuan.entity.";
 
             String nombrePaqueteYCLaseInterfaz = "com.cuellojuan.dao.";
-
 
             switch (clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getSimpleName()){
 
@@ -174,44 +157,41 @@ public class GenericDAOImpl<E>
                 case "Cliente":
 
                     nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Cliente");
-                    objetoParaInstanciar2 = Class.forName(nombrePaqueteYCLase).newInstance();
-                    objetoParaInstanciar2 =  buscarObjeto(objetoParaInstanciar2, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
+                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
+                    objetoParaInstanciar1 =  buscarObjeto(objetoParaInstanciar1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
 
-                    //      DAO del cliente ya que 1ro necesito invocar el find
+                                //  DAO del cliente ya que 1ro necesito invocar el find
 
-                    nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat("Cliente".concat("DAO"));
-
-                    Object interfazObjetoInstancia =  context.getBean("Cliente".concat("DAO"))  ;
-
-                    Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
-
-                    Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoParaInstanciar2.getClass());
-
-
-
-                    Object objBuscadoDao =  findMetodoDelDao.invoke(interfazObjetoInstancia, objetoParaInstanciar2);
+//                                nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat("Cliente".concat("DAO"));
+//
+//                                Object interfazObjetoInstancia =  context.getBean("Cliente".concat("DAO"))  ;
+//
+//                                Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
+//
+//                                Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoParaInstanciar2.getClass());
+//
+//                                Object objBuscadoDao =  findMetodoDelDao.invoke(interfazObjetoInstancia, objetoParaInstanciar2);
 
 
                     // y luego el getUsuarioquerecibio de cliente
 
-
-                    Class objetoBuscadoClase = Class.forName(objBuscadoDao.getClass().getName());
-
-                    Method metodoGetUsuarioQLoRecibio = objetoBuscadoClase.getDeclaredMethod("getUsuarioquerecibio", null);
-
-                    Object usuarioBuscado = metodoGetUsuarioQLoRecibio.invoke(objBuscadoDao, null);
-
-                    Class usuarioBuscadoClase = Class.forName(usuarioBuscado.getClass().getName());
-
-                    Method metodoGetid = usuarioBuscadoClase.getDeclaredMethod("getId", null);
-
-                    int idUsuarioBuscado = (int) metodoGetid.invoke(usuarioBuscado, null);
-
-
-                    nombrePaqueteYCLase = "com.cuellojuan.entity.";
-                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Usuario");
-                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
-                    objetoParaInstanciar1 = buscarObjeto(objetoParaInstanciar1, idUsuarioBuscado);
+//                    Class objetoBuscadoClase = Class.forName(objBuscadoDao.getClass().getName());
+//
+//                    Method metodoGetUsuarioQLoRecibio = objetoBuscadoClase.getDeclaredMethod("getUsuarioquerecibio", null);
+//
+//                    Object usuarioBuscado = metodoGetUsuarioQLoRecibio.invoke(objBuscadoDao, null);
+//
+//                                Class usuarioBuscadoClase = Class.forName(usuarioBuscado.getClass().getName());
+//
+//                                Method metodoGetid = usuarioBuscadoClase.getDeclaredMethod("getId", null);
+//
+//                                int idUsuarioBuscado = (int) metodoGetid.invoke(usuarioBuscado, null);
+//
+//
+//                    nombrePaqueteYCLase = "com.cuellojuan.entity.";
+//                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Usuario");
+//                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
+//                    objetoParaInstanciar1 = buscarObjeto(objetoParaInstanciar1, idUsuarioBuscado);
                     break;
 
                 case "ProvReserva":
@@ -241,7 +221,7 @@ public class GenericDAOImpl<E>
                         break;
 
                         case "Cliente":
-                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar2);
+                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar1);
                             break;
 
                         case "ProvReserva":
