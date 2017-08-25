@@ -78,7 +78,6 @@ public class GenericDAOImpl<E>
                 Field f = retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName());
                 f.setAccessible(true);
 
-
                 id = f.getName().toString().concat(IGUAL).concat( f.get(entity).toString());
                 break;
             }
@@ -97,33 +96,6 @@ public class GenericDAOImpl<E>
         } catch (Exception e) {
             System.out.println("failed operation: " + sqlFinal);
         }
-    }
-
-
-    private Object buscarObjeto(Object entity, int idABuscar) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-
-        //objeto
-        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-         nombrePaqueteYCLase = nombrePaqueteYCLase.concat(entity.getClass().getSimpleName());
-
-        Object objetoInstancia = Class.forName(nombrePaqueteYCLase).newInstance();
-        Class objetoClase = Class.forName(nombrePaqueteYCLase);
-
-        Method setMetodoDelObjeto = objetoClase.getMethod("setId", int.class);
-
-        setMetodoDelObjeto.invoke(objetoInstancia, idABuscar);
-
-        //DAO
-        String nombrePaqueteYCLaseInterfaz = NOMBRE_PAQUETE_DE_DAOS;
-        nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat(entity.getClass().getSimpleName().concat("DAO"));
-
-           Object interfazObjetoInstancia2 =  context.getBean(entity.getClass().getSimpleName().concat("DAO"))  ;
-
-            Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
-
-            Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoInstancia.getClass());
-
-        return findMetodoDelDao.invoke(interfazObjetoInstancia2, objetoInstancia);
     }
 
 
@@ -147,7 +119,26 @@ public class GenericDAOImpl<E>
 
                     objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
 
-                    objetoParaInstanciar1 =  buscarObjeto(objetoParaInstanciar1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()) );
+
+                Object objetoInstancia = Class.forName(nombrePaqueteYCLase).newInstance();
+
+                Class objetoClase = Class.forName(nombrePaqueteYCLase);
+
+                Method setMetodoDelObjeto = objetoClase.getMethod("setId", int.class);
+
+                setMetodoDelObjeto.invoke(objetoInstancia, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
+
+                //DAO
+                String nombrePaqueteYCLaseInterfaz = NOMBRE_PAQUETE_DE_DAOS;
+                nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat(objetoParaInstanciar1.getClass().getSimpleName().concat("DAO"));
+
+                Object interfazObjetoInstancia2 =  context.getBean(objetoParaInstanciar1.getClass().getSimpleName().concat("DAO"))  ;
+
+                Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
+
+                Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoInstancia.getClass());
+
+                objetoParaInstanciar1 = findMetodoDelDao.invoke(interfazObjetoInstancia2, objetoInstancia);
 
             }
 
@@ -353,7 +344,6 @@ public class GenericDAOImpl<E>
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
-
 
         Object objetoClase = retornaInstanciaDeLaClase(entity).newInstance();
         invocarSetters(objetoClase,rs);

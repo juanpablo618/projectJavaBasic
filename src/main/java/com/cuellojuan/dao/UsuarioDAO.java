@@ -1,7 +1,6 @@
 package com.cuellojuan.dao;
 
 import com.cuellojuan.dao.impl.GenericDAOImpl;
-import com.cuellojuan.dao.impl.GenericDAOImplHotel;
 import com.cuellojuan.entity.Usuario;
 
 import java.lang.reflect.InvocationTargetException;

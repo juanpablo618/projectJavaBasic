@@ -7,13 +7,6 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="genericDAOimplHotel" class="com.cuellojuan.dao.impl.GenericDAOImplHotel">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-
-
-
 
 
     <bean id="UsuarioDAO" class="com.cuellojuan.dao.UsuarioDAO">
