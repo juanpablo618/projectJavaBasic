@@ -1,6 +1,5 @@
 package com.cuellojuan.dao.impl;
 
-
 import com.cuellojuan.dao.GenericDAO;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
@@ -39,6 +38,10 @@ public class GenericDAOImpl<E>
     private static final String ID = "id";
 
     private static final String ESPACIO = ", ";
+
+    private static final String NOMBRE_PAQUETE_DE_CLASES = "com.cuellojuan.entity.";
+
+    private static final String NOMBRE_PAQUETE_DE_DAOS = "com.cuellojuan.dao.";
 
 
     private Class retornaInstanciaDeLaClase(E entity) throws NoSuchMethodException, IllegalAccessException {
@@ -100,7 +103,7 @@ public class GenericDAOImpl<E>
     private Object buscarObjeto(Object entity, int idABuscar) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 
         //objeto
-        String nombrePaqueteYCLase = "com.cuellojuan.entity.";
+        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
          nombrePaqueteYCLase = nombrePaqueteYCLase.concat(entity.getClass().getSimpleName());
 
         Object objetoInstancia = Class.forName(nombrePaqueteYCLase).newInstance();
@@ -111,17 +114,14 @@ public class GenericDAOImpl<E>
         setMetodoDelObjeto.invoke(objetoInstancia, idABuscar);
 
         //DAO
-        String nombrePaqueteYCLaseInterfaz = "com.cuellojuan.dao.";
+        String nombrePaqueteYCLaseInterfaz = NOMBRE_PAQUETE_DE_DAOS;
         nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat(entity.getClass().getSimpleName().concat("DAO"));
-
 
            Object interfazObjetoInstancia2 =  context.getBean(entity.getClass().getSimpleName().concat("DAO"))  ;
 
             Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
 
-
             Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoInstancia.getClass());
-
 
         return findMetodoDelDao.invoke(interfazObjetoInstancia2, objetoInstancia);
     }
@@ -138,74 +138,17 @@ public class GenericDAOImpl<E>
             Field campoParaSetear = clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase());
 
             Object objetoParaInstanciar1 = null;
-            Object objetoParaInstanciar2 = null;
+            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
 
-            String nombrePaqueteYCLase = "com.cuellojuan.entity.";
+            // faltaria ir sumando tipos de datos que hay q descartar, como Date, por ejemplo...
+            if(clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() != int.class && clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() != String.class && clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() != Double.class){
 
-            String nombrePaqueteYCLaseInterfaz = "com.cuellojuan.dao.";
-
-            switch (clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getSimpleName()){
-
-                case "Usuario":
-
-                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Usuario");
-                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
-                    objetoParaInstanciar1 = buscarObjeto(objetoParaInstanciar1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
-
-                    break;
-
-                case "Cliente":
-
-                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Cliente");
-                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
-                    objetoParaInstanciar1 =  buscarObjeto(objetoParaInstanciar1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
-
-                                //  DAO del cliente ya que 1ro necesito invocar el find
-
-//                                nombrePaqueteYCLaseInterfaz = nombrePaqueteYCLaseInterfaz.concat("Cliente".concat("DAO"));
-//
-//                                Object interfazObjetoInstancia =  context.getBean("Cliente".concat("DAO"))  ;
-//
-//                                Class claseDeInterfazobjetoDAO = Class.forName(nombrePaqueteYCLaseInterfaz);
-//
-//                                Method findMetodoDelDao = claseDeInterfazobjetoDAO.getMethod("find", objetoParaInstanciar2.getClass());
-//
-//                                Object objBuscadoDao =  findMetodoDelDao.invoke(interfazObjetoInstancia, objetoParaInstanciar2);
-
-
-                    // y luego el getUsuarioquerecibio de cliente
-
-//                    Class objetoBuscadoClase = Class.forName(objBuscadoDao.getClass().getName());
-//
-//                    Method metodoGetUsuarioQLoRecibio = objetoBuscadoClase.getDeclaredMethod("getUsuarioquerecibio", null);
-//
-//                    Object usuarioBuscado = metodoGetUsuarioQLoRecibio.invoke(objBuscadoDao, null);
-//
-//                                Class usuarioBuscadoClase = Class.forName(usuarioBuscado.getClass().getName());
-//
-//                                Method metodoGetid = usuarioBuscadoClase.getDeclaredMethod("getId", null);
-//
-//                                int idUsuarioBuscado = (int) metodoGetid.invoke(usuarioBuscado, null);
-//
-//
-//                    nombrePaqueteYCLase = "com.cuellojuan.entity.";
-//                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("Usuario");
-//                    objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
-//                    objetoParaInstanciar1 = buscarObjeto(objetoParaInstanciar1, idUsuarioBuscado);
-                    break;
-
-                case "ProvReserva":
-
-                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat("ProvReserva");
+                    nombrePaqueteYCLase = nombrePaqueteYCLase.concat(clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getSimpleName());
 
                     objetoParaInstanciar1 = Class.forName(nombrePaqueteYCLase).newInstance();
 
                     objetoParaInstanciar1 =  buscarObjeto(objetoParaInstanciar1, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()) );
 
-                    break;
-
-                default:
-                    break;
             }
 
             int tipodatoRS = rs.getMetaData().getColumnType(i);
@@ -213,38 +156,14 @@ public class GenericDAOImpl<E>
             switch (tipodatoRS) {
                 case 4:
 
-                    switch (clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getSimpleName()){
-
-                        case "Usuario":
-                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar1);
-
-                        break;
-
-                        case "Cliente":
-                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar1);
-                            break;
-
-                        case "ProvReserva":
-                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar1);
-                            break;
-
-                        default:
+                        if(clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() == int.class ){
                             devuelveMetodo(clase, rs, i, campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
-                            break;
-                    }
-
-                    // TERMINAR ESTO
-
-//                        if(clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType().getPackage().getName().equals("com.cuellojuan.entity") ){
-//                            variable.getClass().getPackage().getName().equals("com.cuellojuan.entity")
-//                        }else{
-//                            devuelveMetodo(clase, rs, i, campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
-//
-//                        }
-
-
+                        }else{
+                            devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, objetoParaInstanciar1);
+                        }
 
                     break;
+
                 case -1:
                     devuelveMetodo(clase, rs, i,campoParaSetear).invoke(ob, rs.getLong(campoParaSetear.getName().toLowerCase()));
                     break;
@@ -285,7 +204,6 @@ public class GenericDAOImpl<E>
 
 
 
-
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException, InvocationTargetException {
         instanciarVariables(entity);
 
@@ -319,7 +237,7 @@ public class GenericDAOImpl<E>
             todasLasVariables[i].setAccessible(true);
 
 
-            String nombrePaqueteYCLase = "com.cuellojuan.entity.";
+            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
             Class claseGenerica = null;
             Method metodoGenerico = null;
 
@@ -377,7 +295,7 @@ public class GenericDAOImpl<E>
 
             todasLasVariables[i].setAccessible(true);
 
-            String nombrePaqueteYCLase = "com.cuellojuan.entity.";
+            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
 
             Class claseGenerica = null;
             Method metodoGenerico = null;
@@ -392,7 +310,7 @@ public class GenericDAOImpl<E>
 
             }
 
-                columnaValor.put(todasLasVariables[i].getName(), variable);
+            columnaValor.put(todasLasVariables[i].getName(), variable);
         }
 
         String sqlFinal = "UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID";
@@ -446,13 +364,5 @@ public class GenericDAOImpl<E>
         return (E) objetoClase;
         }
     }
-
-
-
-
-
-
-
-
 
 
