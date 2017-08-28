@@ -40,9 +40,9 @@ public class App {
        ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("apartamentoDAO");
        ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
        DetalleInventarioDAO detalleInventarioDAO = (DetalleInventarioDAO) context.getBean("detalleInventarioDAO");
-       TareasPorApartamentoDAO tareasPorApartamentoDAO = (TareasPorApartamentoDAO) context.getBean("tareasPorApartamentoDAO");
        TareaDAO tareaDAO = (TareaDAO) context.getBean("tareaDAO");
        EstadoDAO estadoDAO = (EstadoDAO) context.getBean("estadoDAO");
+
 
 
 
@@ -260,30 +260,11 @@ public class App {
 
 
 
-        TareasPorApartamento limpiarPieza1 = new TareasPorApartamento();
-        limpiarPieza1.setId(4);
-        limpiarPieza1.setTarea(limpiar);
-        limpiarPieza1.setApartamento(apartamento1);
-        limpiarPieza1.setEstado(realizado);
-        limpiarPieza1.setRealizarPor(juan);
-        limpiarPieza1.setDescripcion("debe realizarse antes de las 12 am");
-
-
-        tareasPorApartamentoDAO.insert(limpiarPieza1);
-        limpiarPieza1.setDescripcion("debe realizarse antes de las 13 hs");
-
-        tareasPorApartamentoDAO.update(limpiarPieza1);
 
 
 //        System.out.println("");
 //        System.out.println(tareasPorApartamentoDAO.find(limpiarPieza1));
 //        System.out.println("");
-
-
-
-
-
-        tareasPorApartamentoDAO.remove(limpiarPieza1);
 
         usuarioDAO.remove(juan);
         usuarioDAO.remove(laura);

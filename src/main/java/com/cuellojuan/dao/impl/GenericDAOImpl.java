@@ -146,6 +146,7 @@ public class GenericDAOImpl<E>
 
             switch (tipodatoRS) {
                 case 4:
+                        //standart todos los tipos de datos de los id's son int.
 
                         if(clase.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() == int.class ){
                             devuelveMetodo(clase, rs, i, campoParaSetear).invoke(ob, rs.getInt(campoParaSetear.getName().toLowerCase()));
@@ -181,6 +182,7 @@ public class GenericDAOImpl<E>
         return ob;
     }
 
+    //devuelve un metodo "set"  para luego ser utilizado con "invoke"
      private Method devuelveMetodo(Class clase, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
 
         String nombreColumna = new String(rs.getMetaData().getColumnName(i));

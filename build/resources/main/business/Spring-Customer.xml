@@ -13,10 +13,6 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="reportesventasDAO" class="com.cuellojuan.dao.ReportesventasDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
 
     <bean id="ClienteDAO" class="com.cuellojuan.dao.ClienteDAO">
         <property name="dataSource" ref="dataSource" />
@@ -41,11 +37,6 @@
     </bean>
 
     <bean id="detalleInventarioDAO" class="com.cuellojuan.dao.DetalleInventarioDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-
-    <bean id="tareasPorApartamentoDAO" class="com.cuellojuan.dao.TareasPorApartamentoDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
