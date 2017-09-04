@@ -9,7 +9,9 @@ import java.sql.SQLException;
 
 public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
 
-    public ApartamentoDAO() {
+
+    private ApartamentoDAO() {
+        super();
     }
 
     public void remove(Apartamento entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {

@@ -3,24 +3,24 @@ package com.cuellojuan.entity;
 
 public class DetalleInventario {
     private int id;
-    private ElementoInventario elementoInventario;
+    private ElementoInventario elementoinventario;
     private  Apartamento apartamento;
     private int cantidad;
 
     private String fecha_insercion;
-    private Usuario realizadoPor;
+    private Usuario realizadopor;
 
 
     public DetalleInventario() {
     }
 
-    public DetalleInventario(int id, ElementoInventario elementoInventario, Apartamento apartamento, int cantidad, String fecha_insercion, Usuario realizadoPor) {
+    public DetalleInventario(int id, ElementoInventario elementoinventario, Apartamento apartamento, int cantidad, String fecha_insercion, Usuario realizadopor) {
         this.id = id;
-        this.elementoInventario = elementoInventario;
+        this.elementoinventario = elementoinventario;
         this.apartamento = apartamento;
         this.cantidad = cantidad;
         this.fecha_insercion = fecha_insercion;
-        this.realizadoPor = realizadoPor;
+        this.realizadopor = realizadopor;
     }
 
     public int getId() {
@@ -31,12 +31,12 @@ public class DetalleInventario {
         this.id = id;
     }
 
-    public ElementoInventario getElementoInventario() {
-        return elementoInventario;
+    public ElementoInventario getElementoinventario() {
+        return elementoinventario;
     }
 
-    public void setElementoInventario(ElementoInventario elementoInventario) {
-        this.elementoInventario = elementoInventario;
+    public void setElementoinventario(ElementoInventario elementoinventario) {
+        this.elementoinventario = elementoinventario;
     }
 
     public Apartamento getApartamento() {
@@ -63,23 +63,23 @@ public class DetalleInventario {
         this.fecha_insercion = fecha_insercion;
     }
 
-    public Usuario getRealizadoPor() {
-        return realizadoPor;
+    public Usuario getRealizadopor() {
+        return realizadopor;
     }
 
-    public void setRealizadoPor(Usuario realizadoPor) {
-        this.realizadoPor = realizadoPor;
+    public void setRealizadopor(Usuario realizadopor) {
+        this.realizadopor = realizadopor;
     }
 
     @Override
     public String toString() {
         return "DetalleInventario{" +
                 "id=" + id +
-                ", elementoInventario=" + elementoInventario +
+                ", elementoinventario=" + elementoinventario +
                 ", apartamento=" + apartamento +
                 ", cantidad=" + cantidad +
                 ", fecha_insercion='" + fecha_insercion + '\'' +
-                ", realizadoPor=" + realizadoPor +
+                ", realizadoPor=" + realizadopor +
                 '}';
     }
 }

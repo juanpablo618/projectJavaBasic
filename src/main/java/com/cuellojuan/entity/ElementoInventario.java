@@ -14,19 +14,19 @@ public class ElementoInventario {
 
     private String fecha_insercion;
 
-    private Usuario usuarioQueCompro;
+    private Usuario usuarioquecompro;
 
 
     public ElementoInventario() {
     }
 
-    public ElementoInventario(int id, String nombre, String codigo, String descripcion, String fecha_insercion, Usuario usuarioQueCompro) {
+    public ElementoInventario(int id, String nombre, String codigo, String descripcion, String fecha_insercion, Usuario usuarioquecompro) {
         this.id = id;
         this.nombre = nombre;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.fecha_insercion = fecha_insercion;
-        this.usuarioQueCompro = usuarioQueCompro;
+        this.usuarioquecompro = usuarioquecompro;
     }
 
 
@@ -71,12 +71,12 @@ public class ElementoInventario {
         this.id = id;
     }
 
-    public Usuario getUsuarioQueCompro() {
-        return usuarioQueCompro;
+    public Usuario getUsuarioquecompro() {
+        return usuarioquecompro;
     }
 
-    public void setUsuarioQueCompro(Usuario usuarioQueCompro) {
-        this.usuarioQueCompro = usuarioQueCompro;
+    public void setUsuarioquecompro(Usuario usuarioquecompro) {
+        this.usuarioquecompro = usuarioquecompro;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ElementoInventario {
                 ", codigo='" + codigo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", fecha_insercion='" + fecha_insercion + '\'' +
-                ", usuarioQueCompro=" + usuarioQueCompro +
+                ", usuarioquecompro=" + usuarioquecompro +
                 '}';
     }
 }

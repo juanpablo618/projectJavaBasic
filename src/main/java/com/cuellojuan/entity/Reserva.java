@@ -1,6 +1,8 @@
 package com.cuellojuan.entity;
 
 
+import java.util.List;
+
 public class Reserva {
 
     private int id;

@@ -1,13 +1,15 @@
 package com.cuellojuan.dao;
 
-import com.cuellojuan.entity.Cliente;
 import com.cuellojuan.dao.impl.GenericDAOImpl;
+import com.cuellojuan.entity.Cliente;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 public class ClienteDAO extends GenericDAOImpl<Cliente> {
 
     public ClienteDAO() {
+        super();
     }
 
     public void remove(Cliente entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {

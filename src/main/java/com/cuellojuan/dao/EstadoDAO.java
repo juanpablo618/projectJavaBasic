@@ -8,6 +8,9 @@ import java.sql.SQLException;
 
 public class EstadoDAO extends GenericDAOImpl<Estado> {
 
+    private EstadoDAO() {
+    }
+
     public void remove(Estado entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
         super.remove(entity);
     }
