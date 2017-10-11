@@ -1,30 +1,30 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Servicio {
 
 
-    private String id;
+    private int id;
     private String nombre;
     private String codigo;
     private String descripcion;
+
+    private Estado estado;
+    private Usuario vendidoPor;
+
 
     public Servicio() {
     }
 
 
-    public Servicio(String id, String nombre, String codigo, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id_servicio) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,13 +52,32 @@ public class Servicio {
         this.descripcion = descripcion;
     }
 
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Usuario getVendidoPor() {
+        return vendidoPor;
+    }
+
+    public void setVendidoPor(Usuario vendidoPor) {
+        this.vendidoPor = vendidoPor;
+    }
+
     @Override
     public String toString() {
         return "Servicio{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", codigo='" + codigo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", estado=" + estado +
+                ", vendidoPor=" + vendidoPor +
                 '}';
     }
 }

@@ -12,7 +12,7 @@ public class ProvReservaDAO extends GenericDAOImpl<ProvReserva> {
     public ProvReservaDAO() {
     }
 
-    public void remove(ProvReserva entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(ProvReserva entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

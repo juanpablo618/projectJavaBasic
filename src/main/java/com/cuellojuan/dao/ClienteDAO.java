@@ -12,7 +12,7 @@ public class ClienteDAO extends GenericDAOImpl<Cliente> {
         super();
     }
 
-    public void remove(Cliente entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Cliente entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

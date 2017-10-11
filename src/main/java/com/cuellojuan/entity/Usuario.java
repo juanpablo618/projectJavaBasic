@@ -1,21 +1,19 @@
 package com.cuellojuan.entity;
 
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
 
     private int id;
     private String nombre;
     private String apellido;
 
-    public Usuario() {
-    }
-
-    public Usuario(int id, String nombre, String apellido) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
-
+    List<Cliente> clientesAlosQueRecibio = new ArrayList<>();
+    List<Tarea> tareasARealizar = new ArrayList<>();
+    List<Servicio> servicioARealizar = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -42,18 +40,39 @@ public class Usuario {
     }
 
 
+    public List<Cliente> getClientesAlosQueRecibio() {
+        return clientesAlosQueRecibio;
+    }
+
+    public void setClientesAlosQueRecibio(List<Cliente> clientesAlosQueRecibio) {
+        this.clientesAlosQueRecibio = clientesAlosQueRecibio;
+    }
+
+    public List<Tarea> getTareasARealizar() {
+        return tareasARealizar;
+    }
+
+    public void setTareasARealizar(List<Tarea> tareasARealizar) {
+        this.tareasARealizar = tareasARealizar;
+    }
+
+    public List<Servicio> getServicioARealizar() {
+        return servicioARealizar;
+    }
+
+    public void setServicioARealizar(List<Servicio> servicioARealizar) {
+        this.servicioARealizar = servicioARealizar;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
+                ", clientesAlosQueRecibio=" + clientesAlosQueRecibio +
+                ", tareasARealizar=" + tareasARealizar +
+                ", servicioARealizar=" + servicioARealizar +
                 '}';
     }
-
-    public int devolverID(){
-
-        return id;
-    }
-
 }

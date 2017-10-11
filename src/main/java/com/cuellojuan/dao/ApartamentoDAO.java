@@ -14,7 +14,7 @@ public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
         super();
     }
 
-    public void remove(Apartamento entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Apartamento entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 
@@ -28,8 +28,6 @@ public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
 
 
     public Apartamento find(Apartamento entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-
-
         return super.find(entity);
     }
 

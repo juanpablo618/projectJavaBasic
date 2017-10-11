@@ -13,7 +13,7 @@ public class UsuarioDAO extends GenericDAOImpl<Usuario> {
     }
 
 
-    public void remove(Usuario entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Usuario entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

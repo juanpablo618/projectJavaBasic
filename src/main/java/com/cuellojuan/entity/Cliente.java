@@ -3,6 +3,8 @@ package com.cuellojuan.entity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente {
 
@@ -21,19 +23,6 @@ public class Cliente {
 
     public Cliente() {
     }
-
-    public Cliente(int id, String apellido, String nombre, String fecha_nacimiento, String tel_fijo, String tel_celular, String email, String comentario, String fecha_insercion) throws IllegalAccessException, InstantiationException, SQLException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
-        this.id = id;
-        this.apellido = apellido;
-        this.nombre = nombre;
-        this.fecha_nacimiento = fecha_nacimiento;
-        this.tel_fijo = tel_fijo;
-        this.tel_celular = tel_celular;
-        this.email = email;
-        this.comentario = comentario;
-        this.fecha_insercion = fecha_insercion;
-    }
-
 
     public int getId() {
         return id;
