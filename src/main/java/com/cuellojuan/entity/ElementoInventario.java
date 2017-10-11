@@ -1,6 +1,8 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElementoInventario {
 
@@ -19,16 +21,6 @@ public class ElementoInventario {
 
     public ElementoInventario() {
     }
-
-    public ElementoInventario(int id, String nombre, String codigo, String descripcion, String fecha_insercion, Usuario usuarioquecompro) {
-        this.id = id;
-        this.nombre = nombre;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.fecha_insercion = fecha_insercion;
-        this.usuarioquecompro = usuarioquecompro;
-    }
-
 
     public String getNombre() {
         return nombre;

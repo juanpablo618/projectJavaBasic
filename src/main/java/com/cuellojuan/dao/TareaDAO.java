@@ -12,7 +12,7 @@ public class TareaDAO extends GenericDAOImpl<Tarea> {
     public TareaDAO() {
     }
 
-    public void remove(Tarea entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Tarea entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

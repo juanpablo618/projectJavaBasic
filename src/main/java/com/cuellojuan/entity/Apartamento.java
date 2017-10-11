@@ -1,6 +1,9 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Apartamento {
 
     private int id;
@@ -8,18 +11,15 @@ public class Apartamento {
     private int ocupacion_maxima;
     private String nombre_edificio;
     private String comentario;
+    private Reserva reserva;
 
+    private List<Tarea> tareasARealizarle = new ArrayList<>();
+    private List<Servicio> serviciosBrindados = new ArrayList<>();
+    private List<ElementoInventario> elementosDeInventarioQuePosee = new ArrayList<>();
 
     public Apartamento() {
     }
 
-    public Apartamento(int id, int nro_piso, int ocupacion_maxima, String nombre_edificio, String comentario) {
-        this.id = id;
-        this.nro_piso = nro_piso;
-        this.ocupacion_maxima = ocupacion_maxima;
-        this.nombre_edificio = nombre_edificio;
-        this.comentario = comentario;
-    }
 
     public int getId() {
         return id;
@@ -61,6 +61,38 @@ public class Apartamento {
         this.comentario = comentario;
     }
 
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
+
+    public List<Tarea> getTareasARealizarle() {
+        return tareasARealizarle;
+    }
+
+    public void setTareasARealizarle(List<Tarea> tareasARealizarle) {
+        this.tareasARealizarle = tareasARealizarle;
+    }
+
+    public List<Servicio> getServiciosBrindados() {
+        return serviciosBrindados;
+    }
+
+    public void setServiciosBrindados(List<Servicio> serviciosBrindados) {
+        this.serviciosBrindados = serviciosBrindados;
+    }
+
+    public List<ElementoInventario> getElementosDeInventarioQuePosee() {
+        return elementosDeInventarioQuePosee;
+    }
+
+    public void setElementosDeInventarioQuePosee(List<ElementoInventario> elementosDeInventarioQuePosee) {
+        this.elementosDeInventarioQuePosee = elementosDeInventarioQuePosee;
+    }
+
     @Override
     public String toString() {
         return "Apartamento{" +
@@ -69,6 +101,10 @@ public class Apartamento {
                 ", ocupacion_maxima=" + ocupacion_maxima +
                 ", nombre_edificio='" + nombre_edificio + '\'' +
                 ", comentario='" + comentario + '\'' +
+                ", reserva=" + reserva +
+                ", tareasARealizarle=" + tareasARealizarle +
+                ", serviciosBrindados=" + serviciosBrindados +
+                ", elementosDeInventarioQuePosee=" + elementosDeInventarioQuePosee +
                 '}';
     }
 }

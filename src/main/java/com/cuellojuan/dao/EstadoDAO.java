@@ -11,7 +11,7 @@ public class EstadoDAO extends GenericDAOImpl<Estado> {
     private EstadoDAO() {
     }
 
-    public void remove(Estado entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(Estado entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

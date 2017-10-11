@@ -1,6 +1,7 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Reserva {
@@ -12,15 +13,18 @@ public class Reserva {
     private String comentario;
     private ProvReserva proveedorreserva;
 
+    private List<Apartamento>  apartPorReserva = new ArrayList<>();
+
     public Reserva() {
     }
 
-    public Reserva(int id,  int num_personas, Double tarifa_total, String comentario, ProvReserva proveedorreserva) {
-        this.id = id;
-        this.num_personas = num_personas;
-        this.tarifa_total = tarifa_total;
-        this.comentario = comentario;
-        this.proveedorreserva = proveedorreserva;
+
+    public List<Apartamento> getApartPorReserva() {
+        return apartPorReserva;
+    }
+
+    public void setApartPorReserva(List<Apartamento> apartPorReserva) {
+        this.apartPorReserva = apartPorReserva;
     }
 
     public Cliente getCliente() {
@@ -71,7 +75,6 @@ public class Reserva {
         this.proveedorreserva = proveedorreserva;
     }
 
-
     @Override
     public String toString() {
         return "Reserva{" +
@@ -81,6 +84,7 @@ public class Reserva {
                 ", tarifa_total=" + tarifa_total +
                 ", comentario='" + comentario + '\'' +
                 ", proveedorreserva=" + proveedorreserva +
+                ", apartPorReserva=" + apartPorReserva +
                 '}';
     }
 }

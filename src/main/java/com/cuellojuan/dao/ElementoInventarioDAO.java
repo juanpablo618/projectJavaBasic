@@ -12,7 +12,7 @@ public class ElementoInventarioDAO extends GenericDAOImpl<ElementoInventario> {
     public ElementoInventarioDAO() {
     }
 
-    public void remove(ElementoInventario entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException {
+    public void remove(ElementoInventario entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
     }
 

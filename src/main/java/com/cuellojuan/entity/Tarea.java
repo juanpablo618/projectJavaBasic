@@ -1,20 +1,19 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tarea {
 
     private int id;
     private String nombre;
     private String descripcion;
+    private Estado estado;
 
+    private Usuario usuarioqlarealiza;
 
     public Tarea() {
-    }
-
-    public Tarea(int id, String nombre, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
     }
 
     public int getId() {
@@ -41,12 +40,32 @@ public class Tarea {
         this.descripcion = descripcion;
     }
 
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+
+    public Usuario getUsuarioqlarealiza() {
+        return usuarioqlarealiza;
+    }
+
+    public void setUsuarioqlarealiza(Usuario usuarioqlarealiza) {
+        this.usuarioqlarealiza = usuarioqlarealiza;
+    }
+
+
     @Override
     public String toString() {
         return "Tarea{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", estado=" + estado +
+                ", usuarioqlarealiza=" + usuarioqlarealiza +
                 '}';
     }
 }

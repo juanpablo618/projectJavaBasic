@@ -1,6 +1,9 @@
 package com.cuellojuan.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProvReserva {
 
     private int id;
@@ -8,12 +11,6 @@ public class ProvReserva {
     private String descripcion;
 
     public ProvReserva() {
-    }
-
-    public ProvReserva(int id, String nombre, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
     }
 
     public int getId() {
@@ -39,7 +36,6 @@ public class ProvReserva {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
 
     @Override
     public String toString() {
