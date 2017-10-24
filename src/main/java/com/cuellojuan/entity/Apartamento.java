@@ -1,6 +1,5 @@
 package com.cuellojuan.entity;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,9 @@ public class Apartamento {
     private String comentario;
     private Reserva reserva;
 
-    private List<Tarea> tareasARealizarle = new ArrayList<>();
     private List<Servicio> serviciosBrindados = new ArrayList<>();
+    private List<Tarea> tareasARealizarle = new ArrayList<>();
     private List<ElementoInventario> elementosDeInventarioQuePosee = new ArrayList<>();
-
-    public Apartamento() {
-    }
 
 
     public int getId() {

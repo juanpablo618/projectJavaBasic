@@ -3,14 +3,10 @@ package com.cuellojuan.dao;
 
 import com.cuellojuan.dao.impl.GenericDAOImpl;
 import com.cuellojuan.entity.Tarea;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 public class TareaDAO extends GenericDAOImpl<Tarea> {
-
-    public TareaDAO() {
-    }
 
     public void remove(Tarea entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
@@ -24,14 +20,7 @@ public class TareaDAO extends GenericDAOImpl<Tarea> {
         super.update(entity);
     }
 
-
     public Tarea find(Tarea entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-
-
         return super.find(entity);
     }
-
-
-
-
 }

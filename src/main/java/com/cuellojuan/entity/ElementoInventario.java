@@ -1,26 +1,13 @@
 package com.cuellojuan.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ElementoInventario {
 
     private int id;
-
     private String nombre;
-
     private String codigo;
-
     private String descripcion;
-
     private String fecha_insercion;
-
     private Usuario usuarioquecompro;
-
-
-    public ElementoInventario() {
-    }
 
     public String getNombre() {
         return nombre;
@@ -57,7 +44,6 @@ public class ElementoInventario {
     public int getId() {
         return id;
     }
-
 
     public void setId(int id) {
         this.id = id;

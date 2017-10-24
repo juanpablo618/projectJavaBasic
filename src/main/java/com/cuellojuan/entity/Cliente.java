@@ -1,13 +1,7 @@
 package com.cuellojuan.entity;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cliente {
-
 
     private int id;
     private String apellido;
@@ -19,10 +13,8 @@ public class Cliente {
     private String comentario;
     private Usuario usuarioquerecibio;
     private String fecha_insercion;
+    private Reserva reservaAsociada;
 
-
-    public Cliente() {
-    }
 
     public int getId() {
         return id;
@@ -88,7 +80,6 @@ public class Cliente {
         this.comentario = comentario;
     }
 
-
     public Usuario getUsuarioquerecibio() {
         return usuarioquerecibio;
     }
@@ -105,6 +96,13 @@ public class Cliente {
         this.fecha_insercion = fecha_insercion;
     }
 
+    public Reserva getReservaAsociada() {
+        return reservaAsociada;
+    }
+
+    public void setReservaAsociada(Reserva reservaAsociada) {
+        this.reservaAsociada = reservaAsociada;
+    }
 
     @Override
     public String toString() {
@@ -119,6 +117,7 @@ public class Cliente {
                 ", comentario='" + comentario + '\'' +
                 ", usuarioquerecibio=" + usuarioquerecibio +
                 ", fecha_insercion='" + fecha_insercion + '\'' +
+                ", reservaAsociada=" + reservaAsociada +
                 '}';
     }
 }

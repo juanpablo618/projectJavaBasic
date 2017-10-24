@@ -1,19 +1,10 @@
 package com.cuellojuan.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Estado {
 
     private int id;
     private String nombre;
     private String descripcion;
-
-
-    public Estado() {
-    }
-
 
     public int getId() {
         return id;

@@ -28,7 +28,7 @@
     </bean>
 
 
-    <bean id="apartamentoDAO" class="com.cuellojuan.dao.ApartamentoDAO">
+    <bean id="ApartamentoDAO" class="com.cuellojuan.dao.ApartamentoDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
@@ -36,20 +36,17 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="detalleInventarioDAO" class="com.cuellojuan.dao.DetalleInventarioDAO">
+    <bean id="EstadoDAO" class="com.cuellojuan.dao.EstadoDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-
-    <bean id="estadoDAO" class="com.cuellojuan.dao.EstadoDAO">
+    <bean id="TareaDAO" class="com.cuellojuan.dao.TareaDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <bean id="tareaDAO" class="com.cuellojuan.dao.TareaDAO">
+    <bean id="ServicioDAO" class="com.cuellojuan.dao.ServicioDAO">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
-
 
 
 </beans>

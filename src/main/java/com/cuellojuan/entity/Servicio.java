@@ -1,23 +1,14 @@
 package com.cuellojuan.entity;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Servicio {
-
 
     private int id;
     private String nombre;
     private String codigo;
     private String descripcion;
-
     private Estado estado;
     private Usuario vendidoPor;
-
-
-    public Servicio() {
-    }
 
 
     public int getId() {

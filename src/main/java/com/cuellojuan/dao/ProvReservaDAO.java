@@ -2,15 +2,10 @@ package com.cuellojuan.dao;
 
 import com.cuellojuan.dao.impl.GenericDAOImpl;
 import com.cuellojuan.entity.ProvReserva;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-
 public class ProvReservaDAO extends GenericDAOImpl<ProvReserva> {
-
-    public ProvReservaDAO() {
-    }
 
     public void remove(ProvReserva entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
@@ -24,18 +19,8 @@ public class ProvReservaDAO extends GenericDAOImpl<ProvReserva> {
         super.update(entity);
     }
 
-
     public ProvReserva find(ProvReserva entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-
-
         return super.find(entity);
     }
-
-
-
-
-
-
-
 
 }

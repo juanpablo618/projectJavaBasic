@@ -5,11 +5,10 @@ import com.cuellojuan.dao.ApartamentoDAO;
 import com.cuellojuan.entity.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
 
 
@@ -33,10 +32,10 @@ public class App {
 
         Estado realizado = new Estado();
         realizado.setDescripcion("realizado ya completado");
-        realizado.setId(2);
+        realizado.setId(1);
         realizado.setNombre("realizado");
 
-      //  estadoDAO.insert(realizado);
+        estadoDAO.insert(realizado);
 
         Apartamento apartamento1 = new Apartamento();
 
@@ -139,7 +138,7 @@ public class App {
 
 
         Estado vendido = new Estado();
-        vendido.setId(1);
+        vendido.setId(2);
         vendido.setNombre("vendido");
         vendido.setDescripcion("vendido ya facturado");
 
@@ -182,9 +181,11 @@ public class App {
         apartamentoDAO.insert(apartamento2);
         apartamentoDAO.insert(apartamento3);
 
-    System.out.println("aca hago el find de un apartamento 1: "+ apartamentoDAO.find(apartamento1).toString());
-
-
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de un apartamento 1: "+ apartamentoDAO.find(apartamento1).toString());
 
     Cliente cliente1 = new Cliente();
 
@@ -236,37 +237,34 @@ public class App {
 
         reservaDAO.update(reserva1);
 
-
         apartamentoDAO.update(apartamento1);
 
         System.out.println("apartamento 1 despues del update: " +apartamento1);
 
+apartamentoDAO.remove(apartamento1);
+apartamentoDAO.remove(apartamento2);
+apartamentoDAO.remove(apartamento3);
 
+reservaDAO.remove(reserva1);
 
-//apartamentoDAO.remove(apartamento1);
-//reservaDAO.remove(reserva1);
+clienteDAO.remove(cliente1);
 
+elementoInventarioDAO.remove(caloventor);
+elementoInventarioDAO.remove(lamparaDePie);
+elementoInventarioDAO.remove(camaDoble);
 
-//clienteDAO.remove(cliente1);
+estadoDAO.remove(vendido);
+estadoDAO.remove(realizado);
 
-//elementoInventarioDAO.remove(caloventor);
-//elementoInventarioDAO.remove(lamparaDePie);
+provReservaDAO.remove(proveedorDeLaReservaBooking);
 
-//estadoDAO.remove(vendido);
+servicioDAO.remove(limpiezaAdicional);
+servicioDAO.remove(ventaBebidaAlcoholica);
 
-//provReservaDAO.remove(proveedorDeLaReservaBooking);
+tareaDAO.remove(arregloDeLuzPrincipal);
+tareaDAO.remove(limpiar);
 
-//servicioDAO.remove(limpiezaAdicional);
-//servicioDAO.remove(ventaBebidaAlcoholica);
-
-//tareaDAO.remove(arregloDeLuzPrincipal);
-//tareaDAO.remove(limpiar);
-
-//usuarioDAO.remove(juanPablo);
-
-
-
+usuarioDAO.remove(juanPablo);
 
     }
-
 }

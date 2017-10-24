@@ -1,20 +1,13 @@
 package com.cuellojuan.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Tarea {
 
     private int id;
     private String nombre;
     private String descripcion;
     private Estado estado;
-
     private Usuario usuarioqlarealiza;
 
-    public Tarea() {
-    }
 
     public int getId() {
         return id;
@@ -48,7 +41,6 @@ public class Tarea {
         this.estado = estado;
     }
 
-
     public Usuario getUsuarioqlarealiza() {
         return usuarioqlarealiza;
     }
@@ -56,7 +48,6 @@ public class Tarea {
     public void setUsuarioqlarealiza(Usuario usuarioqlarealiza) {
         this.usuarioqlarealiza = usuarioqlarealiza;
     }
-
 
     @Override
     public String toString() {

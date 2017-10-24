@@ -15,9 +15,6 @@ public class Reserva {
 
     private List<Apartamento>  apartPorReserva = new ArrayList<>();
 
-    public Reserva() {
-    }
-
 
     public List<Apartamento> getApartPorReserva() {
         return apartPorReserva;
