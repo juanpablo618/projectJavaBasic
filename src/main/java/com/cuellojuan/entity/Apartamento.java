@@ -10,7 +10,7 @@ public class Apartamento {
     private int ocupacion_maxima;
     private String nombre_edificio;
     private String comentario;
-    private Reserva reserva;
+
 
     private List<Servicio> serviciosBrindados = new ArrayList<>();
     private List<Tarea> tareasARealizarle = new ArrayList<>();
@@ -57,13 +57,6 @@ public class Apartamento {
         this.comentario = comentario;
     }
 
-    public Reserva getReserva() {
-        return reserva;
-    }
-
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
-    }
 
     public List<Tarea> getTareasARealizarle() {
         return tareasARealizarle;
@@ -97,7 +90,6 @@ public class Apartamento {
                 ", ocupacion_maxima=" + ocupacion_maxima +
                 ", nombre_edificio='" + nombre_edificio + '\'' +
                 ", comentario='" + comentario + '\'' +
-                ", reserva=" + reserva +
                 ", tareasARealizarle=" + tareasARealizarle +
                 ", serviciosBrindados=" + serviciosBrindados +
                 ", elementosDeInventarioQuePosee=" + elementosDeInventarioQuePosee +

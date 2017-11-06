@@ -11,7 +11,7 @@ public class Reserva {
     private int num_personas;
     private Double tarifa_total;
     private String comentario;
-    private ProvReserva proveedorreserva;
+    private ProvReserva proveedor;
 
     private List<Apartamento>  apartPorReserva = new ArrayList<>();
 
@@ -64,12 +64,12 @@ public class Reserva {
         this.comentario = comentario;
     }
 
-    public ProvReserva getProveedorreserva() {
-        return proveedorreserva;
+    public ProvReserva getProveedor() {
+        return proveedor;
     }
 
-    public void setProveedorreserva(ProvReserva proveedorreserva) {
-        this.proveedorreserva = proveedorreserva;
+    public void setProveedor(ProvReserva proveedor) {
+        this.proveedor = proveedor;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Reserva {
                 ", num_personas=" + num_personas +
                 ", tarifa_total=" + tarifa_total +
                 ", comentario='" + comentario + '\'' +
-                ", proveedorreserva=" + proveedorreserva +
+                ", proveedor=" + proveedor +
                 ", apartPorReserva=" + apartPorReserva +
                 '}';
     }

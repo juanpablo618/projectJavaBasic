@@ -67,6 +67,10 @@ public class GenericDAOImpl<E>
 
     private static final String DELETE_FROM = "delete from ";
 
+    private static final String FIND = "find";
+
+    private static final String DAO = "DAO";
+
     private List listaDeVariablesTipoList;
 
     private int totalVariablesFinal;
@@ -285,7 +289,7 @@ public class GenericDAOImpl<E>
 
 
         }catch (Exception e) {
-            System.out.println("failed method Update");
+            System.out.println("failed method Insert");
         }finally {
            conn.close();
         }
@@ -384,9 +388,9 @@ public class GenericDAOImpl<E>
 
                     nombreMetodo = GET.concat(nombreMetodo);
 
-                    Method metodoDeGetListaParaRemove = entity.getClass().getDeclaredMethod(nombreMetodo);
+                    Method metodoDeGetListaParaRemover = entity.getClass().getDeclaredMethod(nombreMetodo);
 
-                    List listaInvokada = (List) metodoDeGetListaParaRemove.invoke(entity,null);
+                    List listaInvokada = (List) metodoDeGetListaParaRemover.invoke(entity,null);
 
                     if(listaInvokada.size()!=0 && listaInvokada != null) {
 
@@ -472,9 +476,9 @@ public class GenericDAOImpl<E>
 
                                 nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(".").concat(objetoParaInstanciar.getClass().getSimpleName());
 
-                                daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat("DAO")).newInstance();
+                                daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
 
-                                Method metodoFindDelObjAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat("DAO")).getDeclaredMethod("find", objetoParaInstanciar.getClass());
+                                Method metodoFindDelObjAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).getDeclaredMethod(FIND, objetoParaInstanciar.getClass());
 
                                 objetoParaInstanciar = metodoFindDelObjAInsertar.invoke(daoDeObjAInsertarEnListas, objetoParaInstanciar);
 
@@ -531,37 +535,37 @@ public class GenericDAOImpl<E>
 
                     Method metodoDeGetLista = objetoADevolver.getClass().getDeclaredMethod(nombreMetodo);
 
-                    List listaInvokada = (List) metodoDeGetLista.invoke(entity,null);
+                    List listaInvocada = (List) metodoDeGetLista.invoke(entity,null);
 
-                    if(listaInvokada.size()!=0 && listaInvokada != null) {
+                    if(listaInvocada.size()!=0 && listaInvocada != null) {
                         List listaParaInsertarEnNuevaInstancia = new ArrayList();
 
 
                         String idPrimeraTabla = ID_.concat(objetoADevolver.getClass().getSimpleName());
-                        String idSegundaTabla = ID_.concat(listaInvokada.get(0).getClass().getSimpleName().toLowerCase());
+                        String idSegundaTabla = ID_.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase());
 
-                        System.out.println(SELECT_FROM+ listaInvokada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()) +  WHERE  + idPrimeraTabla.toString() + IGUAL + idDelEntity);
+                        System.out.println(SELECT_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(idDelEntity)));
 
-                        PreparedStatement st = conn.prepareCall(SELECT_FROM+ listaInvokada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()) +  WHERE  + idPrimeraTabla.toString() + IGUAL + idDelEntity);
+                        PreparedStatement st = conn.prepareCall(SELECT_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(idDelEntity)));
                         rs = st.executeQuery();
                         Object objetoAInsertarEnLista ;
 
-                        for (int g=1; g<=listaInvokada.size();g++){
+                        for (int g=1; g<=listaInvocada.size();g++){
                             rs.next();
 
                             String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
                             String nombrePaqueteYCLaseParaDAO = NOMBRE_PAQUETE_DE_CLASES_PARA_DAO;
 
-                            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(listaInvokada.get(0).getClass().getSimpleName());
-                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(".").concat(listaInvokada.get(0).getClass().getSimpleName());
+                            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(listaInvocada.get(0).getClass().getSimpleName());
+                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(".").concat(listaInvocada.get(0).getClass().getSimpleName());
 
                             objetoAInsertarEnLista = Class.forName(nombrePaqueteYCLase).newInstance();
 
                             Method metodoSetDeObjetoAInsertar = Class.forName(nombrePaqueteYCLase).getDeclaredMethod(SET_ID, int.class);
                             metodoSetDeObjetoAInsertar.invoke(objetoAInsertarEnLista,rs.getInt(idSegundaTabla));
 
-                            daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat("DAO")).newInstance();
-                            Method findDeObjetoAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat("DAO")).getDeclaredMethod("find", objetoAInsertarEnLista.getClass());
+                            daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
+                            Method findDeObjetoAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).getDeclaredMethod(FIND, objetoAInsertarEnLista.getClass());
 
                             objetoAInsertarEnLista =   findDeObjetoAInsertar.invoke(daoDeObjAInsertarEnListas, objetoAInsertarEnLista);
                             listaParaInsertarEnNuevaInstancia.add(objetoAInsertarEnLista);

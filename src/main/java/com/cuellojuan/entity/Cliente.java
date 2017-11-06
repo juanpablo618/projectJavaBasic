@@ -11,9 +11,8 @@ public class Cliente {
     private String tel_celular;
     private String email;
     private String comentario;
-    private Usuario usuarioquerecibio;
+    private Usuario receptor;
     private String fecha_insercion;
-    private Reserva reservaAsociada;
 
 
     public int getId() {
@@ -80,12 +79,12 @@ public class Cliente {
         this.comentario = comentario;
     }
 
-    public Usuario getUsuarioquerecibio() {
-        return usuarioquerecibio;
+    public Usuario getReceptor() {
+        return receptor;
     }
 
-    public void setUsuarioquerecibio(Usuario usuarioquerecibio) {
-        this.usuarioquerecibio = usuarioquerecibio;
+    public void setReceptor(Usuario receptor) {
+        this.receptor = receptor;
     }
 
     public String getFecha_insercion() {
@@ -96,28 +95,19 @@ public class Cliente {
         this.fecha_insercion = fecha_insercion;
     }
 
-    public Reserva getReservaAsociada() {
-        return reservaAsociada;
-    }
-
-    public void setReservaAsociada(Reserva reservaAsociada) {
-        this.reservaAsociada = reservaAsociada;
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +
                 "id=" + id +
                 ", apellido='" + apellido + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
-                ", tel_fijo='" + tel_fijo + '\'' +
-                ", tel_celular='" + tel_celular + '\'' +
+                ", fechaNacimiento='" + fecha_nacimiento + '\'' +
+                ", telFijo='" + tel_fijo + '\'' +
+                ", telCelular='" + tel_celular + '\'' +
                 ", email='" + email + '\'' +
                 ", comentario='" + comentario + '\'' +
-                ", usuarioquerecibio=" + usuarioquerecibio +
-                ", fecha_insercion='" + fecha_insercion + '\'' +
-                ", reservaAsociada=" + reservaAsociada +
+                ", receptor=" + receptor +
+                ", fechaInsercion='" + fecha_insercion + '\'' +
                 '}';
     }
 }
