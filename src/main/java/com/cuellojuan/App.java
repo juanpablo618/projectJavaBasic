@@ -32,12 +32,10 @@ public class App {
 
         Estado realizado = new Estado();
         realizado.setDescripcion("realizado ya completado");
-        realizado.setId(1);
         realizado.setNombre("realizado");
         estadoDAO.insert(realizado);
 
         Estado vendido = new Estado();
-        vendido.setId(2);
         vendido.setNombre("vendido");
         vendido.setDescripcion("vendido ya facturado");
         estadoDAO.insert(vendido);
@@ -45,7 +43,6 @@ public class App {
 
         Apartamento apartamento1 = new Apartamento();
 
-        apartamento1.setId(1);
         apartamento1.setComentario("excelente vista al rio");
         apartamento1.setNombre_edificio("La porteña hab. 1");
         apartamento1.setNro_piso(1);
@@ -54,7 +51,6 @@ public class App {
 
         Apartamento apartamento2 = new Apartamento();
 
-        apartamento2.setId(2);
         apartamento2.setComentario("excelente vista al rio depto 2");
         apartamento2.setNombre_edificio("La porteña hab. 2");
         apartamento2.setNro_piso(1);
@@ -63,14 +59,12 @@ public class App {
 
         Apartamento apartamento3 = new Apartamento();
 
-        apartamento3.setId(3);
         apartamento3.setComentario("acceso directo desde la calle apartamento 3");
         apartamento3.setNombre_edificio("La porteña hab. 3");
         apartamento3.setNro_piso(1);
         apartamento3.setOcupacion_maxima(2);
 
         Usuario juanPablo = new Usuario();
-        juanPablo.setId(1);
         juanPablo.setApellido("Cuello");
         juanPablo.setNombre("Juan Pablo");
 
@@ -80,7 +74,6 @@ public class App {
         Tarea limpiar = new Tarea();
         limpiar.setDescripcion("limpiar toda la habitación");
         //limpiar.setRealizador(juanPablo);
-        limpiar.setId(2);
         limpiar.setNombre("limpiar");
         limpiar.setEstado(realizado);
         tareaDAO.insert(limpiar);
@@ -88,7 +81,6 @@ public class App {
         Tarea arregloDeLuzPrincipal = new Tarea();
         arregloDeLuzPrincipal.setDescripcion("Arreglar luz principal de la habitación");
         //arregloDeLuzPrincipal.setRealizador(juanPablo);
-        arregloDeLuzPrincipal.setId(1);
         arregloDeLuzPrincipal.setNombre("arreglar Luz principal");
         arregloDeLuzPrincipal.setEstado(realizado);
         tareaDAO.insert(arregloDeLuzPrincipal);
@@ -101,7 +93,6 @@ public class App {
         apartamento1.setTareasARealizarle(tareasARealizarEnPieza1);
 
         ElementoInventario lamparaDePie = new ElementoInventario();
-        lamparaDePie.setId(1);
         lamparaDePie.setNombre("Lampara de pie");
         lamparaDePie.setFecha_insercion("2017-09-02");
         lamparaDePie.setCodigo("Lamp001");
@@ -111,7 +102,6 @@ public class App {
 
 
         ElementoInventario caloventor = new ElementoInventario();
-        caloventor.setId(2);
         caloventor.setNombre("Caloventor");
         caloventor.setFecha_insercion("2017-09-20");
         caloventor.setCodigo("Caloventor001");
@@ -121,7 +111,6 @@ public class App {
 
 
         ElementoInventario camaDoble = new ElementoInventario();
-        camaDoble.setId(3);
         camaDoble.setNombre("cama Doble");
         camaDoble.setFecha_insercion("2017-09-20");
         camaDoble.setCodigo("camaDoble001");
@@ -131,7 +120,6 @@ public class App {
 
 
         Servicio ventaBebidaAlcoholica = new Servicio();
-        ventaBebidaAlcoholica.setId(1);
         ventaBebidaAlcoholica.setDescripcion("venta de medida de whisky a la habitacion.");
         ventaBebidaAlcoholica.setNombre("venta de bebida alcoholica");
         ventaBebidaAlcoholica.setCodigo("bebidaAlcoholica01");
@@ -144,7 +132,6 @@ public class App {
         limpiezaAdicional.setVendedor(juanPablo);
         limpiezaAdicional.setDescripcion("limpieza adicional de habitacion por pedido del cliente");
         limpiezaAdicional.setNombre("limpieza adicional");
-        limpiezaAdicional.setId(2);
         limpiezaAdicional.setEstado(realizado);
         servicioDAO.insert(limpiezaAdicional);
 
@@ -171,7 +158,6 @@ public class App {
 
         Cliente cliente1 = new Cliente();
 
-        cliente1.setId(1);
         cliente1.setApellido("apellido cliente");
         cliente1.setNombre("nombre cliente");
         cliente1.setFecha_nacimiento("2017-09-09");
@@ -186,64 +172,77 @@ public class App {
         clienteDAO.insert(cliente1);
 
         ProvReserva proveedorDeLaReservaBooking = new ProvReserva();
-        proveedorDeLaReservaBooking.setId(1);
         proveedorDeLaReservaBooking.setDescripcion("booking.com entrar por extranet");
         proveedorDeLaReservaBooking.setNombre("Booking");
         provReservaDAO.insert(proveedorDeLaReservaBooking);
 
 
         Reserva reserva1 = new Reserva();
-        reserva1.setId(1);
         reserva1.setCliente(cliente1);
         reserva1.setNum_personas(4);
         reserva1.setTarifa_total(60.00);
         reserva1.setComentario("comentario de la reserva");
         reserva1.setProveedor(proveedorDeLaReservaBooking);
-        reserva1.setCliente(cliente1);
 
 
         List<Apartamento> listadeHabParaReserva1 = new ArrayList<>();
-        listadeHabParaReserva1.add(apartamento1);
         listadeHabParaReserva1.add(apartamento2);
+        listadeHabParaReserva1.add(apartamento3);
 
         reserva1.setApartPorReserva(listadeHabParaReserva1);
 
         reservaDAO.insert(reserva1);
 
-        List<Tarea> tareasArealizarPorJuan = new ArrayList<>();
-        tareasArealizarPorJuan.add(arregloDeLuzPrincipal);
-        tareasArealizarPorJuan.add(limpiar);
-
         System.out.println("");
         System.out.println("");
         System.out.println("Find de usuario: "+ usuarioDAO.find(juanPablo).toString());
+
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Apartamento1: "+ apartamentoDAO.find(apartamento1).toString());
 
         System.out.println("");
         System.out.println("");
-
         System.out.println("Find de Reserva: "+ reservaDAO.find(reserva1).toString());
+
         System.out.println("");
         System.out.println("");
         System.out.println("Find de cliente: "+ clienteDAO.find(cliente1).toString());
+
         System.out.println("");
         System.out.println("");
         System.out.println("Find de estado realizado: "+ estadoDAO.find(realizado).toString());
+
         System.out.println("");
         System.out.println("");
         System.out.println("Find de estado vendido: "+ estadoDAO.find(vendido).toString());
-        System.out.println("");
-        System.out.println("");
-        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(caloventor).toString());
-        System.out.println("");
-        System.out.println("");
-        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(camaDoble).toString());
+
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(caloventor).toString());
 
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(camaDoble).toString());
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(caloventor).toString());
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Proveedor de reserva: "+ provReservaDAO.find(proveedorDeLaReservaBooking).toString());
+
+
+        System.out.println("");
+        System.out.println("");
+        juanPablo.setApellido("rosales");
+        usuarioDAO.update(juanPablo);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de usuario modificado: "+ usuarioDAO.find(juanPablo).toString());
+        System.out.println("");
+        System.out.println("");
 
         apartamentoDAO.remove(apartamento1);
         apartamentoDAO.remove(apartamento2);

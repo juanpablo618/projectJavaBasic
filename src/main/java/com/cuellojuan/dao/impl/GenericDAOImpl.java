@@ -29,17 +29,22 @@ public class GenericDAOImpl<E>
 
     private StringBuilder totalDeVariables;
 
-    private static final String SET = "set";
-
-    private static final String SET_ID = "setId";
 
     private static final String WHERE = " WHERE ";
 
     private static final String SELECT_FROM = "select * from ";
 
+    private static final String SELECT_MAX_ID_FROM = "SELECT MAX(id) AS id FROM ";
+
+    private static final String DELETE_FROM = "DELETE FROM ";
+
+    private static final String SET = "set";
+
     private static final String GET = "get";
 
     private static final String GET_ID = "getId";
+
+    private static final String SET_ID = "setId";
 
     private static final String IGUAL = "=";
 
@@ -64,8 +69,6 @@ public class GenericDAOImpl<E>
     private static final String SUCCESSFUL_OPERATION = "successful operation: ";
 
     private static final String FAILED_OPERATION = "failed operation: ";
-
-    private static final String DELETE_FROM = "delete from ";
 
     private static final String FIND = "find";
 
@@ -235,13 +238,39 @@ public class GenericDAOImpl<E>
 
 
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException, InvocationTargetException {
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+        E idDelObj = invocarGetID(entity);
+        if(idDelObj.equals(0)){
+
+            String tablaInsertadaAnterior = entity.getClass().getSimpleName().toLowerCase();
+
+            PreparedStatement st2 = conn.prepareStatement(SELECT_MAX_ID_FROM.concat(tablaInsertadaAnterior));
+            ResultSet rs;
+            int ultimoIdInsertadoMasUno = 0;
+
+            rs = st2.executeQuery();
+
+            while(rs.next()){
+                ultimoIdInsertadoMasUno = rs.getInt(1);
+            }
+            rs.close();
+            ultimoIdInsertadoMasUno = ultimoIdInsertadoMasUno +1;
+            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
+            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(entity.getClass().getSimpleName());
+            Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
+
+            Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
+            setMetodoDelObjeto.invoke(entity, ultimoIdInsertadoMasUno);
+        }
+
         instanciarVariables(entity);
 
         //por que la Clase puede tener más de una variable de que sea una Lista de Objetos.
         listaDeVariablesTipoList = new ArrayList();
 
-        Connection conn;
-        conn = dataSource.getConnection();
         try {
 
             for (int i = 0; i < todasLasVariables.length; i++) {
@@ -263,7 +292,6 @@ public class GenericDAOImpl<E>
                 } else {
                     listaDeValoresDeVariables.add(variable);
                 }
-
                 if (f.getType() != List.class) totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
             }
 
