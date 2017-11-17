@@ -186,7 +186,7 @@ public class App {
 
 
         List<Apartamento> listadeHabParaReserva1 = new ArrayList<>();
-        listadeHabParaReserva1.add(apartamento2);
+        listadeHabParaReserva1.add(apartamento1);
         listadeHabParaReserva1.add(apartamento3);
 
         reserva1.setApartPorReserva(listadeHabParaReserva1);

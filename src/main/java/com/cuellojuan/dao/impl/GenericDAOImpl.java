@@ -34,8 +34,6 @@ public class GenericDAOImpl<E>
 
     private static final String SELECT_FROM = "select * from ";
 
-    private static final String SELECT_MAX_ID_FROM = "SELECT MAX(id) AS id FROM ";
-
     private static final String DELETE_FROM = "DELETE FROM ";
 
     private static final String SET = "set";
@@ -159,42 +157,6 @@ public class GenericDAOImpl<E>
         return variable;
     }
 
-    public void insertarEnTablaAuxiliar(E primerObj, E segundoObj) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, SQLException {
-        Connection conn;
-        conn = dataSource.getConnection();
-
-        Field variablePrimerObj = retornaInstanciaDeLaClase(primerObj).getDeclaredField(ID);
-        Field variableSegundoObj = retornaInstanciaDeLaClase(segundoObj).getDeclaredField(ID);
-
-        variablePrimerObj.setAccessible(true);
-        variableSegundoObj.setAccessible(true);
-
-        //Por que podría variar el tipo de dato
-        Object valorVarPrimerObj = variablePrimerObj.get(primerObj);
-        Object valorVarSegundoObj = variableSegundoObj.get(segundoObj);
-
-        String nombreTabla = primerObj.getClass().getSimpleName().toLowerCase();
-
-        String ids = ID_.concat(primerObj.getClass().getSimpleName().toLowerCase()).concat(" , ").concat(ID_).concat(segundoObj.getClass().getSimpleName().toLowerCase());
-
-        nombreTabla = nombreTabla.concat(POR).concat(segundoObj.getClass().getSimpleName().toLowerCase());
-
-        List valores = new ArrayList();
-
-        valores.add(valorVarPrimerObj);
-        valores.add(valorVarSegundoObj);
-
-        String sqlFinal = "Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES );";
-
-        sqlFinal = sqlFinal.replace("#TABLA", nombreTabla);
-        sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES", ids);
-        sqlFinal = sqlFinal.replace("#VALORES", valores.toString());
-        sqlFinal = sqlFinal.replaceAll("[>\\[\\]-]", "");
-        ejecutaSentencia(conn, sqlFinal);
-
-    }
-
-
     public void actualizarEnTablaAuxiliar(E primerObj, E segundoObj) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, SQLException, InvocationTargetException, ClassNotFoundException {
         Connection conn;
         conn = dataSource.getConnection();
@@ -237,40 +199,42 @@ public class GenericDAOImpl<E>
     }
 
 
+    private void insertarEnTablaDeRelacion(String tablaDelPrimerObj, String tablaDelSegundoObj, String idDelObjDentroDeLista, String idAutogenerado) throws SQLException {
+
+        Connection conn;
+        conn = dataSource.getConnection();
+
+        String nombreTabla = tablaDelPrimerObj;
+
+        String ids = ID_.concat(tablaDelPrimerObj.concat(" , ").concat(ID_).concat(tablaDelSegundoObj));
+
+        nombreTabla = nombreTabla.concat(POR).concat(tablaDelSegundoObj);
+
+        List valores = new ArrayList();
+
+        valores.add(idDelObjDentroDeLista);
+        valores.add(idAutogenerado);
+
+        String sqlFinal = "Insert into #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES );";
+
+        sqlFinal = sqlFinal.replace("#TABLA", nombreTabla);
+        sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES", ids);
+        sqlFinal = sqlFinal.replace("#VALORES", valores.toString());
+        sqlFinal = sqlFinal.replaceAll("[>\\[\\]-]", "");
+        ejecutaSentencia(conn, sqlFinal);
+
+    }
+
     public void insert(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException, InvocationTargetException {
 
         Connection conn;
         conn = dataSource.getConnection();
 
-        E idDelObj = invocarGetID(entity);
-        if(idDelObj.equals(0)){
-
-            String tablaInsertadaAnterior = entity.getClass().getSimpleName().toLowerCase();
-
-            PreparedStatement st2 = conn.prepareStatement(SELECT_MAX_ID_FROM.concat(tablaInsertadaAnterior));
-            ResultSet rs;
-            int ultimoIdInsertadoMasUno = 0;
-
-            rs = st2.executeQuery();
-
-            while(rs.next()){
-                ultimoIdInsertadoMasUno = rs.getInt(1);
-            }
-            rs.close();
-            ultimoIdInsertadoMasUno = ultimoIdInsertadoMasUno +1;
-            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(entity.getClass().getSimpleName());
-            Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
-
-            Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
-            setMetodoDelObjeto.invoke(entity, ultimoIdInsertadoMasUno);
-        }
-
         instanciarVariables(entity);
 
         //por que la Clase puede tener más de una variable de que sea una Lista de Objetos.
         listaDeVariablesTipoList = new ArrayList();
-
+        int idAutogenerado = 0;
         try {
 
             for (int i = 0; i < todasLasVariables.length; i++) {
@@ -290,9 +254,13 @@ public class GenericDAOImpl<E>
                 if (variable.getClass() == ArrayList.class) {
                     listaDeVariablesTipoList.add(variable);
                 } else {
-                    listaDeValoresDeVariables.add(variable);
+                    if(!(variable.equals(0) && f.getName().equals("id")))
+                        listaDeValoresDeVariables.add(variable);
                 }
-                if (f.getType() != List.class) totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
+                if (f.getType() != List.class) {
+                    if(!(variable.equals(0) && f.getName().equals("id")))
+                    totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
+                }
             }
 
             String totalDeVariablesFinal;
@@ -303,7 +271,26 @@ public class GenericDAOImpl<E>
             sqlFinal = sqlFinal.replace("#TOTALDEVARIABLES", totalDeVariablesFinal.toString());
             sqlFinal = sqlFinal.replace("#VALORES", listaDeValoresDeVariables.toString());
             sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]", "");
-            ejecutaSentencia(conn, sqlFinal);
+
+            PreparedStatement ps = conn.prepareCall(sqlFinal);
+                try {
+                    ps.execute();
+                    System.out.println(SUCCESSFUL_OPERATION.concat(sqlFinal));
+
+                    ResultSet rs = ps.getGeneratedKeys();
+                    if (rs != null && rs.next()) {
+                         idAutogenerado = rs.getInt(1);
+                    }
+                } catch (Exception e) {
+                    System.out.println(FAILED_OPERATION.concat(sqlFinal));
+                }
+
+            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
+            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(entity.getClass().getSimpleName());
+            Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
+
+            Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
+            setMetodoDelObjeto.invoke(entity, idAutogenerado);
 
             for (int g = 0; g < listaDeVariablesTipoList.size(); g++) {
 
@@ -311,7 +298,14 @@ public class GenericDAOImpl<E>
                 int tamaño = ((ArrayList) variable).size();
 
                 for (int i = 0; i < tamaño; i++) {
-                    insertarEnTablaAuxiliar((E) ((ArrayList) variable).get(i), entity);
+                    String tablaDelPrimerObj = ((ArrayList) variable).get(i).getClass().getSimpleName().toLowerCase();
+                    String tablaDelSegundoObj = entity.getClass().getSimpleName().toLowerCase();
+                    String idDelObjDentroDeLista;
+
+                    E objDentroDeLaLista = (E) ((ArrayList) variable).get(i);
+                    idDelObjDentroDeLista = invocarGetID(objDentroDeLaLista).toString();
+
+                    insertarEnTablaDeRelacion(tablaDelPrimerObj,tablaDelSegundoObj, idDelObjDentroDeLista, String.valueOf(idAutogenerado));
                 }
             }
 
@@ -322,7 +316,6 @@ public class GenericDAOImpl<E>
            conn.close();
         }
     }
-
 
     public void update(E entity) throws SQLException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, InstantiationException {
         instanciarVariables(entity);
@@ -430,7 +423,6 @@ public class GenericDAOImpl<E>
 
                     }
                 }
-
             }
 
         }catch (Exception e) {
