@@ -23,4 +23,8 @@ public class ProvReservaDAO extends GenericDAOImpl<ProvReserva> {
         return super.find(entity);
     }
 
+    public ProvReserva findByProperty(Class<ProvReserva> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(clase, field, value);
+    }
+
 }

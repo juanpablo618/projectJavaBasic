@@ -22,4 +22,9 @@ public class ReservaDAO extends GenericDAOImpl<Reserva> {
     public Reserva find(Reserva entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
         return super.find(entity);
     }
+
+    public Reserva findByProperty(Class<Reserva> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(clase, field, value);
+    }
+
 }

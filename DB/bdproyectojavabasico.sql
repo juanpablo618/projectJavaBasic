@@ -10,7 +10,7 @@ USE `bdproyectojavabasico`;
 --
 
 CREATE TABLE `apartamento` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nro_piso` int(11) NOT NULL,
   `ocupacion_maxima` int(11) NOT NULL,
   `nombre_edificio` varchar(500) NOT NULL,
@@ -72,10 +72,7 @@ CREATE TABLE `elementoinventario` (
 CREATE TABLE `elementoinventario_por_apartamento` (
   `id` int(11) NOT NULL,
   `id_elementoinventario` int(11) NOT NULL,
-  `id_apartamento` int(11) NOT NULL,
-  `cantidad` int(11) DEFAULT NULL,
-  `fecha_insercion` varchar(500) DEFAULT NULL,
-  `realizadoPor` int(11) DEFAULT NULL
+  `id_apartamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -126,7 +123,7 @@ CREATE TABLE `reserva` (
 CREATE TABLE `servicio` (
   `id` int(11) NOT NULL,
   `nombre` varchar(250) NOT NULL,
-  `codigo` varchar(200) NOT NULL,
+  `codigo` varchar(200) DEFAULT NULL,
   `descripcion` varchar(500) NOT NULL,
   `estado` int(11) NOT NULL,
   `vendedor` int(11) NOT NULL
@@ -141,8 +138,7 @@ CREATE TABLE `servicio` (
 CREATE TABLE `servicio_por_apartamento` (
   `id` int(11) NOT NULL,
   `id_servicio` int(11) NOT NULL,
-  `id_apartamento` int(11) NOT NULL,
-  `cantidad` int(11) DEFAULT NULL
+  `id_apartamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -219,8 +215,7 @@ ALTER TABLE `elementoinventario`
 ALTER TABLE `elementoinventario_por_apartamento`
   ADD PRIMARY KEY (`id`),
   ADD KEY `detalle_inventario_ibfk_1` (`id_elementoinventario`),
-  ADD KEY `detalle_inventario_ibfk_2` (`id_apartamento`),
-  ADD KEY `id_usuario` (`realizadoPor`);
+  ADD KEY `detalle_inventario_ibfk_2` (`id_apartamento`);
 
 --
 -- Indices de la tabla `estado`
