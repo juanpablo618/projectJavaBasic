@@ -24,8 +24,8 @@ public class ElementoInventarioDAO extends GenericDAOImpl<ElementoInventario> {
         return super.find(entity);
     }
 
-    public ElementoInventario findByProperty(Class<ElementoInventario> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-        return super.findByProperty(clase, field, value);
+    public ElementoInventario findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
     }
 
 }

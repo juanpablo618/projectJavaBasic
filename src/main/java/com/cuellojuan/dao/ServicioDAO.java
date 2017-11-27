@@ -24,7 +24,7 @@ public class ServicioDAO extends GenericDAOImpl<Servicio> {
         return super.find(entity);
     }
 
-    public Servicio findByProperty(Class<Servicio> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-        return super.findByProperty(clase, field, value);
+    public Servicio findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
     }
 }

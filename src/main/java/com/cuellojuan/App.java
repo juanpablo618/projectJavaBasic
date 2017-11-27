@@ -204,7 +204,7 @@ public class App {
         System.out.println("Find de Tarea:"+ tareaDAO.find(arregloDeLuzPrincipal).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Tarea:"+ tareaDAO.findByProperty(Tarea.class , "nombre", "limpiar"));
+        System.out.println("FindByProperty de Tarea:"+ tareaDAO.findByProperty("nombre", "limpiar"));
         System.out.println("");
         System.out.println("");
         System.out.println("");
@@ -213,7 +213,7 @@ public class App {
 
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de usuario:"+ usuarioDAO.findByProperty(Usuario.class , "nombre", "Juan Pablo"));
+        System.out.println("FindByProperty de usuario:"+ usuarioDAO.findByProperty("nombre", "Juan Pablo"));
 
         System.out.println("");
         System.out.println("");
@@ -222,7 +222,7 @@ public class App {
         System.out.println("");
         System.out.println("no devuelve la lista de tareas A Realizarle ni servicios Brindados ni elementosDeInventarioQuePosee, por que el anterior metodo find, " +
                 "hacia un invoke a la lista del objeto q uno queria buscar");
-        System.out.println("FindByProperty de Apartamento1:"+ apartamentoDAO.findByProperty(Apartamento.class , "comentario", "excelente vista al rio"));
+        System.out.println("FindByProperty de Apartamento1:"+ apartamentoDAO.findByProperty("comentario", "excelente vista al rio"));
         System.out.println("");
         System.out.println("");
         System.out.println("");
@@ -235,58 +235,58 @@ public class App {
         System.out.println("Find de Reserva: "+ reservaDAO.find(reserva1).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Reserva:"+ reservaDAO.findByProperty(Reserva.class , "comentario", "comentario de la reserva 1"));
+        System.out.println("FindByProperty de Reserva:"+ reservaDAO.findByProperty("comentario", "comentario de la reserva 1"));
         System.out.println("");
         System.out.println("");
         System.out.println("Find de cliente: "+ clienteDAO.find(cliente1).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de cliente:"+ clienteDAO.findByProperty(Cliente.class , "apellido", "apellido cliente"));
+        System.out.println("FindByProperty de cliente:"+ clienteDAO.findByProperty("apellido", "apellido cliente"));
         System.out.println("");
         System.out.println("");
         System.out.println("Find de estado realizado: "+ estadoDAO.find(realizado).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de estado realizado:"+ estadoDAO.findByProperty(Estado.class , "nombre", "realizado"));
+        System.out.println("FindByProperty de estado realizado:"+ estadoDAO.findByProperty("nombre", "realizado"));
         System.out.println("");
         System.out.println("");
         System.out.println("Find de estado vendido: "+ estadoDAO.find(vendido).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de estado vendido:"+ estadoDAO.findByProperty(Estado.class , "nombre", "vendido"));
+        System.out.println("FindByProperty de estado vendido:"+ estadoDAO.findByProperty("nombre", "vendido"));
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(caloventor).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty(ElementoInventario.class , "nombre", "Caloventor"));
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Caloventor"));
 
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(camaDoble).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty(ElementoInventario.class , "nombre", "Cama Doble"));
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Cama Doble"));
 
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(lamparaDePie).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty(ElementoInventario.class , "nombre", "Lampara de pie"));
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Lampara de pie"));
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Proveedor de reserva: "+ provReservaDAO.find(proveedorDeLaReservaBooking).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Proveedor de reserva:"+ provReservaDAO.findByProperty(ProvReserva.class , "nombre", "Booking"));
+        System.out.println("FindByProperty de Proveedor de reserva:"+ provReservaDAO.findByProperty("nombre", "Booking"));
 
         System.out.println("");
         System.out.println("");
         System.out.println("Find de Servicio: "+ servicioDAO.find(limpiezaAdicional).toString());
         System.out.println("");
         System.out.println("");
-        System.out.println("FindByProperty de Servicio:"+ servicioDAO.findByProperty(Servicio.class , "nombre", "limpieza adicional"));
+        System.out.println("FindByProperty de Servicio:"+ servicioDAO.findByProperty("nombre", "limpieza adicional"));
 
         System.out.println("");
         System.out.println("");

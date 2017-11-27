@@ -23,7 +23,7 @@ public class EstadoDAO extends GenericDAOImpl<Estado> {
         return super.find(entity);
     }
 
-    public Estado findByProperty(Class<Estado> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-        return super.findByProperty(clase, field, value);
+    public Estado findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
     }
 }

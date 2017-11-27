@@ -23,8 +23,8 @@ public class UsuarioDAO extends GenericDAOImpl<Usuario> {
         return super.find(entity);
     }
 
-    public Usuario findByProperty(Class<Usuario> clase , String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
-        return super.findByProperty(clase, field, value);
+    public Usuario findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
     }
 
 }
