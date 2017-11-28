@@ -87,6 +87,8 @@ public class GenericDAOImpl<E>
 
     private static final String DAO = "DAO";
 
+    private static final String PUNTO = ".";
+
     private List listaDeVariablesTipoList;
 
     private int totalVariablesFinal;
@@ -127,8 +129,6 @@ public class GenericDAOImpl<E>
     private int ejecutarSentencias(Connection conn, String sqlFinal) throws SQLException {
         int idAutoincrementable = 0;
         PreparedStatement ps = conn.prepareCall(sqlFinal);
-
-        if(sqlFinal.contains(INSERT_INTO)){
             try {
                 ps.execute();
                 System.out.println(SUCCESSFUL_OPERATION.concat(sqlFinal));
@@ -136,22 +136,11 @@ public class GenericDAOImpl<E>
                 if (rs != null && rs.next()) {
                     idAutoincrementable = rs.getInt(1);
                 }
-
-            } catch (Exception e) {
-                System.out.println(FAILED_OPERATION.concat(sqlFinal));
-            }
-
-            return  idAutoincrementable;
-
-        }else{
-            try {
-                ps.execute();
-                System.out.println(SUCCESSFUL_OPERATION.concat(sqlFinal));
             } catch (Exception e) {
                 System.out.println(FAILED_OPERATION.concat(sqlFinal));
             }
             return  idAutoincrementable;
-        }
+
     }
 
     private Method devuelveMetodoParaInvocar(Class clase, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
@@ -180,7 +169,7 @@ public class GenericDAOImpl<E>
         Class claseGenerica;
         Method metodoGenerico;
 
-        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".");
+        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO);
         nombrePaqueteYCLase = nombrePaqueteYCLase.concat(variable.getClass().getSimpleName());
         claseGenerica = Class.forName(nombrePaqueteYCLase);
         metodoGenerico = claseGenerica.getMethod(GET_ID, null);
@@ -322,7 +311,7 @@ public class GenericDAOImpl<E>
             idAutoGenerado = ejecutarSentencias(conn,reemplazarValores(sqlFinal,tabla, totalDeVariablesFinal, listaDeValoresDeVariables.toString()));
 
             String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(entity.getClass().getSimpleName());
+            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(entity.getClass().getSimpleName());
             Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
 
             Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
@@ -336,10 +325,9 @@ public class GenericDAOImpl<E>
                 for (int i = 0; i < tamaño; i++) {
                     String tablaDelPrimerObj = ((ArrayList) variable).get(i).getClass().getSimpleName().toLowerCase();
                     String tablaDelSegundoObj = entity.getClass().getSimpleName().toLowerCase();
-                    String idDelObjDentroDeLista;
 
                     E objDentroDeLaLista = (E) ((ArrayList) variable).get(i);
-                    idDelObjDentroDeLista = invocarGetID(objDentroDeLaLista).toString();
+                    String idDelObjDentroDeLista = invocarGetID(objDentroDeLaLista).toString();
 
                     insertarEnTablaDeRelacion(tablaDelPrimerObj,tablaDelSegundoObj, idDelObjDentroDeLista, String.valueOf(idAutoGenerado));
                 }
@@ -357,8 +345,6 @@ public class GenericDAOImpl<E>
 
         Connection conn;
         conn = dataSource.getConnection();
-
-        listaDeVariablesTipoList = new ArrayList();
 
         try {
                 HashMap columnaValor = new HashMap();
@@ -393,7 +379,9 @@ public class GenericDAOImpl<E>
 
                             default:
                                 if (variable.getClass() == ArrayList.class) {
-                                    listaDeVariablesTipoList.add(variable);
+                                    ArrayList variableLista = (ArrayList) variable;
+                                    if(variableLista.size()>0) actualizarEnTablaAuxiliar(variableLista, entity);
+
                                 }else{
                                     variable = invocarGetID((E) variable);
                                     columnaValor.put(todasLasVariables[i].getName(), variable);
@@ -415,12 +403,6 @@ public class GenericDAOImpl<E>
 
                 ejecutarSentencias(conn, sqlFinal);
 
-            for (int g = 0; g < listaDeVariablesTipoList.size(); g++) {
-
-                ArrayList variableLista = (ArrayList) listaDeVariablesTipoList.get(g);
-
-                   if(variableLista.size()>0) actualizarEnTablaAuxiliar(variableLista, entity);
-            }
         }catch (Exception e) {
             System.out.println("failed method Update");
         }finally {
@@ -478,14 +460,12 @@ public class GenericDAOImpl<E>
                     }
                 }
             }
-
         }catch (Exception e) {
             System.out.println("failed method Remove");
         }
         finally {
             conn.close();
         }
-
     }
 
     public E find(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
@@ -521,7 +501,6 @@ public class GenericDAOImpl<E>
             rs.close();
             ps.close();
 
-
             for (int i = 0; i < objetoADevolver.getClass().getDeclaredFields().length; i++) {
 
                 if (objetoADevolver.getClass().getDeclaredFields()[i].getType() == List.class) {
@@ -531,16 +510,14 @@ public class GenericDAOImpl<E>
 
                     String nombreDeLaLista = ListaDelEntity.getName();
 
-                    String primeraLetraMayuscula = String.valueOf(Character.toUpperCase(nombreDeLaLista.charAt(0)));
-
-                    String nombreMetodo = primeraLetraMayuscula.concat(nombreDeLaLista.substring(1, nombreDeLaLista.length()));
+                    String nombreMetodo = String.valueOf(Character.toUpperCase(nombreDeLaLista.charAt(0))).concat(nombreDeLaLista.substring(1, nombreDeLaLista.length()));
 
                     String nombreMetodoSet = SET.concat(nombreMetodo);
                     nombreMetodo = GET.concat(nombreMetodo);
 
-                    Method metodoDeGetLista = objetoADevolver.getClass().getDeclaredMethod(nombreMetodo);
+                    Method metodoGetLista = objetoADevolver.getClass().getDeclaredMethod(nombreMetodo);
 
-                    List listaInvocada = (List) metodoDeGetLista.invoke(entity,null);
+                    List listaInvocada = (List) metodoGetLista.invoke(entity,null);
 
                     if(listaInvocada.size()!=0 && listaInvocada != null) {
                         List listaParaInsertarEnNuevaInstancia = new ArrayList();
@@ -561,8 +538,8 @@ public class GenericDAOImpl<E>
                             String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
                             String nombrePaqueteYCLaseParaDAO = NOMBRE_PAQUETE_DE_CLASES_PARA_DAO;
 
-                            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(listaInvocada.get(0).getClass().getSimpleName());
-                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(".").concat(listaInvocada.get(0).getClass().getSimpleName());
+                            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
+                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
 
                             objetoAInsertarEnLista = Class.forName(nombrePaqueteYCLase).newInstance();
 
@@ -612,7 +589,7 @@ public class GenericDAOImpl<E>
                         devuelveMetodoParaInvocar(claseDelObjADevolver, rs, i, campoAEstablecer).invoke(objetoADevolver, rs.getInt(campoAEstablecer.getName().toLowerCase()));
                     }else {
 
-                        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(campoAEstablecer.getType().getSimpleName());
+                        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(campoAEstablecer.getType().getSimpleName());
                         Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
 
                         objetoParaInstanciar = Class.forName(nombrePaqueteYCLase).newInstance();
@@ -626,7 +603,7 @@ public class GenericDAOImpl<E>
                         if (idDelObjetoParaInstanciar != 0) {
                             String nombrePaqueteYCLaseParaDAO = NOMBRE_PAQUETE_DE_CLASES_PARA_DAO;
 
-                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(".").concat(objetoParaInstanciar.getClass().getSimpleName());
+                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(PUNTO).concat(objetoParaInstanciar.getClass().getSimpleName());
 
                             daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
 
@@ -661,7 +638,6 @@ public class GenericDAOImpl<E>
         }
     }
 
-
     @Override
     public E findByProperty(String field, String value) throws SQLException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
 
@@ -669,7 +645,8 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         String sql = SELECT_FROM_TABLA_WHERE.concat(WHERE_CLAUSE);
-        String ClaseDeObjetoParaDevolver = this.getClass().getSimpleName().replace(DAO,"");
+
+        String ClaseDeObjetoParaDevolver = this.getClass().getMethod("findByProperty", String.class, String.class).getReturnType().getSimpleName() ;
 
         sql = sql.replace(TABLA, ClaseDeObjetoParaDevolver.toLowerCase());
 
@@ -680,7 +657,7 @@ public class GenericDAOImpl<E>
 
         String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
 
-        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(".").concat(ClaseDeObjetoParaDevolver);
+        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(ClaseDeObjetoParaDevolver);
 
         Object objetoADevolver = Class.forName(nombrePaqueteYCLase).newInstance();
 
