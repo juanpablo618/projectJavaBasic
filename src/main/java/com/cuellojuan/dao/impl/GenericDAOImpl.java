@@ -2,6 +2,7 @@ package com.cuellojuan.dao.impl;
 
 import com.cuellojuan.dao.GenericDAO;
 import org.springframework.stereotype.Repository;
+
 import javax.sql.DataSource;
 import java.lang.reflect.*;
 import java.sql.*;
@@ -31,8 +32,6 @@ public class GenericDAOImpl<E>
 
     private static final String WHERE_CLAUSE = "#WHERE_CLAUSE";
 
-    private static final String INSERT_INTO = "INSERT INTO";
-
     private static final String TABLA = "#TABLA";
 
     private static final String SELECT_FROM = "select * from ";
@@ -44,6 +43,8 @@ public class GenericDAOImpl<E>
     private static final String DELETE_FROM_TABLA_WHERE = "DELETE FROM #TABLA WHERE ";
 
     private static final String INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES = "INSERT INTO #TABLA ( #TOTALDEVARIABLES ) VALUES ( #VALORES );";
+
+    private static final String UPDATE_TABLA_SET_COLUMNAVALOR_WHERE_ID = "UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID";
 
     private static final String NUMERAL_ID = "#ID";
 
@@ -67,7 +68,7 @@ public class GenericDAOImpl<E>
 
     private static final String ID_ = "id_";
 
-    private static final String ID_conIgual =  "id=";
+    private static final String ID_conIgual = "id=";
 
     private static final String ESPACIO = ", ";
 
@@ -89,19 +90,37 @@ public class GenericDAOImpl<E>
 
     private static final String PUNTO = ".";
 
+    private static final String EMPTY_STRING = "";
+
+    private static final String FIND_BY_PROPERTY = "findByProperty";
+
+    private static final String COLUMNA_VALOR = "#COLUMNAVALOR";
+
+    private static final String FAILED_METHOD = "failed method";
+
+    private static final String STRING = "String";
+
+    private static final String DATE = "Date";
+
+    private static final String INTEGER = "Integer";
+
+    private static final String DOUBLE = "Double";
+
+    private static final String ARRAYLIST = "ArrayList";
+
     private List listaDeVariablesTipoList;
 
     private int totalVariablesFinal;
 
-    private Class retornaInstanciaDeLaClase(E entity) throws NoSuchMethodException, IllegalAccessException {
+    private Class retornaClaseDelObjeto(E entity) throws NoSuchMethodException, IllegalAccessException {
         return entity.getClass();
     }
 
     private void instanciarVariables(E entity) throws NoSuchMethodException, IllegalAccessException {
 
-        tabla = retornaInstanciaDeLaClase(entity).getSimpleName().toLowerCase();
+        tabla = retornaClaseDelObjeto(entity).getSimpleName().toLowerCase();
 
-        todasLasVariables = retornaInstanciaDeLaClase(entity).getDeclaredFields();
+        todasLasVariables = retornaClaseDelObjeto(entity).getDeclaredFields();
 
         //Esto lo realizo por que si la variable es una lista no la cuento como variable de la clase.
         totalVariablesFinal = 0;
@@ -119,7 +138,6 @@ public class GenericDAOImpl<E>
         int i = 0;
         do {
             todasLasVariables[i].setAccessible(true);
-
             nombreDeLasVariables.add(todasLasVariables[i].getName());
             i = i + 1;
         } while (i < todasLasVariables.length);
@@ -129,28 +147,24 @@ public class GenericDAOImpl<E>
     private int ejecutarSentencias(Connection conn, String sqlFinal) throws SQLException {
         int idAutoincrementable = 0;
         PreparedStatement ps = conn.prepareCall(sqlFinal);
-            try {
-                ps.execute();
-                System.out.println(SUCCESSFUL_OPERATION.concat(sqlFinal));
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs != null && rs.next()) {
-                    idAutoincrementable = rs.getInt(1);
-                }
-            } catch (Exception e) {
-                System.out.println(FAILED_OPERATION.concat(sqlFinal));
+        try {
+            ps.execute();
+            System.out.println(SUCCESSFUL_OPERATION.concat(sqlFinal));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                idAutoincrementable = rs.getInt(1);
             }
-            return  idAutoincrementable;
+        } catch (Exception e) {
+            System.out.println(FAILED_OPERATION.concat(sqlFinal));
+        }
+        return idAutoincrementable;
 
     }
 
     private Method devuelveMetodoParaInvocar(Class clase, ResultSet rs, int i, Field campoParaSetear) throws SQLException, NoSuchMethodException {
 
         String nombreColumna = new String(rs.getMetaData().getColumnName(i).toLowerCase());
-
-        String primeraLetraMayuscula = String.valueOf(Character.toUpperCase(nombreColumna.charAt(0)));
-
-        String nombreMetodo = primeraLetraMayuscula.concat(nombreColumna.substring(1, nombreColumna.length()));
-
+        String nombreMetodo = Character.toUpperCase(nombreColumna.charAt(0)) + nombreColumna.substring(1, nombreColumna.length());
         return clase.getDeclaredMethod(SET.concat(nombreMetodo), campoParaSetear.getType());
     }
 
@@ -164,19 +178,13 @@ public class GenericDAOImpl<E>
 
     public E invocarGetID(E variable) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
+        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES.concat(PUNTO).concat(variable.getClass().getSimpleName());
+        Class claseGenerica = Class.forName(nombrePaqueteYCLase);
+        Method metodoGenerico = claseGenerica.getMethod(GET_ID, null);
 
-        Class claseGenerica;
-        Method metodoGenerico;
+        E variableId = (E) metodoGenerico.invoke(variable, null);
 
-        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO);
-        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(variable.getClass().getSimpleName());
-        claseGenerica = Class.forName(nombrePaqueteYCLase);
-        metodoGenerico = claseGenerica.getMethod(GET_ID, null);
-
-        variable = (E) metodoGenerico.invoke(variable, null);
-
-        return variable;
+        return variableId;
     }
 
     private void actualizarEnTablaAuxiliar(ArrayList variableLista, E entity) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, NoSuchFieldException {
@@ -184,59 +192,43 @@ public class GenericDAOImpl<E>
         Connection conn;
         conn = dataSource.getConnection();
 
-        String nombrePrimeraTabla = variableLista.get(0).getClass().getSimpleName().toLowerCase();
-        String nombreDeSegundaTabla = entity.getClass().getSimpleName().toLowerCase();
+        String idParaBuscar = ID_.concat(entity.getClass().getSimpleName().toLowerCase()).concat(IGUAL).concat(invocarGetID(entity).toString());
 
-        String valorIdDeEntity = invocarGetID(entity).toString();
+        String nombreTablaRelacional = variableLista.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase());
 
-        String idParaBuscar = ID_.concat(nombreDeSegundaTabla).concat(IGUAL).concat(valorIdDeEntity);
+        String sql = DELETE_FROM_TABLA_WHERE.concat(NUMERAL_ID);
+        sql = sql.replace(TABLA, nombreTablaRelacional);
+        sql = sql.replace(NUMERAL_ID, idParaBuscar);
 
-        String nombreTablaRelacional = nombrePrimeraTabla.concat(POR).concat(nombreDeSegundaTabla);
+        ejecutarSentencias(conn, sql);
 
-            String sql = DELETE_FROM_TABLA_WHERE.concat(NUMERAL_ID);
-            sql = sql.replace(TABLA, nombreTablaRelacional);
-            sql = sql.replace(NUMERAL_ID, idParaBuscar);
+        for (Object i : variableLista) {
 
-            ejecutarSentencias(conn, sql);
+            insertarEnTablaDeRelacion(variableLista.get(0).getClass().getSimpleName().toLowerCase(), entity.getClass().getSimpleName().toLowerCase(), invocarGetID((E) i).toString(), invocarGetID(entity).toString());
 
-        String nombreDeColumnas = ID_.concat(variableLista.get(0).getClass().getSimpleName().toLowerCase()).concat(ESPACIO).concat(ID_).concat(nombreDeSegundaTabla);
-
-                    for (Object i: variableLista) {
-
-                        String valores = invocarGetID((E) i).toString().concat(ESPACIO).concat(valorIdDeEntity);
-
-                        String sqlFinal = INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES;
-                        ejecutarSentencias(conn, reemplazarValores(sqlFinal,nombreTablaRelacional,nombreDeColumnas, valores));
-
-                    }
         }
+    }
 
     private void insertarEnTablaDeRelacion(String tablaDelPrimerObj, String tablaDelSegundoObj, String idDelObjDentroDeLista, String idAutogenerado) throws SQLException {
 
         Connection conn;
         conn = dataSource.getConnection();
 
-        String ids = ID_.concat(tablaDelPrimerObj.concat(" , ").concat(ID_).concat(tablaDelSegundoObj));
+        String ids = ID_.concat(tablaDelPrimerObj.concat(ESPACIO).concat(ID_).concat(tablaDelSegundoObj));
 
         String nombreTablaRelacional = tablaDelPrimerObj.concat(POR).concat(tablaDelSegundoObj);
 
-        List valores = new ArrayList();
+        String valores = idDelObjDentroDeLista.concat(ESPACIO).concat(idAutogenerado);
 
-        valores.add(idDelObjDentroDeLista);
-        valores.add(idAutogenerado);
-
-        String sqlFinal = INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES;
-
-        ejecutarSentencias(conn, reemplazarValores(sqlFinal,nombreTablaRelacional,ids,valores.toString()));
-
+        ejecutarSentencias(conn, reemplazarValores(INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES, nombreTablaRelacional, ids, valores));
     }
 
-    private String reemplazarValores(String sqlFinal,String tabla, String totalDeVariablesFinal, String listaDeValoresDeVariables) {
+    private String reemplazarValores(String sqlFinal, String tabla, String totalDeVariablesFinal, String listaDeValoresDeVariables) {
 
         sqlFinal = sqlFinal.replace(TABLA, tabla);
         sqlFinal = sqlFinal.replace(TOTAL_DE_VALORES, totalDeVariablesFinal.toString());
         sqlFinal = sqlFinal.replace(VALORES, listaDeValoresDeVariables.toString());
-        sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]", "");
+        sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]", EMPTY_STRING);
         return sqlFinal;
     }
 
@@ -249,70 +241,64 @@ public class GenericDAOImpl<E>
 
         //por que la Clase puede tener más de una variable de que sea una Lista de Objetos.
         listaDeVariablesTipoList = new ArrayList();
-        int idAutoGenerado;
         try {
 
             for (int i = 0; i < todasLasVariables.length; i++) {
 
-                Field f = retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName());
+                Field f = retornaClaseDelObjeto(entity).getDeclaredField(todasLasVariables[i].getName());
                 f.setAccessible(true);
 
                 String nombreDelCampo = todasLasVariables[i].getName();
                 Object variable = f.get(entity);
 
-                    if(variable != null){
+                if (variable != null) {
 
-                        switch (variable.getClass().getSimpleName()){
+                    switch (variable.getClass().getSimpleName()) {
 
-                            case "String":
-                                variable = colocarComillasSimples(variable);
+                        case STRING:
+                            variable = colocarComillasSimples(variable);
+                            listaDeValoresDeVariables.add(variable);
+                            totalDeVariables.append(nombreDelCampo).append(ESPACIO);
+                            break;
+
+                        case DATE:
+                            variable = colocarComillasSimples(variable);
+                            listaDeValoresDeVariables.add(variable);
+                            totalDeVariables.append(nombreDelCampo).append(ESPACIO);
+                            break;
+
+                        case INTEGER:
+                            if (!(variable.equals(0) && f.getName().equals(ID)))
                                 listaDeValoresDeVariables.add(variable);
+                            if (!(variable.equals(0) && f.getName().equals(ID)))
                                 totalDeVariables.append(nombreDelCampo).append(ESPACIO);
-                                break;
+                            break;
+                        case DOUBLE:
+                            listaDeValoresDeVariables.add(variable);
+                            totalDeVariables.append(nombreDelCampo).append(ESPACIO);
+                            break;
 
-                            case "Date":
-                                variable = colocarComillasSimples(variable);
-                                listaDeValoresDeVariables.add(variable);
-                                totalDeVariables.append(nombreDelCampo).append(ESPACIO);
-                                break;
+                        case ARRAYLIST:
+                            listaDeVariablesTipoList.add(variable);
+                            break;
 
-                            case "Integer":
-                                if(!(variable.equals(0) && f.getName().equals(ID)))
-                                    listaDeValoresDeVariables.add(variable);
-                                if(!(variable.equals(0) && f.getName().equals(ID)))
-                                    totalDeVariables.append(nombreDelCampo).append(ESPACIO);
-                                break;
-                            case "Double":
-                                listaDeValoresDeVariables.add(variable);
-                                totalDeVariables.append(nombreDelCampo).append(ESPACIO);
-                                break;
-
-                            case "ArrayList":
-                                listaDeVariablesTipoList.add(variable);
-                                break;
-
-                            default:
-                                if (variable.getClass().getPackage().getName().equals(NOMBRE_PAQUETE_DE_CLASES)) variable = invocarGetID((E) variable);
-                                listaDeValoresDeVariables.add(variable);
-                                totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
-                        }
-                    }else{
-                        variable = NULL;
-                        listaDeValoresDeVariables.add(variable);
-                        totalDeVariables.append(nombreDelCampo).append(ESPACIO);
+                        default:
+                            if (variable.getClass().getPackage().getName().equals(NOMBRE_PAQUETE_DE_CLASES))
+                                variable = invocarGetID((E) variable);
+                            listaDeValoresDeVariables.add(variable);
+                            totalDeVariables.append(todasLasVariables[i].getName()).append(ESPACIO);
                     }
+                } else {
+                    variable = NULL;
+                    listaDeValoresDeVariables.add(variable);
+                    totalDeVariables.append(nombreDelCampo).append(ESPACIO);
+                }
 
             }
 
-            String totalDeVariablesFinal = totalDeVariables.substring(0, totalDeVariables.length() - 2);
+            int idAutoGenerado = ejecutarSentencias(conn, reemplazarValores(INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES, tabla, totalDeVariables.substring(0, totalDeVariables.length() - 2), listaDeValoresDeVariables.toString()));
 
-            String sqlFinal = INSERT_INTO_TABLA_TOTALDEVALORES_VALUES_VALORES;
-
-            idAutoGenerado = ejecutarSentencias(conn,reemplazarValores(sqlFinal,tabla, totalDeVariablesFinal, listaDeValoresDeVariables.toString()));
-
-            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(entity.getClass().getSimpleName());
-            Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
+            Class claseDelObjParaInstanciar = Class.forName(NOMBRE_PAQUETE_DE_CLASES.concat(PUNTO).concat(entity.getClass().getSimpleName()));
 
             Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
             setMetodoDelObjeto.invoke(entity, idAutoGenerado);
@@ -329,14 +315,14 @@ public class GenericDAOImpl<E>
                     E objDentroDeLaLista = (E) ((ArrayList) variable).get(i);
                     String idDelObjDentroDeLista = invocarGetID(objDentroDeLaLista).toString();
 
-                    insertarEnTablaDeRelacion(tablaDelPrimerObj,tablaDelSegundoObj, idDelObjDentroDeLista, String.valueOf(idAutoGenerado));
+                    insertarEnTablaDeRelacion(tablaDelPrimerObj, tablaDelSegundoObj, idDelObjDentroDeLista, String.valueOf(idAutoGenerado));
                 }
             }
 
-        }catch (Exception e) {
-            System.out.println("failed method Insert");
-        }finally {
-           conn.close();
+        } catch (Exception e) {
+            System.out.println(FAILED_METHOD.concat("Insert"));
+        } finally {
+            conn.close();
         }
     }
 
@@ -347,86 +333,82 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         try {
-                HashMap columnaValor = new HashMap();
+            HashMap columnaValor = new HashMap();
 
-                for (int i = 0; i < todasLasVariables.length; i++) {
+            for (int i = 0; i < todasLasVariables.length; i++) {
 
-                    Field f = retornaInstanciaDeLaClase(entity).getDeclaredField(todasLasVariables[i].getName());
-                    f.setAccessible(true);
+                Field f = retornaClaseDelObjeto(entity).getDeclaredField(todasLasVariables[i].getName());
+                f.setAccessible(true);
 
-                    Object variable = f.get(entity);
+                Object variable = f.get(entity);
 
-                    if(variable != null){
-                        switch (variable.getClass().getSimpleName()){
+                if (variable != null) {
+                    switch (variable.getClass().getSimpleName()) {
 
-                            case "String":
-                                variable = colocarComillasSimples(variable);
+                        case STRING:
+                            variable = colocarComillasSimples(variable);
+                            columnaValor.put(todasLasVariables[i].getName(), variable);
+                            break;
+
+                        case DATE:
+                            variable = colocarComillasSimples(variable);
+                            columnaValor.put(todasLasVariables[i].getName(), variable);
+                            break;
+
+                        case INTEGER:
+                            columnaValor.put(todasLasVariables[i].getName(), variable);
+                            break;
+
+                        case DOUBLE:
+                            columnaValor.put(todasLasVariables[i].getName(), variable);
+                            break;
+
+                        default:
+                            if (variable.getClass() == ArrayList.class) {
+                                ArrayList variableLista = (ArrayList) variable;
+                                if (variableLista.size() > 0) actualizarEnTablaAuxiliar(variableLista, entity);
+
+                            } else {
+                                variable = invocarGetID((E) variable);
                                 columnaValor.put(todasLasVariables[i].getName(), variable);
-                                break;
-
-                            case "Date":
-                                variable = colocarComillasSimples(variable);
-                                columnaValor.put(todasLasVariables[i].getName(), variable);
-                                break;
-
-                            case "Integer":
-                                columnaValor.put(todasLasVariables[i].getName(), variable);
-                                break;
-
-                            case "Double":
-                                columnaValor.put(todasLasVariables[i].getName(), variable);
-                                break;
-
-                            default:
-                                if (variable.getClass() == ArrayList.class) {
-                                    ArrayList variableLista = (ArrayList) variable;
-                                    if(variableLista.size()>0) actualizarEnTablaAuxiliar(variableLista, entity);
-
-                                }else{
-                                    variable = invocarGetID((E) variable);
-                                    columnaValor.put(todasLasVariables[i].getName(), variable);
-                                }
-                                break;
-                        }
-                    }else{
-                        variable = NULL;
-                        columnaValor.put(todasLasVariables[i].getName(), variable);
+                            }
+                            break;
                     }
+                } else {
+                    variable = NULL;
+                    columnaValor.put(todasLasVariables[i].getName(), variable);
                 }
+            }
 
-                String sqlFinal = "UPDATE #TABLA SET #COLUMNAVALOR WHERE #ID";
+            String sqlFinal = UPDATE_TABLA_SET_COLUMNAVALOR_WHERE_ID;
 
-                sqlFinal = sqlFinal.replace(TABLA, tabla);
-                sqlFinal = sqlFinal.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID(entity).toString())  );
-                sqlFinal = sqlFinal.replace("#COLUMNAVALOR", columnaValor.toString());
-                sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]", "");
+            sqlFinal = sqlFinal.replace(TABLA, tabla);
+            sqlFinal = sqlFinal.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID(entity).toString()));
+            sqlFinal = sqlFinal.replace(COLUMNA_VALOR, columnaValor.toString());
+            sqlFinal = sqlFinal.replaceAll("[>\\[\\]\\{\\}-]", EMPTY_STRING);
 
-                ejecutarSentencias(conn, sqlFinal);
+            ejecutarSentencias(conn, sqlFinal);
 
-        }catch (Exception e) {
-            System.out.println("failed method Update");
-        }finally {
+        } catch (Exception e) {
+            System.out.println(FAILED_METHOD.concat("Update"));
+        } finally {
             conn.close();
         }
     }
 
-       @Override
+    @Override
     public void remove(E entity) throws SQLException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException {
 
         Connection conn;
         conn = dataSource.getConnection();
 
-        String idDelEntity = ID_conIgual.concat(invocarGetID(entity).toString());
+        try {
+            instanciarVariables(entity);
+            rellenarListaDeNombresDeVariables();
 
-        idDelEntity = idDelEntity.replace(ID_conIgual,"");
-
-        try{
-        instanciarVariables(entity);
-        rellenarListaDeNombresDeVariables();
-
-        String sql = DELETE_FROM_TABLA_WHERE.concat(NUMERAL_ID);
-        sql = sql.replace(TABLA, tabla);
-        sql = sql.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID(entity).toString()));
+            String sql = DELETE_FROM_TABLA_WHERE.concat(NUMERAL_ID);
+            sql = sql.replace(TABLA, tabla);
+            sql = sql.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID(entity).toString()));
 
             ejecutarSentencias(conn, sql);
 
@@ -437,33 +419,26 @@ public class GenericDAOImpl<E>
                     Field ListaDelEntity = entity.getClass().getDeclaredFields()[i];
                     ListaDelEntity.setAccessible(true);
 
-                    String nombreDeLista = ListaDelEntity.getName();
+                    String nombreMetodoGet = GET.concat(Character.toUpperCase(ListaDelEntity.getName().charAt(0)) + ListaDelEntity.getName().substring(1, ListaDelEntity.getName().length()));
 
-                    String primeraLetraMayuscula = String.valueOf(Character.toUpperCase(nombreDeLista.charAt(0)));
+                    Method metodoDeGetListaParaRemover = entity.getClass().getDeclaredMethod(nombreMetodoGet);
 
-                    String nombreMetodo = primeraLetraMayuscula.concat(nombreDeLista.substring(1, nombreDeLista.length()));
+                    List listaInvocada = (List) metodoDeGetListaParaRemover.invoke(entity, null);
 
-                    nombreMetodo = GET.concat(nombreMetodo);
-
-                    Method metodoDeGetListaParaRemover = entity.getClass().getDeclaredMethod(nombreMetodo);
-
-                    List listaInvokada = (List) metodoDeGetListaParaRemover.invoke(entity,null);
-
-                    if(listaInvokada.size()!=0 && listaInvokada != null) {
+                    if (listaInvocada.size() != 0 && listaInvocada != null) {
 
                         String idPrimeraTabla = ID_.concat(entity.getClass().getSimpleName());
 
-                        String sqlFinal = DELETE_FROM.concat(listaInvokada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(idDelEntity));
+                        sql = DELETE_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(invocarGetID(entity).toString()));
 
-                        ejecutarSentencias(conn, sqlFinal);
+                        ejecutarSentencias(conn, sql);
 
                     }
                 }
             }
-        }catch (Exception e) {
-            System.out.println("failed method Remove");
-        }
-        finally {
+        } catch (Exception e) {
+            System.out.println(FAILED_METHOD.concat("Remove"));
+        } finally {
             conn.close();
         }
     }
@@ -477,26 +452,19 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         String sql = SELECT_FROM_TABLA_WHERE.concat(NUMERAL_ID);
-
         sql = sql.replace(TABLA, tabla);
-
-        sql = sql.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID( entity).toString()));
+        sql = sql.replace(NUMERAL_ID, ID_conIgual.concat(invocarGetID(entity).toString()));
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
-        Object objetoADevolver = retornaInstanciaDeLaClase(entity).newInstance();
-
-        String idDelEntity = ID_conIgual.concat(invocarGetID(entity).toString());
-
-        idDelEntity = idDelEntity.replace(ID_conIgual,"");
+        Object objetoADevolver = retornaClaseDelObjeto(entity).newInstance();
 
         try {
 
-            Class claseDelObjADevolver = objetoADevolver.getClass();
             rs.next();
 
-            invocarCamposDelObjetoADevolver(rs, claseDelObjADevolver, objetoADevolver);
+            invocarCamposDelObjetoADevolver(rs, objetoADevolver.getClass(), objetoADevolver);
 
             rs.close();
             ps.close();
@@ -508,62 +476,59 @@ public class GenericDAOImpl<E>
                     Field ListaDelEntity = objetoADevolver.getClass().getDeclaredFields()[i];
                     ListaDelEntity.setAccessible(true);
 
-                    String nombreDeLaLista = ListaDelEntity.getName();
+                    String nombreDeLaLista = String.valueOf(Character.toUpperCase(ListaDelEntity.getName().charAt(0))).concat(ListaDelEntity.getName().substring(1, ListaDelEntity.getName().length()));
 
-                    String nombreMetodo = String.valueOf(Character.toUpperCase(nombreDeLaLista.charAt(0))).concat(nombreDeLaLista.substring(1, nombreDeLaLista.length()));
+                    String nombreMetodoSetDeLaLista = SET.concat(nombreDeLaLista);
 
-                    String nombreMetodoSet = SET.concat(nombreMetodo);
-                    nombreMetodo = GET.concat(nombreMetodo);
+                    String nombreMetodoGet = GET.concat(nombreDeLaLista);
 
-                    Method metodoGetLista = objetoADevolver.getClass().getDeclaredMethod(nombreMetodo);
+                    Method metodoGetLista = objetoADevolver.getClass().getDeclaredMethod(nombreMetodoGet);
 
-                    List listaInvocada = (List) metodoGetLista.invoke(entity,null);
+                    List listaInvocada = (List) metodoGetLista.invoke(entity, null);
 
-                    if(listaInvocada.size()!=0 && listaInvocada != null) {
+                    if (listaInvocada.size() != 0 && listaInvocada != null) {
                         List listaParaInsertarEnNuevaInstancia = new ArrayList();
 
 
                         String idPrimeraTabla = ID_.concat(objetoADevolver.getClass().getSimpleName());
                         String idSegundaTabla = ID_.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase());
 
-                        System.out.println(SELECT_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(idDelEntity)));
+                        sql = SELECT_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla).concat(IGUAL).concat(invocarGetID(entity).toString()));
 
-                        PreparedStatement st = conn.prepareCall(SELECT_FROM.concat(listaInvocada.get(0).getClass().getSimpleName().toLowerCase().concat(POR).concat(entity.getClass().getSimpleName().toLowerCase()).concat(WHERE).concat(idPrimeraTabla.toString()).concat(IGUAL).concat(idDelEntity)));
+                        System.out.println(sql);
+                        PreparedStatement st = conn.prepareCall(sql);
                         rs = st.executeQuery();
-                        Object objetoAInsertarEnLista ;
 
-                        for (int g=1; g<=listaInvocada.size();g++){
+                        for (int g = 1; g <= listaInvocada.size(); g++) {
                             rs.next();
 
-                            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-                            String nombrePaqueteYCLaseParaDAO = NOMBRE_PAQUETE_DE_CLASES_PARA_DAO;
+                            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
 
-                            nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
-                            nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
+                            String nombrePaqueteYCLaseParaDAO = NOMBRE_PAQUETE_DE_CLASES_PARA_DAO.concat(PUNTO).concat(listaInvocada.get(0).getClass().getSimpleName());
 
-                            objetoAInsertarEnLista = Class.forName(nombrePaqueteYCLase).newInstance();
+                            Object objetoAInsertarEnLista = Class.forName(nombrePaqueteYCLase).newInstance();
 
-                            Method metodoSetDeObjetoAInsertar = Class.forName(nombrePaqueteYCLase).getDeclaredMethod(SET_ID, int.class);
-                            metodoSetDeObjetoAInsertar.invoke(objetoAInsertarEnLista,rs.getInt(idSegundaTabla));
+                            Class.forName(nombrePaqueteYCLase).getDeclaredMethod(SET_ID, int.class).invoke(objetoAInsertarEnLista, rs.getInt(idSegundaTabla));
 
                             Object daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
+
                             Method findDeObjetoAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).getDeclaredMethod(FIND, objetoAInsertarEnLista.getClass());
 
-                            objetoAInsertarEnLista =   findDeObjetoAInsertar.invoke(daoDeObjAInsertarEnListas, objetoAInsertarEnLista);
+                            objetoAInsertarEnLista = findDeObjetoAInsertar.invoke(daoDeObjAInsertarEnListas, objetoAInsertarEnLista);
                             listaParaInsertarEnNuevaInstancia.add(objetoAInsertarEnLista);
                         }
 
-                        Method setListaCompletaANuevaInstancia = objetoADevolver.getClass().getDeclaredMethod(nombreMetodoSet, List.class);
+                        Method setListaCompletaANuevaInstancia = objetoADevolver.getClass().getDeclaredMethod(nombreMetodoSetDeLaLista, List.class);
 
-                        setListaCompletaANuevaInstancia.invoke(objetoADevolver,listaParaInsertarEnNuevaInstancia);
+                        setListaCompletaANuevaInstancia.invoke(objetoADevolver, listaParaInsertarEnNuevaInstancia);
                         rs.close();
                     }
                 }
 
             }
 
-        }catch (Exception e){
-            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(FAILED_METHOD.concat("Find"));
         }
         return (E) objetoADevolver;
     }
@@ -574,25 +539,17 @@ public class GenericDAOImpl<E>
 
             Field campoAEstablecer = claseDelObjADevolver.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase());
 
-            Object objetoParaInstanciar;
-            Object daoDeObjAInsertarEnListas;
-
-            String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-
             int tipodatoRS = rs.getMetaData().getColumnType(i);
 
             switch (tipodatoRS) {
                 case 4:
 
-                    if (claseDelObjADevolver.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() == int.class) {
+                    if (claseDelObjADevolver.getDeclaredField(rs.getMetaData().getColumnName(i).toLowerCase()).getType() != int.class) {
 
-                        devuelveMetodoParaInvocar(claseDelObjADevolver, rs, i, campoAEstablecer).invoke(objetoADevolver, rs.getInt(campoAEstablecer.getName().toLowerCase()));
-                    }else {
-
-                        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(campoAEstablecer.getType().getSimpleName());
+                        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES.concat(PUNTO).concat(campoAEstablecer.getType().getSimpleName());
                         Class claseDelObjParaInstanciar = Class.forName(nombrePaqueteYCLase);
 
-                        objetoParaInstanciar = Class.forName(nombrePaqueteYCLase).newInstance();
+                        Object objetoParaInstanciar = Class.forName(nombrePaqueteYCLase).newInstance();
 
                         Method setMetodoDelObjeto = claseDelObjParaInstanciar.getMethod(SET_ID, int.class);
                         setMetodoDelObjeto.invoke(objetoParaInstanciar, rs.getInt(rs.getMetaData().getColumnName(i).toLowerCase()));
@@ -605,13 +562,16 @@ public class GenericDAOImpl<E>
 
                             nombrePaqueteYCLaseParaDAO = nombrePaqueteYCLaseParaDAO.concat(PUNTO).concat(objetoParaInstanciar.getClass().getSimpleName());
 
-                            daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
+                            Object daoDeObjAInsertarEnListas = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).newInstance();
 
                             Method metodoFindDelObjAInsertar = Class.forName(nombrePaqueteYCLaseParaDAO.concat(DAO)).getDeclaredMethod(FIND, objetoParaInstanciar.getClass());
 
                             objetoParaInstanciar = metodoFindDelObjAInsertar.invoke(daoDeObjAInsertarEnListas, objetoParaInstanciar);
                         }
                         devuelveMetodoParaInvocar(claseDelObjADevolver, rs, i, campoAEstablecer).invoke(objetoADevolver, objetoParaInstanciar);
+
+                    } else {
+                        devuelveMetodoParaInvocar(claseDelObjADevolver, rs, i, campoAEstablecer).invoke(objetoADevolver, rs.getInt(campoAEstablecer.getName().toLowerCase()));
                     }
                     break;
                 case -1:
@@ -645,21 +605,13 @@ public class GenericDAOImpl<E>
         conn = dataSource.getConnection();
 
         String sql = SELECT_FROM_TABLA_WHERE.concat(WHERE_CLAUSE);
-
-        String ClaseDeObjetoParaDevolver = this.getClass().getMethod("findByProperty", String.class, String.class).getReturnType().getSimpleName() ;
-
-        sql = sql.replace(TABLA, ClaseDeObjetoParaDevolver.toLowerCase());
-
+        sql = sql.replace(TABLA, this.getClass().getMethod(FIND_BY_PROPERTY, String.class, String.class).getReturnType().getSimpleName().toLowerCase());
         sql = sql.replace(WHERE_CLAUSE, field.toString().concat(IGUAL).concat(COMILLA_SIMPLE).concat(value).concat(COMILLA_SIMPLE));
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
-        String nombrePaqueteYCLase = NOMBRE_PAQUETE_DE_CLASES;
-
-        nombrePaqueteYCLase = nombrePaqueteYCLase.concat(PUNTO).concat(ClaseDeObjetoParaDevolver);
-
-        Object objetoADevolver = Class.forName(nombrePaqueteYCLase).newInstance();
+        Object objetoADevolver = Class.forName(NOMBRE_PAQUETE_DE_CLASES.concat(PUNTO).concat(this.getClass().getMethod(FIND_BY_PROPERTY, String.class, String.class).getReturnType().getSimpleName())).newInstance();
 
         try {
             rs.next();
@@ -667,7 +619,7 @@ public class GenericDAOImpl<E>
             rs.close();
             ps.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return (E) objetoADevolver;
