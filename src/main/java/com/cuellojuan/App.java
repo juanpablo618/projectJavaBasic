@@ -185,6 +185,8 @@ public class App {
         reserva1.setTarifa_total(60.00);
         reserva1.setComentario("comentario de la reserva 1");
         reserva1.setProveedor(proveedorDeLaReservaBooking);
+        reserva1.setIngreso("2017-10-11");
+        reserva1.setEgreso("2107-10-14");
 
 
         List<Apartamento> listadeHabParaReserva1 = new ArrayList<>();
@@ -301,6 +303,19 @@ public class App {
         tareaDAO.update(arregloDeLuzPrincipal);
 
 
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+
+        listadeHabParaReserva1.add(apartamento1);
+
+        System.out.println("lista de hab pieza 1: " + listadeHabParaReserva1.toString());
+
+        reservaDAO.update(reserva1);
+
         apartamentoDAO.remove(apartamento1);
         apartamentoDAO.remove(apartamento2);
         apartamentoDAO.remove(apartamento3);
@@ -325,6 +340,7 @@ public class App {
         tareaDAO.remove(limpiar);
 
         usuarioDAO.remove(juanPablo);
+
 
 
     }

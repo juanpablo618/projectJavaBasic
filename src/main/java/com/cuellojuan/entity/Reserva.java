@@ -12,6 +12,8 @@ public class Reserva {
     private Double tarifa_total;
     private String comentario;
     private ProvReserva proveedor;
+    private String ingreso;
+    private String egreso;
 
     private List<Apartamento>  apartPorReserva = new ArrayList<>();
 
@@ -72,6 +74,22 @@ public class Reserva {
         this.proveedor = proveedor;
     }
 
+    public String getIngreso() {
+        return ingreso;
+    }
+
+    public void setIngreso(String ingreso) {
+        this.ingreso = ingreso;
+    }
+
+    public String getEgreso() {
+        return egreso;
+    }
+
+    public void setEgreso(String egreso) {
+        this.egreso = egreso;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" +
@@ -81,6 +99,8 @@ public class Reserva {
                 ", tarifa_total=" + tarifa_total +
                 ", comentario='" + comentario + '\'' +
                 ", proveedor=" + proveedor +
+                ", ingreso='" + ingreso + '\'' +
+                ", egreso='" + egreso + '\'' +
                 ", apartPorReserva=" + apartPorReserva +
                 '}';
     }
