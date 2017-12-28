@@ -5,6 +5,8 @@ import com.cuellojuan.dao.ApartamentoDAO;
 import com.cuellojuan.entity.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,36 +21,38 @@ public class App {
     public static void main( String[] args ) throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
 
 
-       ClienteDAO clienteDAO = (ClienteDAO) context.getBean("ClienteDAO");
-       UsuarioDAO usuarioDAO = (UsuarioDAO)   context.getBean("UsuarioDAO");
-       ProvReservaDAO provReservaDAO = (ProvReservaDAO)   context.getBean("ProvReservaDAO");
-       ReservaDAO reservaDAO =  (ReservaDAO) context.getBean("ReservaDAO");
-       ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("ApartamentoDAO");
-       ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
-       TareaDAO tareaDAO = (TareaDAO) context.getBean("TareaDAO");
-       EstadoDAO estadoDAO = (EstadoDAO) context.getBean("EstadoDAO");
-       ServicioDAO  servicioDAO = (ServicioDAO) context.getBean("ServicioDAO");
+        ClienteDAO clienteDAO = (ClienteDAO) context.getBean("ClienteDAO");
+        UsuarioDAO usuarioDAO = (UsuarioDAO)   context.getBean("UsuarioDAO");
+        ProvReservaDAO provReservaDAO = (ProvReservaDAO)   context.getBean("ProvReservaDAO");
+        ReservaDAO reservaDAO =  (ReservaDAO) context.getBean("ReservaDAO");
+        ApartamentoDAO apartamentoDAO = (ApartamentoDAO) context.getBean("ApartamentoDAO");
+        ElementoInventarioDAO elementoInventarioDAO = (ElementoInventarioDAO) context.getBean("elementoInventarioDAO");
+        TareaDAO tareaDAO = (TareaDAO) context.getBean("TareaDAO");
+        EstadoDAO estadoDAO = (EstadoDAO) context.getBean("EstadoDAO");
+        ServicioDAO  servicioDAO = (ServicioDAO) context.getBean("ServicioDAO");
 
 
         Estado realizado = new Estado();
         realizado.setDescripcion("realizado ya completado");
-        realizado.setId(1);
         realizado.setNombre("realizado");
-
         estadoDAO.insert(realizado);
+
+        Estado vendido = new Estado();
+        vendido.setNombre("vendido");
+        vendido.setDescripcion("vendido ya facturado");
+        estadoDAO.insert(vendido);
+
 
         Apartamento apartamento1 = new Apartamento();
 
-       apartamento1.setId(1);
-       apartamento1.setComentario("excelente vista al rio");
-       apartamento1.setNombre_edificio("La porteña hab. 1");
-       apartamento1.setNro_piso(1);
-       apartamento1.setOcupacion_maxima(2);
+        apartamento1.setComentario("excelente vista al rio");
+        apartamento1.setNombre_edificio("La porteña hab. 1");
+        apartamento1.setNro_piso(1);
+        apartamento1.setOcupacion_maxima(2);
 
 
         Apartamento apartamento2 = new Apartamento();
 
-        apartamento2.setId(2);
         apartamento2.setComentario("excelente vista al rio depto 2");
         apartamento2.setNombre_edificio("La porteña hab. 2");
         apartamento2.setNro_piso(1);
@@ -57,112 +61,84 @@ public class App {
 
         Apartamento apartamento3 = new Apartamento();
 
-        apartamento3.setId(3);
         apartamento3.setComentario("acceso directo desde la calle apartamento 3");
         apartamento3.setNombre_edificio("La porteña hab. 3");
         apartamento3.setNro_piso(1);
         apartamento3.setOcupacion_maxima(2);
 
-       Usuario juanPablo = new Usuario();
-       juanPablo.setId(1);
-       juanPablo.setApellido("Cuello");
-       juanPablo.setNombre("Juan Pablo");
+        Usuario juanPablo = new Usuario();
+        juanPablo.setApellido("Cuello");
+        juanPablo.setNombre("Juan Pablo");
 
-         usuarioDAO.insert(juanPablo);
+        usuarioDAO.insert(juanPablo);
 
-       Tarea limpiar = new Tarea();
-       limpiar.setDescripcion("limpiar toda la habitación");
-       limpiar.setUsuarioqlarealiza(juanPablo);
-       limpiar.setId(2);
-       limpiar.setNombre("limpiar");
-       limpiar.setEstado(realizado);
 
+        Tarea limpiar = new Tarea();
+        limpiar.setDescripcion("limpiar toda la habitación");
+        //limpiar.setRealizador(juanPablo);
+        limpiar.setNombre("limpiar");
+        limpiar.setEstado(realizado);
         tareaDAO.insert(limpiar);
 
         Tarea arregloDeLuzPrincipal = new Tarea();
-
         arregloDeLuzPrincipal.setDescripcion("Arreglar luz principal de la habitación");
-        arregloDeLuzPrincipal.setUsuarioqlarealiza(juanPablo);
-        arregloDeLuzPrincipal.setId(1);
+        //arregloDeLuzPrincipal.setRealizador(juanPablo);
         arregloDeLuzPrincipal.setNombre("arreglar Luz principal");
         arregloDeLuzPrincipal.setEstado(realizado);
-
         tareaDAO.insert(arregloDeLuzPrincipal);
 
 
         List<Tarea> tareasARealizarEnPieza1 = new ArrayList<>();
-
         tareasARealizarEnPieza1.add(arregloDeLuzPrincipal);
         tareasARealizarEnPieza1.add(limpiar);
 
         apartamento1.setTareasARealizarle(tareasARealizarEnPieza1);
 
         ElementoInventario lamparaDePie = new ElementoInventario();
-        lamparaDePie.setId(1);
         lamparaDePie.setNombre("Lampara de pie");
         lamparaDePie.setFecha_insercion("2017-09-02");
         lamparaDePie.setCodigo("Lamp001");
         lamparaDePie.setDescripcion("Lampara de pie antigua valor de rotura 4000 pesos");
-        lamparaDePie.setUsuarioquecompro(juanPablo);
-
+        lamparaDePie.setComprador(juanPablo);
         elementoInventarioDAO.insert(lamparaDePie);
 
 
         ElementoInventario caloventor = new ElementoInventario();
-        caloventor.setId(2);
         caloventor.setNombre("Caloventor");
         caloventor.setFecha_insercion("2017-09-20");
         caloventor.setCodigo("Caloventor001");
         caloventor.setDescripcion("Caloventor unitario para pieza individual");
-        caloventor.setUsuarioquecompro(juanPablo);
-
+        caloventor.setComprador(juanPablo);
         elementoInventarioDAO.insert(caloventor);
 
 
         ElementoInventario camaDoble = new ElementoInventario();
-        camaDoble.setId(3);
-        camaDoble.setNombre("cama Doble");
+        camaDoble.setNombre("Cama Doble");
         camaDoble.setFecha_insercion("2017-09-20");
         camaDoble.setCodigo("camaDoble001");
         camaDoble.setDescripcion("cama doble con colchnon");
-        camaDoble.setUsuarioquecompro(juanPablo);
-
+        camaDoble.setComprador(juanPablo);
         elementoInventarioDAO.insert(camaDoble);
 
 
         Servicio ventaBebidaAlcoholica = new Servicio();
-        ventaBebidaAlcoholica.setId(1);
         ventaBebidaAlcoholica.setDescripcion("venta de medida de whisky a la habitacion.");
         ventaBebidaAlcoholica.setNombre("venta de bebida alcoholica");
         ventaBebidaAlcoholica.setCodigo("bebidaAlcoholica01");
-
-
-        Estado vendido = new Estado();
-        vendido.setId(2);
-        vendido.setNombre("vendido");
-        vendido.setDescripcion("vendido ya facturado");
-
-         estadoDAO.insert(vendido);
-
         ventaBebidaAlcoholica.setEstado(vendido);
-        ventaBebidaAlcoholica.setVendidoPor(juanPablo);
+        ventaBebidaAlcoholica.setVendedor(juanPablo);
+        servicioDAO.insert(ventaBebidaAlcoholica);
 
-         servicioDAO.insert(ventaBebidaAlcoholica);
-
-        List<Servicio> serviciosBrindadosPieza1 = new ArrayList<>();
-
-        serviciosBrindadosPieza1.add(ventaBebidaAlcoholica);
 
         Servicio limpiezaAdicional = new Servicio();
-        limpiezaAdicional.setVendidoPor(juanPablo);
+        limpiezaAdicional.setVendedor(juanPablo);
         limpiezaAdicional.setDescripcion("limpieza adicional de habitacion por pedido del cliente");
         limpiezaAdicional.setNombre("limpieza adicional");
-        limpiezaAdicional.setId(2);
-
         limpiezaAdicional.setEstado(realizado);
-
         servicioDAO.insert(limpiezaAdicional);
 
+        List<Servicio> serviciosBrindadosPieza1 = new ArrayList<>();
+        serviciosBrindadosPieza1.add(ventaBebidaAlcoholica);
         serviciosBrindadosPieza1.add(limpiezaAdicional);
 
 
@@ -170,101 +146,202 @@ public class App {
 
         inventarioApartamento1.add(lamparaDePie);
         inventarioApartamento1.add(caloventor);
+        inventarioApartamento1.add(camaDoble);
 
 
         apartamento1.setElementosDeInventarioQuePosee(inventarioApartamento1);
-
-        inventarioApartamento1.add(camaDoble);
-
+        apartamento1.setTareasARealizarle(tareasARealizarEnPieza1);
+        apartamento1.setServiciosBrindados(serviciosBrindadosPieza1);
 
         apartamentoDAO.insert(apartamento1);
         apartamentoDAO.insert(apartamento2);
         apartamentoDAO.insert(apartamento3);
 
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("Find de un apartamento 1: "+ apartamentoDAO.find(apartamento1).toString());
 
-    Cliente cliente1 = new Cliente();
+        Cliente cliente1 = new Cliente();
 
-    cliente1.setId(1);
-    cliente1.setApellido("apellido cliente");
-    cliente1.setNombre("nombre cliente");
-    cliente1.setFecha_nacimiento("2017-09-09");
-    cliente1.setTel_fijo("31231");
-    cliente1.setTel_celular("3311311313");
-    cliente1.setEmail("email@delCLiente.com");
-    cliente1.setComentario("comentario sobre el cliente");
-    cliente1.setUsuarioquerecibio(juanPablo);
-    cliente1.setFecha_insercion("2017-05-02");
+        cliente1.setApellido("apellido cliente");
+        cliente1.setNombre("nombre cliente");
+        cliente1.setFecha_nacimiento("2017-09-09");
+        cliente1.setTel_fijo("31231");
+        cliente1.setTel_celular("3311311313");
+        cliente1.setEmail("email@delCLiente.com");
+        cliente1.setComentario("comentario sobre el cliente");
+        cliente1.setReceptor(juanPablo);
+        cliente1.setFecha_insercion("2017-05-02");
 
 
-    clienteDAO.insert(cliente1);
+        clienteDAO.insert(cliente1);
 
-    ProvReserva proveedorDeLaReservaBooking = new ProvReserva();
-       proveedorDeLaReservaBooking.setId(1);
-       proveedorDeLaReservaBooking.setDescripcion("booking.com entrar por extranet");
-       proveedorDeLaReservaBooking.setNombre("Booking");
-
-    provReservaDAO.insert(proveedorDeLaReservaBooking);
+        ProvReserva proveedorDeLaReservaBooking = new ProvReserva();
+        proveedorDeLaReservaBooking.setDescripcion("booking.com entrar por extranet");
+        proveedorDeLaReservaBooking.setNombre("Booking");
+        provReservaDAO.insert(proveedorDeLaReservaBooking);
 
 
         Reserva reserva1 = new Reserva();
-        reserva1.setId(1);
         reserva1.setCliente(cliente1);
         reserva1.setNum_personas(4);
         reserva1.setTarifa_total(60.00);
-        reserva1.setComentario("comentario de la reserva");
-        reserva1.setProveedorreserva(proveedorDeLaReservaBooking);
+        reserva1.setComentario("comentario de la reserva 1");
+        reserva1.setProveedor(proveedorDeLaReservaBooking);
+        reserva1.setIngreso("2017-10-11");
+        reserva1.setEgreso("2107-10-14");
 
-        reserva1.setCliente(cliente1);
 
-
-       List<Apartamento> listadeHabParaReserva1 = new ArrayList<>();
+        List<Apartamento> listadeHabParaReserva1 = new ArrayList<>();
         listadeHabParaReserva1.add(apartamento1);
-        listadeHabParaReserva1.add(apartamento2);
+        listadeHabParaReserva1.add(apartamento3);
 
         reserva1.setApartPorReserva(listadeHabParaReserva1);
 
         reservaDAO.insert(reserva1);
 
+        System.out.println("");
+        System.out.println("");
 
-        listadeHabParaReserva1.remove(1);
 
-        listadeHabParaReserva1.add(apartamento3);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Tarea:"+ tareaDAO.find(arregloDeLuzPrincipal).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Tarea:"+ tareaDAO.findByProperty("nombre", "limpiar"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de usuario: "+ usuarioDAO.find(juanPablo).toString());
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de usuario:"+ usuarioDAO.findByProperty("nombre", "Juan Pablo"));
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Apartamento1: "+ apartamentoDAO.find(apartamento1).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("no devuelve la lista de tareas A Realizarle ni servicios Brindados ni elementosDeInventarioQuePosee, por que el anterior metodo find, " +
+                "hacia un invoke a la lista del objeto q uno queria buscar");
+        System.out.println("FindByProperty de Apartamento1:"+ apartamentoDAO.findByProperty("comentario", "excelente vista al rio"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        apartamentoDAO.update(apartamento1);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Lo mismo pasa con las listas de objetos dentro de un objeto reserva, el anterior metodo find hace un invoke a las listas del obj. a buscar");
+        System.out.println("");
+        System.out.println("Find de Reserva: "+ reservaDAO.find(reserva1).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Reserva:"+ reservaDAO.findByProperty("comentario", "comentario de la reserva 1"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de cliente: "+ clienteDAO.find(cliente1).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de cliente:"+ clienteDAO.findByProperty("apellido", "apellido cliente"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de estado realizado: "+ estadoDAO.find(realizado).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de estado realizado:"+ estadoDAO.findByProperty("nombre", "realizado"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de estado vendido: "+ estadoDAO.find(vendido).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de estado vendido:"+ estadoDAO.findByProperty("nombre", "vendido"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(caloventor).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Caloventor"));
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(camaDoble).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Cama Doble"));
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Elemento de Inventario: "+ elementoInventarioDAO.find(lamparaDePie).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Elemento de Inventario:"+ elementoInventarioDAO.findByProperty("nombre", "Lampara de pie"));
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Proveedor de reserva: "+ provReservaDAO.find(proveedorDeLaReservaBooking).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Proveedor de reserva:"+ provReservaDAO.findByProperty("nombre", "Booking"));
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de Servicio: "+ servicioDAO.find(limpiezaAdicional).toString());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("FindByProperty de Servicio:"+ servicioDAO.findByProperty("nombre", "limpieza adicional"));
+
+        System.out.println("");
+        System.out.println("");
+        juanPablo.setApellido("rosales");
+        usuarioDAO.update(juanPablo);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Find de usuario modificado: "+ usuarioDAO.find(juanPablo).toString());
+        System.out.println("");
+        System.out.println("");
+        arregloDeLuzPrincipal.setDescripcion("arreglar luz y cambiar interruptor");
+        tareaDAO.update(arregloDeLuzPrincipal);
+
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+
+        listadeHabParaReserva1.add(apartamento1);
+
+        System.out.println("lista de hab pieza 1: " + listadeHabParaReserva1.toString());
 
         reservaDAO.update(reserva1);
 
-        apartamentoDAO.update(apartamento1);
+        apartamentoDAO.remove(apartamento1);
+        apartamentoDAO.remove(apartamento2);
+        apartamentoDAO.remove(apartamento3);
 
-        System.out.println("apartamento 1 despues del update: " +apartamento1);
+        reservaDAO.remove(reserva1);
 
-apartamentoDAO.remove(apartamento1);
-apartamentoDAO.remove(apartamento2);
-apartamentoDAO.remove(apartamento3);
+        clienteDAO.remove(cliente1);
 
-reservaDAO.remove(reserva1);
+        elementoInventarioDAO.remove(caloventor);
+        elementoInventarioDAO.remove(lamparaDePie);
+        elementoInventarioDAO.remove(camaDoble);
 
-clienteDAO.remove(cliente1);
+        estadoDAO.remove(vendido);
+        estadoDAO.remove(realizado);
 
-elementoInventarioDAO.remove(caloventor);
-elementoInventarioDAO.remove(lamparaDePie);
-elementoInventarioDAO.remove(camaDoble);
+        provReservaDAO.remove(proveedorDeLaReservaBooking);
 
-estadoDAO.remove(vendido);
-estadoDAO.remove(realizado);
+        servicioDAO.remove(limpiezaAdicional);
+        servicioDAO.remove(ventaBebidaAlcoholica);
 
-provReservaDAO.remove(proveedorDeLaReservaBooking);
+        tareaDAO.remove(arregloDeLuzPrincipal);
+        tareaDAO.remove(limpiar);
 
-servicioDAO.remove(limpiezaAdicional);
-servicioDAO.remove(ventaBebidaAlcoholica);
+        usuarioDAO.remove(juanPablo);
 
-tareaDAO.remove(arregloDeLuzPrincipal);
-tareaDAO.remove(limpiar);
 
-usuarioDAO.remove(juanPablo);
 
     }
 }

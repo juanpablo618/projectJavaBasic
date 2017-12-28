@@ -24,4 +24,8 @@ public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
         return super.find(entity);
     }
 
+    public Apartamento findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
+    }
+
 }

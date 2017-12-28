@@ -23,5 +23,8 @@ public class ClienteDAO extends GenericDAOImpl<Cliente> {
         return super.find(entity);
     }
 
+    public Cliente findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
+    }
 
 }

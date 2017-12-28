@@ -1,33 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost
--- Tiempo de generación: 04-08-2017 a las 23:03:42
--- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `bdproyectojavabasico`
---
-
--- --------------------------------------------------------
-
+CREATE DATABASE IF NOT EXISTS `bdproyectojavabasico` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `bdproyectojavabasico`;
 --
 -- Estructura de tabla para la tabla `apartamento`
 --
 
 CREATE TABLE `apartamento` (
-  `id_apartamento` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nro_piso` int(11) NOT NULL,
   `ocupacion_maxima` int(11) NOT NULL,
   `nombre_edificio` varchar(500) NOT NULL,
@@ -41,66 +19,63 @@ CREATE TABLE `apartamento` (
 --
 
 CREATE TABLE `apartamento_por_reserva` (
-  `id_reserva` int(11) NOT NULL,
+  `id_apartamento` int(11) NOT NULL,
+  `id_reserva` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cliente`
+--
+
+CREATE TABLE `cliente` (
+  `id` int(11) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `fecha_nacimiento` varchar(1000) NOT NULL,
+  `tel_fijo` varchar(50) NOT NULL,
+  `tel_celular` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `comentario` varchar(100) NOT NULL,
+  `receptor` int(11) DEFAULT NULL,
+  `fecha_insercion` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `elementoinventario`
+--
+
+CREATE TABLE `elementoinventario` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(500) NOT NULL,
+  `codigo` varchar(500) NOT NULL,
+  `descripcion` varchar(1000) NOT NULL,
+  `fecha_insercion` varchar(250) NOT NULL,
+  `comprador` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `elementoinventario_por_apartamento`
+--
+
+CREATE TABLE `elementoinventario_por_apartamento` (
+  `id_elementoinventario` int(11) NOT NULL,
   `id_apartamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `clientes`
+-- Estructura de tabla para la tabla `estado`
 --
 
-CREATE TABLE `clientes` (
-  `id_cliente` int(11) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
-  `tel_fijo` varchar(50) NOT NULL,
-  `tel_celular` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `comentario` varchar(100) NOT NULL,
-  `recibido_por` int(11) NOT NULL,
-  `fecha_insercion` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `detalle_inventario`
---
-
-CREATE TABLE `detalle_inventario` (
-  `id_elemento_de_inventario` int(11) NOT NULL,
-  `id_apartamento` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `fecha_ingreso` date NOT NULL,
-  `id_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `elementos_de_inventario`
---
-
-CREATE TABLE `elementos_de_inventario` (
-  `id_elemento_de_inventario` int(11) NOT NULL,
-  `nombre` varchar(500) NOT NULL,
-  `codigo` varchar(500) NOT NULL,
-  `descripcion` varchar(1000) NOT NULL,
-  `fecha_insercion` date NOT NULL,
-  `id_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `estados`
---
-
-CREATE TABLE `estados` (
-  `id_estado` int(11) NOT NULL,
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(250) NOT NULL,
   `descripcion` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -108,11 +83,11 @@ CREATE TABLE `estados` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `proveedores_de_reserva`
+-- Estructura de tabla para la tabla `provreserva`
 --
 
-CREATE TABLE `proveedores_de_reserva` (
-  `id_prov_de_reserva` int(11) NOT NULL,
+CREATE TABLE `provreserva` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(1000) NOT NULL,
   `descripcion` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -120,29 +95,33 @@ CREATE TABLE `proveedores_de_reserva` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reservas`
+-- Estructura de tabla para la tabla `reserva`
 --
 
-CREATE TABLE `reservas` (
-  `id_reserva` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
+CREATE TABLE `reserva` (
+  `id` int(11) NOT NULL,
+  `cliente` int(11) NOT NULL,
   `num_personas` int(11) NOT NULL,
   `tarifa_total` double NOT NULL,
-  `comentario` int(11) NOT NULL,
-  `id_prov_de_reserva` int(11) NOT NULL
+  `comentario` varchar(500) NOT NULL,
+  `proveedor` int(11) DEFAULT NULL,
+  `ingreso` varchar(100) NOT NULL,
+  `egreso` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `servicios`
+-- Estructura de tabla para la tabla `servicio`
 --
 
-CREATE TABLE `servicios` (
-  `id_servicio` int(11) NOT NULL,
+CREATE TABLE `servicio` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(250) NOT NULL,
-  `codigo` varchar(200) NOT NULL,
-  `descripcion` varchar(500) NOT NULL
+  `codigo` varchar(200) DEFAULT NULL,
+  `descripcion` varchar(500) NOT NULL,
+  `estado` int(11) DEFAULT NULL,
+  `vendedor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -153,48 +132,42 @@ CREATE TABLE `servicios` (
 
 CREATE TABLE `servicio_por_apartamento` (
   `id_servicio` int(11) NOT NULL,
-  `id_apartamento` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `fecha_y_hora_de_ingreso` datetime NOT NULL,
-  `usuario_tomo_el_pedido` int(11) NOT NULL,
-  `id_estado` int(11) NOT NULL
+  `id_apartamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tareas`
+-- Estructura de tabla para la tabla `tarea`
 --
 
-CREATE TABLE `tareas` (
-  `id_tarea` int(11) NOT NULL,
+CREATE TABLE `tarea` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(200) NOT NULL,
-  `descripcion` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tareas_por_apartamento`
---
-
-CREATE TABLE `tareas_por_apartamento` (
-  `id_tarea` int(11) NOT NULL,
-  `id_apartamento` int(11) NOT NULL,
-  `id_estado` int(11) NOT NULL,
-  `usuario a realizarla` varchar(250) NOT NULL,
   `descripcion` varchar(1000) NOT NULL,
-  `id_usuario_a_realizarla` int(11) NOT NULL
+  `estado` int(11) DEFAULT NULL,
+  `realizador` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Estructura de tabla para la tabla `tarea_por_apartamento`
 --
 
-CREATE TABLE `usuarios` (
-  `id_usuario` int(11) NOT NULL,
+CREATE TABLE `tarea_por_apartamento` (
+  `id_tarea` int(11) NOT NULL,
+  `id_apartamento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -207,109 +180,141 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `apartamento`
 --
 ALTER TABLE `apartamento`
-  ADD PRIMARY KEY (`id_apartamento`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `apartamento_por_reserva`
 --
 ALTER TABLE `apartamento_por_reserva`
-  ADD PRIMARY KEY (`id_reserva`),
-  ADD UNIQUE KEY `id_reserva_2` (`id_reserva`),
-  ADD UNIQUE KEY `id_apartamento` (`id_apartamento`),
-  ADD KEY `id_reserva` (`id_reserva`);
+  ADD KEY `apartamento_por_reserva-apartamento` (`id_apartamento`),
+  ADD KEY `apartamento_por_reserva-reserva` (`id_reserva`);
 
 --
--- Indices de la tabla `clientes`
+-- Indices de la tabla `cliente`
 --
-ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`id_cliente`),
-  ADD KEY `recibido_por` (`recibido_por`);
+ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receptor` (`receptor`);
 
 --
--- Indices de la tabla `detalle_inventario`
+-- Indices de la tabla `elementoinventario`
 --
-ALTER TABLE `detalle_inventario`
-  ADD KEY `detalle_inventario_ibfk_1` (`id_elemento_de_inventario`),
-  ADD KEY `detalle_inventario_ibfk_2` (`id_apartamento`),
-  ADD KEY `id_usuario` (`id_usuario`);
+ALTER TABLE `elementoinventario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `comprador` (`comprador`);
 
 --
--- Indices de la tabla `elementos_de_inventario`
+-- Indices de la tabla `elementoinventario_por_apartamento`
 --
-ALTER TABLE `elementos_de_inventario`
-  ADD PRIMARY KEY (`id_elemento_de_inventario`),
-  ADD KEY `id_usuario` (`id_usuario`);
+ALTER TABLE `elementoinventario_por_apartamento`
+  ADD KEY `elementoinventario_por_apartamento-elementoinventario` (`id_elementoinventario`),
+  ADD KEY `elementoinventario_por_apartamento-apartamento` (`id_apartamento`);
 
 --
--- Indices de la tabla `estados`
+-- Indices de la tabla `estado`
 --
-ALTER TABLE `estados`
-  ADD PRIMARY KEY (`id_estado`);
+ALTER TABLE `estado`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `proveedores_de_reserva`
+-- Indices de la tabla `provreserva`
 --
-ALTER TABLE `proveedores_de_reserva`
-  ADD PRIMARY KEY (`id_prov_de_reserva`);
+ALTER TABLE `provreserva`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `reservas`
+-- Indices de la tabla `reserva`
 --
-ALTER TABLE `reservas`
-  ADD PRIMARY KEY (`id_reserva`),
-  ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_prov_de_reserva` (`id_prov_de_reserva`);
+ALTER TABLE `reserva`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `proveedor` (`proveedor`),
+  ADD KEY `reserva-cliente` (`cliente`);
 
 --
--- Indices de la tabla `servicios`
+-- Indices de la tabla `servicio`
 --
-ALTER TABLE `servicios`
-  ADD PRIMARY KEY (`id_servicio`);
+ALTER TABLE `servicio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `servicio-estado` (`estado`),
+  ADD KEY `vendedor` (`vendedor`);
 
 --
 -- Indices de la tabla `servicio_por_apartamento`
 --
 ALTER TABLE `servicio_por_apartamento`
-  ADD KEY `id_servicio` (`id_servicio`),
-  ADD KEY `id_apartamento` (`id_apartamento`),
-  ADD KEY `id_estado` (`id_estado`),
-  ADD KEY `usuario_tomo_el_pedido` (`usuario_tomo_el_pedido`);
+  ADD KEY `servicio_por_apartamento-servicio` (`id_servicio`),
+  ADD KEY `servicio_por_apartamento-apartamento` (`id_apartamento`);
 
 --
--- Indices de la tabla `tareas`
+-- Indices de la tabla `tarea`
 --
-ALTER TABLE `tareas`
-  ADD PRIMARY KEY (`id_tarea`);
+ALTER TABLE `tarea`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `estado` (`estado`),
+  ADD KEY `realizador` (`realizador`);
 
 --
--- Indices de la tabla `tareas_por_apartamento`
+-- Indices de la tabla `tarea_por_apartamento`
 --
-ALTER TABLE `tareas_por_apartamento`
-  ADD KEY `id_tarea` (`id_tarea`),
-  ADD KEY `id_apartamento` (`id_apartamento`),
-  ADD KEY `id_estado` (`id_estado`),
-  ADD KEY `id_usuario_a_realizarla` (`id_usuario_a_realizarla`);
+ALTER TABLE `tarea_por_apartamento`
+  ADD KEY `tarea_por_apartamento-apartamento` (`id_apartamento`),
+  ADD KEY `tarea_por_apartamento-tarea` (`id_tarea`);
 
 --
--- Indices de la tabla `usuarios`
+-- Indices de la tabla `usuario`
 --
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id_usuario`);
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `estados`
+-- AUTO_INCREMENT de la tabla `apartamento`
 --
-ALTER TABLE `estados`
-  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `apartamento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
--- AUTO_INCREMENT de la tabla `tareas`
+-- AUTO_INCREMENT de la tabla `cliente`
 --
-ALTER TABLE `tareas`
-  MODIFY `id_tarea` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `cliente`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `elementoinventario`
+--
+ALTER TABLE `elementoinventario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT de la tabla `estado`
+--
+ALTER TABLE `estado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `provreserva`
+--
+ALTER TABLE `provreserva`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `reserva`
+--
+ALTER TABLE `reserva`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `tarea`
+--
+ALTER TABLE `tarea`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Restricciones para tablas volcadas
 --
@@ -318,54 +323,59 @@ ALTER TABLE `tareas`
 -- Filtros para la tabla `apartamento_por_reserva`
 --
 ALTER TABLE `apartamento_por_reserva`
-  ADD CONSTRAINT `apartamento_por_reserva_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reserva`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `apartamento_por_reserva_ibfk_2` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id_apartamento`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `apartamento_por_reserva-apartamento` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `apartamento_por_reserva-reserva` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `clientes`
+-- Filtros para la tabla `cliente`
 --
-ALTER TABLE `clientes`
-  ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`recibido_por`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `cliente`
+  ADD CONSTRAINT `cliente-usuario` FOREIGN KEY (`receptor`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `detalle_inventario`
+-- Filtros para la tabla `elementoinventario`
 --
-ALTER TABLE `detalle_inventario`
-  ADD CONSTRAINT `detalle_inventario_ibfk_1` FOREIGN KEY (`id_elemento_de_inventario`) REFERENCES `elementos_de_inventario` (`id_elemento_de_inventario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `detalle_inventario_ibfk_2` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id_apartamento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `detalle_inventario_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `elementoinventario`
+  ADD CONSTRAINT `elementoinventario-usuario` FOREIGN KEY (`comprador`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `elementos_de_inventario`
+-- Filtros para la tabla `elementoinventario_por_apartamento`
 --
-ALTER TABLE `elementos_de_inventario`
-  ADD CONSTRAINT `elementos_de_inventario_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `elementoinventario_por_apartamento`
+  ADD CONSTRAINT `elementoinventario_por_apartamento-apartamento` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `elementoinventario_por_apartamento-elementoinventario` FOREIGN KEY (`id_elementoinventario`) REFERENCES `elementoinventario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `reservas`
+-- Filtros para la tabla `reserva`
 --
-ALTER TABLE `reservas`
-  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
-  ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_prov_de_reserva`) REFERENCES `proveedores_de_reserva` (`id_prov_de_reserva`);
+ALTER TABLE `reserva`
+  ADD CONSTRAINT `reserva-cliente` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reserva-provreserva` FOREIGN KEY (`proveedor`) REFERENCES `provreserva` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  ADD CONSTRAINT `servicio-estado` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `servicio-usuario` FOREIGN KEY (`vendedor`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `servicio_por_apartamento`
 --
 ALTER TABLE `servicio_por_apartamento`
-  ADD CONSTRAINT `servicio_por_apartamento_ibfk_1` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicio`),
-  ADD CONSTRAINT `servicio_por_apartamento_ibfk_2` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id_apartamento`),
-  ADD CONSTRAINT `servicio_por_apartamento_ibfk_3` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`),
-  ADD CONSTRAINT `servicio_por_apartamento_ibfk_4` FOREIGN KEY (`usuario_tomo_el_pedido`) REFERENCES `usuarios` (`id_usuario`);
+  ADD CONSTRAINT `servicio_por_apartamento-apartamento` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `servicio_por_apartamento-servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `tareas_por_apartamento`
+-- Filtros para la tabla `tarea`
 --
-ALTER TABLE `tareas_por_apartamento`
-  ADD CONSTRAINT `tareas_por_apartamento_ibfk_1` FOREIGN KEY (`id_tarea`) REFERENCES `tareas` (`id_tarea`),
-  ADD CONSTRAINT `tareas_por_apartamento_ibfk_2` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id_apartamento`),
-  ADD CONSTRAINT `tareas_por_apartamento_ibfk_3` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`),
-  ADD CONSTRAINT `tareas_por_apartamento_ibfk_4` FOREIGN KEY (`id_usuario_a_realizarla`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `tarea`
+  ADD CONSTRAINT `tarea-estado` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `tarea-usuario` FOREIGN KEY (`realizador`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Filtros para la tabla `tarea_por_apartamento`
+--
+ALTER TABLE `tarea_por_apartamento`
+  ADD CONSTRAINT `tarea_por_apartamento-apartamento` FOREIGN KEY (`id_apartamento`) REFERENCES `apartamento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tarea_por_apartamento-tarea` FOREIGN KEY (`id_tarea`) REFERENCES `tarea` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

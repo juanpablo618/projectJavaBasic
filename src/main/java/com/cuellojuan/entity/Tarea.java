@@ -6,7 +6,7 @@ public class Tarea {
     private String nombre;
     private String descripcion;
     private Estado estado;
-    private Usuario usuarioqlarealiza;
+    private Usuario realizador;
 
 
     public int getId() {
@@ -41,12 +41,12 @@ public class Tarea {
         this.estado = estado;
     }
 
-    public Usuario getUsuarioqlarealiza() {
-        return usuarioqlarealiza;
+    public Usuario getRealizador() {
+        return realizador;
     }
 
-    public void setUsuarioqlarealiza(Usuario usuarioqlarealiza) {
-        this.usuarioqlarealiza = usuarioqlarealiza;
+    public void setRealizador(Usuario realizador) {
+        this.realizador = realizador;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Tarea {
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", estado=" + estado +
-                ", usuarioqlarealiza=" + usuarioqlarealiza +
+                ", realizador=" + realizador +
                 '}';
     }
 }
