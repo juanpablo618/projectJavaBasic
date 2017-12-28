@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="genericDAOimpl" class="com.cuellojuan.dao.impl.GenericDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+
+    <bean id="UsuarioDAO" class="com.cuellojuan.dao.UsuarioDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <bean id="ClienteDAO" class="com.cuellojuan.dao.ClienteDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <bean id="ProvReservaDAO" class="com.cuellojuan.dao.ProvReservaDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="ReservaDAO" class="com.cuellojuan.dao.ReservaDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <bean id="ApartamentoDAO" class="com.cuellojuan.dao.ApartamentoDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="elementoInventarioDAO" class="com.cuellojuan.dao.ElementoInventarioDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="EstadoDAO" class="com.cuellojuan.dao.EstadoDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="TareaDAO" class="com.cuellojuan.dao.TareaDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="ServicioDAO" class="com.cuellojuan.dao.ServicioDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+</beans>

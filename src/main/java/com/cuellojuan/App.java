@@ -5,8 +5,6 @@ import com.cuellojuan.dao.ApartamentoDAO;
 import com.cuellojuan.entity.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
