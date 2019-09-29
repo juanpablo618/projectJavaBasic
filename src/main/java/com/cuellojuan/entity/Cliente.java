@@ -1,13 +1,7 @@
 package com.cuellojuan.entity;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cliente {
-
 
     private int id;
     private String apellido;
@@ -17,12 +11,9 @@ public class Cliente {
     private String tel_celular;
     private String email;
     private String comentario;
-    private Usuario usuarioquerecibio;
+    private Usuario receptor;
     private String fecha_insercion;
 
-
-    public Cliente() {
-    }
 
     public int getId() {
         return id;
@@ -88,13 +79,12 @@ public class Cliente {
         this.comentario = comentario;
     }
 
-
-    public Usuario getUsuarioquerecibio() {
-        return usuarioquerecibio;
+    public Usuario getReceptor() {
+        return receptor;
     }
 
-    public void setUsuarioquerecibio(Usuario usuarioquerecibio) {
-        this.usuarioquerecibio = usuarioquerecibio;
+    public void setReceptor(Usuario receptor) {
+        this.receptor = receptor;
     }
 
     public String getFecha_insercion() {
@@ -105,20 +95,19 @@ public class Cliente {
         this.fecha_insercion = fecha_insercion;
     }
 
-
     @Override
     public String toString() {
         return "Cliente{" +
                 "id=" + id +
                 ", apellido='" + apellido + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
-                ", tel_fijo='" + tel_fijo + '\'' +
-                ", tel_celular='" + tel_celular + '\'' +
+                ", fechaNacimiento='" + fecha_nacimiento + '\'' +
+                ", telFijo='" + tel_fijo + '\'' +
+                ", telCelular='" + tel_celular + '\'' +
                 ", email='" + email + '\'' +
                 ", comentario='" + comentario + '\'' +
-                ", usuarioquerecibio=" + usuarioquerecibio +
-                ", fecha_insercion='" + fecha_insercion + '\'' +
+                ", receptor=" + receptor +
+                ", fechaInsercion='" + fecha_insercion + '\'' +
                 '}';
     }
 }

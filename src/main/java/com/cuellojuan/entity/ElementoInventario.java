@@ -1,26 +1,13 @@
 package com.cuellojuan.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ElementoInventario {
 
     private int id;
-
     private String nombre;
-
     private String codigo;
-
     private String descripcion;
-
     private String fecha_insercion;
-
-    private Usuario usuarioquecompro;
-
-
-    public ElementoInventario() {
-    }
+    private Usuario comprador;
 
     public String getNombre() {
         return nombre;
@@ -58,17 +45,16 @@ public class ElementoInventario {
         return id;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public Usuario getUsuarioquecompro() {
-        return usuarioquecompro;
+    public Usuario getComprador() {
+        return comprador;
     }
 
-    public void setUsuarioquecompro(Usuario usuarioquecompro) {
-        this.usuarioquecompro = usuarioquecompro;
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
     }
 
     @Override
@@ -78,8 +64,8 @@ public class ElementoInventario {
                 ", nombre='" + nombre + '\'' +
                 ", codigo='" + codigo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", fecha_insercion='" + fecha_insercion + '\'' +
-                ", usuarioquecompro=" + usuarioquecompro +
+                ", fechaInsercion='" + fecha_insercion + '\'' +
+                ", comprador=" + comprador +
                 '}';
     }
 }

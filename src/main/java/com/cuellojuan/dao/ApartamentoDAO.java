@@ -3,16 +3,10 @@ package com.cuellojuan.dao;
 
 import com.cuellojuan.dao.impl.GenericDAOImpl;
 import com.cuellojuan.entity.Apartamento;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
-
-
-    private ApartamentoDAO() {
-        super();
-    }
 
     public void remove(Apartamento entity) throws IllegalAccessException, NoSuchFieldException, SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
         super.remove(entity);
@@ -26,11 +20,12 @@ public class ApartamentoDAO  extends GenericDAOImpl<Apartamento> {
         super.update(entity);
     }
 
-
     public Apartamento find(Apartamento entity) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
         return super.find(entity);
     }
 
-
+    public Apartamento findByProperty(String field , String value) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, SQLException, ClassNotFoundException {
+        return super.findByProperty(field, value);
+    }
 
 }

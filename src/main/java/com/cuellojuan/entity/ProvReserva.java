@@ -1,17 +1,11 @@
 package com.cuellojuan.entity;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProvReserva {
 
     private int id;
     private String nombre;
     private String descripcion;
-
-    public ProvReserva() {
-    }
 
     public int getId() {
         return id;
